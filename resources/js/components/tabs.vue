@@ -1,6 +1,6 @@
 <template>
 	<v-card>
-		<v-tabs v-model="tab" centered icons-and-text>
+		<v-tabs v-model="tab" centered icons-and-text touchless>
 			<v-tabs-slider></v-tabs-slider>
 
 			<v-tab href="#tab-1" disabled> Products </v-tab>

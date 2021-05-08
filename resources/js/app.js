@@ -2,14 +2,12 @@ require('./bootstrap');
 
 import Vue from 'vue'
 import vuetify from './vuetify'
-import { Datetime } from 'vue-datetime'
 import VueRouter from 'vue-router'
 import AdminCalender from './components/calenderAdmin.vue'
 import table from './components/table.vue'
+import Swal from 'sweetalert2'
 
 Vue.use(VueRouter)
-
-Vue.use(Datetime)
 
 //Main pages
 

@@ -42,13 +42,13 @@
 import moment from "moment";
 import { bus } from "../app";
 import eventForm from "../components/eventForm.vue";
+import Swal from "sweetalert2";
 export default {
-	props: ["calanderType", "startDate"],
 	components: { eventForm },
 	data: () => ({
 		today: "",
 		theDate: "",
-		start: moment().add(1, "days").format("Y-MM-DD"),
+		start: moment().add(2, "days").format("Y-MM-DD"),
 		selected_date: "",
 		formated_date: "",
 		type: "month",
@@ -66,9 +66,16 @@ export default {
 			bus.$emit("move_next");
 		},
 		clickTime(event) {
-			if (moment(event.date).isAfter(this.today)) {
+			if (moment(event.date).isAfter(moment(this.today).add(1, "days"))) {
 				this.showEvent();
 				this.selected_date = new Date(`${event.date} ${event.time}`);
+			} else if (
+				moment(event.date).isBefore(
+					moment(this.today).add(1, "days")
+				) &&
+				moment(event.date).isAfter(moment(this.today))
+			) {
+				Swal.fire("Day fully booked");
 			}
 		},
 		getEvents() {
@@ -89,7 +96,6 @@ export default {
 		},
 	},
 	mounted: function () {
-		this.type = this.calanderType;
 		this.today = moment().format("Y-MM-DD HH:mm:ss");
 	},
 	watch: {

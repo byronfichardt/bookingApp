@@ -33,6 +33,7 @@
         "luxon": "^1.26.0",
         "material-design-icons": "^3.0.1",
         "moment": "^2.29.1",
+        "sweetalert2": "^10.16.7",
         "vue": "^2.6.12",
         "vue-cal": "^3.10.1",
         "vue-datetime": "^1.0.0-beta.14",

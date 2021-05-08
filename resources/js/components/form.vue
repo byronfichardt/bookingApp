@@ -4,7 +4,7 @@
 
 		<br />
 		<hr />
-		<div style="margin: auto" class="ml-6">
+		<div style="margin: auto">
 			<v-simple-table>
 				<template v-slot:default>
 					<tbody>
@@ -22,36 +22,33 @@
 								<v-text-field
 									v-model="item.quantity"
 									v-if="item.display_quantity"
-									label="Number of ..."
+									label="Qty"
+									@change="updatePrice(item)"
 								></v-text-field>
 							</td>
 							<td>
 								<v-text-field
+									style="text-align: right"
 									v-model="item.price"
 									disabled
 									label="Price"
-								></v-text-field>
-							</td>
-							<td>
-								<v-text-field
-									v-model="item.minutes"
-									disabled
-									label="Time"
 								></v-text-field>
 							</td>
 						</tr>
 					</tbody>
 					<tfoot>
 						<tr>
-							<td></td>
-							<td>Totals:</td>
-							<td>
+							<td>Cost:</td>
+							<td colspan="3">
 								<v-text-field
 									v-model="sumPrice"
 									disabled
 								></v-text-field>
 							</td>
-							<td>
+						</tr>
+						<tr>
+							<td>Total time:</td>
+							<td colspan="3">
 								<v-text-field
 									v-model="sumIntoHours"
 									disabled
@@ -93,8 +90,13 @@ export default {
 			minutes: 0,
 		},
 	}),
-
 	methods: {
+		updatePrice(item) {
+			item.origanalPrice
+				? item.origanalPrice
+				: (item.origanalPrice = item.price);
+			item.price = item.quantity * item.origanalPrice;
+		},
 		getProducts() {
 			axios.get("api/products").then((response) => {
 				this.products = response.data;
@@ -130,9 +132,9 @@ export default {
 			this.products.forEach((element) => {
 				if (element.selected) {
 					let price = parseFloat(element.price);
-					if (element.hasOwnProperty("quantity")) {
-						price = price * parseFloat(element.quantity);
-					}
+					//if (element.hasOwnProperty("quantity")) {
+					//price = price * parseFloat(element.quantity);
+					//}
 					sum = parseFloat(sum) + parseFloat(price);
 				}
 			});
@@ -164,8 +166,23 @@ export default {
 .v-select__slot .v-label {
 	left: 15px !important;
 }
+.v-label,
+.v-input {
+	font-size: 0.875rem !important;
+}
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > td,
+.v-data-table > .v-data-table__wrapper > table > tfoot > tr > td,
+.v-data-table > .v-data-table__wrapper > table > thead > tr > td {
+	font-size: 0.875rem !important;
+}
 .v-select__slot .v-select__selections .v-select__selection {
 	padding-left: 15px !important;
+}
+
+@media only screen and (max-width: 600px) {
+	body {
+		background-color: lightblue;
+	}
 }
 </style>
 <style scoped>
