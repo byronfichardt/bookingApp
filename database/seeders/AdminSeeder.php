@@ -16,9 +16,10 @@ class AdminSeeder extends Seeder
     {
         User::create([
             "name" => 'karin',
-            "email" => env('ADMIN_USER_EMAIL'),
-            "password" => env('ADMIN_PASSWORD'),
-            "type" => "admin"
+            "email" => config('admin.email'),
+            "password" => config('admin.password'),
+            "type" => "admin",
+            "phone" => "12121212"
         ]);
     }
 }
