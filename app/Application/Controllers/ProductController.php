@@ -25,7 +25,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'price' => $request->price,
             'minutes' => $request->minutes,
-            'display_quantity' => $request->display_quantity,
+            'display_quantity' => $request->display_quantity ?? false,
         ]);
         return 'success';
     }
