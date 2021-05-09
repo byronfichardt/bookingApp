@@ -2,20 +2,14 @@
 
 namespace App\Application\Models;
 
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-
-    /** @return SomeFancyFactory */
-    protected static function newFactory()
-    {
-        return UserFactory::new();
-    }
 
     /**
      * The attributes that are mass assignable.
@@ -31,5 +25,10 @@ class User extends Authenticatable
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
     }
 }
