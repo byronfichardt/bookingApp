@@ -1,13 +1,21 @@
 <template>
-	<div style="width: 80%; margin-left: 50px">
-		<v-btn
-			color="accent"
-			elevation="2"
-			outlined
-			small
-			@click="openAddItemForm"
-			>Add item</v-btn
-		>
+	<div style="width: 100%">
+        <v-card
+            class="d-flex flex-row-reverse"
+            color="none"
+            flat
+            tile
+            style="padding-right: 15px"
+        >
+            <v-btn
+                color="accent"
+                elevation="2"
+                outlined
+                small
+                @click="openAddItemForm"
+                >Add item</v-btn
+            >
+        </v-card>
 		<v-simple-table>
 			<template v-slot:default>
 				<thead>

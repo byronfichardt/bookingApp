@@ -1,5 +1,5 @@
 <template>
-	<div style="width: 80%; margin-left: 50px">
+	<div style="width: 100%" >
 		<v-sheet tile height="55" class="d-flex">
 			<v-btn icon class="ma-2" @click="$refs.calendar.prev()">
 				<v-icon>mdi-chevron-left</v-icon>
