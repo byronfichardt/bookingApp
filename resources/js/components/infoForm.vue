@@ -11,7 +11,6 @@
 
 			<v-text-field
 				v-model="phone"
-				:rules="phoneRules"
 				label="Phone"
 				required
 			></v-text-field>
@@ -40,12 +39,6 @@
 import { bus } from "../app";
 export default {
 	data: () => ({
-		phoneRules: [
-			(v) => !!v || "Phone is required",
-			(v) =>
-				/([0-9]{2} ){3}[0-9]{2}/.test(v) ||
-				"Phone must be in the format XX XX XX XX",
-		],
 		phone: "",
 		valid: true,
 		booking_note: "",

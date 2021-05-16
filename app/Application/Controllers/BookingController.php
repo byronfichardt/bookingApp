@@ -48,10 +48,19 @@ class BookingController extends Controller
             $booking->products()->attach($product['id'], ['quantity' => (int) data_get($product, 'quantity', 1)]);
         }
 
-        $token = base64_encode(json_encode($user->toArray()));
+        $token = base64_encode(json_encode($user->only('id', 'email')));
 
         BookingCreatedEmail::dispatch($user, $token);
 
         return ['status' => "success"];
+    }
+
+    public function cancel(Request $request)
+    {
+        $token = $request->token;
+        $data = json_decode(base64_decode($token),true);
+        Booking::where('active', true)->where('user_id', $data['id'])->delete();
+
+        return view('cancel');
     }
 }

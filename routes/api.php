@@ -25,6 +25,8 @@ Route::post('products', [ProductController::class, 'store']);
 Route::delete('products/{id}', [ProductController::class, 'delete']);
 Route::patch('products/{id}', [ProductController::class, 'edit']);
 
+Route::get('cancel', [BookingController::class, 'cancel']);
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
