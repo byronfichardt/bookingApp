@@ -16,12 +16,12 @@ class BookingController extends Controller
 {
     public function index()
     {
-        return BookingResource::collection(Booking::all());
+        return BookingResource::collection(Booking::where('active', true)->get());
     }
 
     public function fetch(Request $request, string $date)
     {
-        return Booking::where('created_at', $date)->get()->toJson();
+        return Booking::where('created_at', $date)->where('active', true)->get()->toJson();
     }
 
     public function store(Request $request)
@@ -48,7 +48,7 @@ class BookingController extends Controller
             $booking->products()->attach($product['id'], ['quantity' => (int) data_get($product, 'quantity', 1)]);
         }
 
-        $token = base64_encode(json_encode($user->only('id', 'email')));
+        $token = base64_encode(json_encode(['booking_id' => $booking->id]));
 
         BookingCreatedEmail::dispatch($user, $token);
 
@@ -59,7 +59,7 @@ class BookingController extends Controller
     {
         $token = $request->token;
         $data = json_decode(base64_decode($token),true);
-        Booking::where('active', true)->where('user_id', $data['id'])->delete();
+        Booking::find($data['booking_id'])->delete();
 
         return view('cancel');
     }
