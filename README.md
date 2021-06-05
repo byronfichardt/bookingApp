@@ -2,7 +2,7 @@
 
 BookingApp is a free booking application with an easy-to-use interface. I believe in providing the best experience when using the application.
 
-##Install your own
+## Install your own
 Download the copy to your server
 ```
 git clone git@github.com:byronfichardt/bookingApp.git
