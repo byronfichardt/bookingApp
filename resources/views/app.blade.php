@@ -2,6 +2,6 @@
 
 @section('content')
     <div id="user" data-app app-data="true" class="container">
-        <app></app>
+        <app ></app>
     </div>
 @endsection

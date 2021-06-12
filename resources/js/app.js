@@ -17,6 +17,7 @@ import User from './views/app.vue'
 const routes = [
     { path: '/calender', component: AdminCalender },
     { path: '/products', component: table },
+    { path: '', component: AdminCalender },
 ]
 
 const router = new VueRouter({

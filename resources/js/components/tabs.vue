@@ -79,4 +79,10 @@ export default {
 .v-tab--disabled {
 	opacity: 0.7 !important;
 }
+.v-sheet.v-card {
+     border-radius: unset!important;
+}
+.v-sheet.v-card:not(.v-sheet--outlined) {
+    box-shadow: unset!important;
+}
 </style>

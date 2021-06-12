@@ -61,6 +61,8 @@
 		</div>
 
 		<v-btn
+
+            tile
 			color="info"
 			class="mr-4 mt-2 mb-2 float-right"
 			@click="saveProducts"

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="min-height: 800px">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
         <v-navigation-drawer
