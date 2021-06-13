@@ -41,7 +41,11 @@
 
         <header class="w3-container w3-center" style="padding:100px 16px;background: linear-gradient( 180deg, rgba(139, 225, 255, 1) 0%, rgba(0, 241, 255, 1) 100% );">
             <h1 class="w3-margin w3-jumbo">Impulse Nails</h1>
-            <p class="w3-xlarge">By Karin</p>
+            <div>
+                <a href="https://www.facebook.com/ImpulseNailsCph" class="fa fa-facebook"></a>
+                <a href="https://www.instagram.com/impulsenailscph/" class="fa fa-instagram"></a>
+            </div>
+
             <a class="w3-button w3-black w3-padding-large w3-large w3-margin-top" href="#book">Book Now!</a>
         </header>
 
@@ -117,6 +121,33 @@
                 width: 30%;
                 right: 0px;
             }
+        }
+        .fa {
+            padding: 7px;
+            font-size: 15px;
+            width: 20px;
+            text-align: center;
+            text-decoration: none;
+            margin: 5px 2px;
+        }
+
+        /* Add a hover effect if you want */
+        .fa:hover {
+            opacity: 0.7;
+        }
+
+        /* Set a specific color for each brand */
+
+        /* Facebook */
+        .fa-facebook {
+            background: #3B5998;
+            color: white;
+        }
+
+        /* Twitter */
+        .fa-instagram {
+            background: #125688;
+            color: white;
         }
     </style>
     <script>
