@@ -7,21 +7,28 @@ use App\Application\Models\User;
 use App\Application\Resources\BookingResource;
 use App\Http\Controllers\Controller;
 use App\Jobs\BookingCreatedEmail;
+use App\Jobs\BookingPendingEmail;
 use App\Mail\BookingCreated;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
     public function index()
     {
-        return BookingResource::collection(Booking::where('active', true)->get());
+        return BookingResource::collection(Booking::with('user')->where('status', 'active')->get());
+    }
+
+    public function pending()
+    {
+        return BookingResource::collection(Booking::with('user')->where('status', 'pending')->get());
     }
 
     public function fetch(Request $request, string $date)
     {
-        return Booking::where('created_at', $date)->where('active', true)->get()->toJson();
+        return Booking::where('created_at', $date)->where('status', 'active')->get()->toJson();
     }
 
     public function store(Request $request)
@@ -41,12 +48,27 @@ class BookingController extends Controller
             'start_time' => Carbon::parse($request->date_time),
             'end_time' => Carbon::parse($request->date_time)->addMinutes($request->minutes_total),
             'user_id' => $user->id,
-            'name' => $request->booking_note
+            'name' => $request->booking_note,
+            'status' => 'pending'
         ]);
 
         foreach ($request->products as $product) {
             $booking->products()->attach($product['id'], ['quantity' => (int) data_get($product, 'quantity', 1)]);
         }
+
+        BookingPendingEmail::dispatch($user);
+
+        return ['status' => "success"];
+    }
+
+    public function approve($bookingId)
+    {
+        $booking = Booking::find($bookingId);
+
+        $user = User::find($booking->user_id);
+
+        $booking->status = 'active';
+        $booking->save();
 
         $token = base64_encode(json_encode(['booking_id' => $booking->id]));
 

@@ -22,9 +22,9 @@
 				<div class="mt-2 mb-2">
 					<v-label class="disabled">Available times</v-label>
 				</div>
-				<v-btn elevation="2" @click="setDateTime(9)">09:00</v-btn>
-				<v-btn elevation="2" @click="setDateTime(13)">13:00</v-btn>
-				<v-btn elevation="2" @click="setDateTime(16)">16:00</v-btn>
+
+                <v-btn v-for="time in available_times" :key="time" elevation="2" @click="setDateTime(time)">{{ hourToString(time) }}</v-btn>
+
 				<v-alert
 					class="mt-2"
 					v-if="intercept_alert"
@@ -34,6 +34,7 @@
 					type="error"
 					>{{ intercept_alert_message }}</v-alert
 				>
+
 			</v-card-text>
 			<v-card-actions class="justify-end">
 				<v-btn @click="selected_open = false" color="error"
@@ -48,7 +49,7 @@ import { bus } from "../app";
 import { Datetime } from "vue-datetime";
 import moment from "moment";
 export default {
-	props: ["startDate"],
+	props: ["startDate", 'events'],
 	components: {
 		datetime: Datetime,
 	},
@@ -60,9 +61,15 @@ export default {
 			date_end: "",
 			intercept_alert: false,
 			intercept_alert_message: "",
+            available_times : [],
+            times: [],
+            date_start_date: ""
 		};
 	},
 	methods: {
+	    hourToString(time) {
+            return ('0' + time).slice(-2) + ":00"
+        },
 		setDateTime(time) {
 			this.intercept_alert = false;
 			let dateTime = moment(this.date_start)
@@ -71,16 +78,28 @@ export default {
 				.set("second", 0);
 			bus.$emit("selected_date_time", dateTime);
 			setTimeout(() => {
-				if (this.intercept_alert == false) {
+				if (this.intercept_alert === false) {
 					this.selected_open = false;
 					bus.$emit("move_next");
 				}
 			}, 1000);
 		},
+        checkTimes() {
+	        this.times = [];
+            for (const event of this.events){
+                let start = moment(event.start).format('YYYY-MM-DD');
+		        if(start === this.date_start_date) {
+                    this.times.push(new Date(event.start).getHours());
+                }
+            }
+            this.available_times = [9, 13, 16].filter(x => !this.times.includes(x));
+        },
 	},
 	watch: {
 		startDate: function (newVal) {
 			this.date_start = moment(newVal).format("YYYY-MM-DD HH:mm:ss");
+            this.date_start_date = moment(newVal).format("YYYY-MM-DD");
+            this.checkTimes();
 		},
 	},
 	mounted: function () {

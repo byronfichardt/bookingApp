@@ -12,7 +12,6 @@ class Booking extends Model
 
     protected $guarded = [];
 
-    /** @return SomeFancyFactory */
     protected static function newFactory()
     {
         return BookingFactory::new();

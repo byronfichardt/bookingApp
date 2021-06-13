@@ -24,6 +24,10 @@
                         <router-link to="products">Products</router-link>
                     </v-list-item>
 
+                    <v-list-item>
+                        <router-link to="approvals">Approvals</router-link>
+                    </v-list-item>
+
                 </v-list-item-group>
             </v-list>
         </v-navigation-drawer>

@@ -27,7 +27,7 @@
 				v-model="theDate"
 				:weekdays="weekday"
 				:type="type"
-				:events="eventsCal"
+				:events="events"
 				@change="getEvents"
 				color="primary"
 				@click:day="clickTime"
@@ -35,7 +35,7 @@
 			>
 			</v-calendar>
 		</v-sheet>
-		<eventForm :startDate="selected_date"></eventForm>
+		<eventForm :startDate="selected_date" :events="events"></eventForm>
 	</div>
 </template>
 <script>

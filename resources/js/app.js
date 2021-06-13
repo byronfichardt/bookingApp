@@ -1,3 +1,5 @@
+import bookingApprovalTable from "./components/bookingApprovalTable";
+
 require('./bootstrap');
 
 import Vue from 'vue'
@@ -17,6 +19,7 @@ import User from './views/app.vue'
 const routes = [
     { path: '/calender', component: AdminCalender },
     { path: '/products', component: table },
+    { path: '/approvals', component: bookingApprovalTable },
     { path: '', component: AdminCalender },
 ]
 

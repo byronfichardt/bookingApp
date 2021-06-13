@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('bookings', [BookingController::class, 'index']);
+Route::get('bookings/pending', [BookingController::class, 'pending']);
+Route::get('bookings/{id}/approve', [BookingController::class, 'approve']);
 Route::post('bookings', [BookingController::class, 'store']);
 Route::get('bookings/{date}', [BookingController::class, 'fetch']);
 
