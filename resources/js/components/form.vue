@@ -1,9 +1,5 @@
 <template>
 	<div class="ma-2 pa-2">
-		<h5 style="text-align: center">{{ intro }}</h5>
-
-		<br />
-		<hr />
 		<div style="margin: auto">
 			<v-simple-table>
 				<template v-slot:default>
@@ -27,32 +23,29 @@
 								></v-text-field>
 							</td>
 							<td>
-								<v-text-field
-									style="text-align: right"
-									v-model="item.price"
-									disabled
-									label="Price"
-								></v-text-field>
+                                <label>Dkk {{item.price}}</label>
 							</td>
 						</tr>
 					</tbody>
 					<tfoot>
 						<tr>
-							<td>Cost:</td>
-							<td colspan="3">
-								<v-text-field
-									v-model="sumPrice"
-									disabled
-								></v-text-field>
+							<td style="text-align: left" colspan="2">Cost:</td>
+							<td colspan="2">
+                                <label>Dkk {{sumtotal('price')}}</label>
+<!--								<v-text-field-->
+<!--									v-model="sumPrice"-->
+<!--									disabled-->
+<!--								></v-text-field>-->
 							</td>
 						</tr>
 						<tr>
-							<td>Total time:</td>
-							<td colspan="3">
-								<v-text-field
-									v-model="sumIntoHours"
-									disabled
-								></v-text-field>
+							<td style="text-align: left" colspan="2">Total time:</td>
+							<td colspan="2">
+                                <label>Hours {{sumIntoHours}}</label>
+<!--								<v-text-field-->
+<!--									v-model="sumIntoHours"-->
+<!--									disabled-->
+<!--								></v-text-field>-->
 							</td>
 						</tr>
 					</tfoot>
@@ -97,7 +90,7 @@ export default {
 			item.origanalPrice
 				? item.origanalPrice
 				: (item.origanalPrice = item.price);
-			item.price = item.quantity * item.origanalPrice;
+			item.price = 1 * item.origanalPrice;
 		},
 		getProducts() {
 			axios.get("api/products").then((response) => {
@@ -118,39 +111,52 @@ export default {
 				bus.$emit("move_next");
 			}
 		},
+        sumtotal(type) {
+            let sum = 0;
+            this.products.forEach((element) => {
+                if (element.selected) {
+                    let value = parseInt(element[type]);
+                    let total = 0
+                    let itemQty = 1
+                    if (element.hasOwnProperty("quantity")) {
+                        if(element.quantity) {
+                            itemQty = element.quantity
+                        }
+                    }
+                    total = value * parseInt(itemQty);
+                    sum = parseFloat(sum) + parseInt(total);
+                }
+            });
+            return sum;
+        },
+
 	},
 	computed: {
-		sumIntoHours() {
-			let minutes = this.sumMinutes % 60;
-			return (
-				parseInt((this.sumMinutes / 60).toFixed(2)) +
-				" and " +
-				minutes +
-				" minutes"
-			);
-		},
-		sumPrice() {
-			let sum = 0.0;
-			this.products.forEach((element) => {
-				if (element.selected) {
-					let price = parseFloat(element.price);
-					//if (element.hasOwnProperty("quantity")) {
-					//price = price * parseFloat(element.quantity);
-					//}
-					sum = parseFloat(sum) + parseFloat(price);
-				}
-			});
-			return sum;
-		},
+        sumIntoHours() {
+            let minutes = this.sumtotal('minutes') % 60;
+            return (
+                parseInt((this.sumtotal('minutes') / 60).toFixed(2)) +
+                " and " +
+                minutes +
+                " minutes"
+            );
+        },
+        checkQuantity(value, element) {
+            if (element.hasOwnProperty("quantity")) {
+                let itemQty = 1
+                if(element.quantity) {
+                    itemQty = element.quantity
+                }
+                return value * parseInt(itemQty);
+            }
+        },
 		sumMinutes() {
 			let sum = 0.0;
 			this.products.forEach((element) => {
 				if (element.selected) {
 					let minutes = parseInt(element.minutes);
-					if (element.hasOwnProperty("quantity")) {
-						minutes = minutes * parseInt(element.quantity);
-					}
-					sum = parseInt(sum) + parseInt(minutes);
+                    total = this.checkQuantity(minutes, element);
+					sum = parseInt(sum) + parseInt(total);
 				}
 			});
 			return sum;

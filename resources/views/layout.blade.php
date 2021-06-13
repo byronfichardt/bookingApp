@@ -71,16 +71,17 @@
             </div>
 
         </div>
-        <div id="book" class="w3-container" style="padding:50px 16px" >
+        <div id="book" class="w3-container " style="padding:50px 16px;" >
             <div class="w3-row">
-                <div class="w3-col s3 w3-center"><p></p></div>
-                <div class="w3-col s6 w3-center">
+                <div class="w3-col m3 w3-center"><p></p></div>
+                <div class="w3-col m6 w3-center">
                     <h2>Book Now!!</h2>
                     @yield('content')
 
                 </div>
+
+                <div class="w3-col m3 w3-center"><p></p></div>
             </div>
-            <div class="w3-col s3 w3-center"><p></p></div>
         </div>
 
         <!-- Header -->
@@ -102,5 +103,12 @@
             </div>
 
         </div>
+    <style>
+        @media only screen and (max-width: 600px) {
+            #book {
+                padding:0px 0px 0px!important;
+            }
+        }
+    </style>
     </body>
 @include('partials.footer')
