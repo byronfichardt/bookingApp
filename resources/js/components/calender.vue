@@ -27,7 +27,7 @@
 				v-model="theDate"
 				:weekdays="weekday"
 				:type="type"
-				:events="events"
+				:events="eventsCal"
 				@change="getEvents"
 				color="primary"
 				@click:day="clickTime"
