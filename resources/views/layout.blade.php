@@ -7,9 +7,9 @@
                 <!-- Right-sided navbar links -->
                 <div class="w3-right w3-hide-small">
                     <a href="#about" class="w3-bar-item w3-button">About</a>
-                    <a href="#book" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Pricing</a>
-                    <a href="#book" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Book Now</a>
-                    <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> Contact</a>
+                    <a href="#book" class="w3-bar-item w3-button">Pricing</a>
+                    <a href="#book" class="w3-bar-item w3-button">Book Now</a>
+                    <a href="#contact" class="w3-bar-item w3-button">Contact</a>
                     @guest
                         <a class="w3-bar-item w3-button" href="{{ route('login') }}">{{ __('Login') }}</a>
                     @else
@@ -52,10 +52,9 @@
                 <div class="w3-col s6 w3-center">
                     <h2>ABOUT</h2>
                         <p>My Name in Karin Keight. I am a newly qualifed
-                            nail technician. I started my home based salon and
-                            work by myself. I absolutely love what I do, doing nails
-                            is my passion. I use top quality products and love my clients
-                            to share my passion.</p>
+                            nail technician through <a href="https://www.youngnails.com/">Young Nails</a>. I recently started my home based salon in the Copenhagen Central Area.
+                            I use top quality products. I absolutely love what I do, making nails beautiful is my passion and hope for my clients
+                            to share in my passion.</p>
                         </p>
 
                     </div>
