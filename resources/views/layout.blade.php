@@ -123,9 +123,9 @@
             }
         }
         .fa {
-            padding: 7px;
+            padding: 5px;
             font-size: 15px;
-            width: 20px;
+            width: 25px;
             text-align: center;
             text-decoration: none;
             margin: 5px 2px;
