@@ -1,8 +1,6 @@
 <template>
 	<v-card>
 		<v-tabs v-model="tab" centered icons-and-text touchless>
-			<v-tabs-slider></v-tabs-slider>
-
 			<v-tab href="#tab-1" disabled> Products </v-tab>
 			<v-tab href="#tab-2" disabled> Date </v-tab>
 			<v-tab href="#tab-3" disabled> Your Info </v-tab>
@@ -85,4 +83,8 @@ export default {
 .v-sheet.v-card:not(.v-sheet--outlined) {
     box-shadow: unset!important;
 }
+.v-slide-group:not(.v-slide-group--has-affixes)>.v-slide-group__next, .v-slide-group:not(.v-slide-group--has-affixes)>.v-slide-group__prev {
+    display: none!important;
+}
 </style>
+

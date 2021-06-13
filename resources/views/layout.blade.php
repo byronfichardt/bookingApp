@@ -6,10 +6,10 @@
 
                 <!-- Right-sided navbar links -->
                 <div class="w3-right w3-hide-small">
-                    <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
-                    <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Pricing</a>
+                    <a href="#about" class="w3-bar-item w3-button">About</a>
+                    <a href="#book" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Pricing</a>
                     <a href="#book" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Book Now</a>
-                    <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
+                    <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> Contact</a>
                     @guest
                         <a class="w3-bar-item w3-button" href="{{ route('login') }}">{{ __('Login') }}</a>
                     @else
@@ -26,10 +26,17 @@
                 </div>
                 <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
-                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+                <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="myFunction()">
                     <i class="fa fa-bars"></i>
                 </a>
             </div>
+        </div>
+        <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+        <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:38px">
+            <a href="#about" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">About</a>
+            <a href="#book" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Pricing</a>
+            <a href="#book" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Book Now</a>
+            <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Contact</a>
         </div>
 
         <header class="w3-container w3-center" style="padding:100px 16px;background: linear-gradient( 180deg, rgba(139, 225, 255, 1) 0%, rgba(0, 241, 255, 1) 100% );">
@@ -94,7 +101,6 @@
                         Mobile +45 52 81 37 11
                         Email:  impulsenailscph@gmail.com</p>
                     <p class="w3-medium" style="color: black">
-                        Location
                         Axel Hedies Gade,
                         Kobenhavn S,
                         2300</p>
@@ -108,7 +114,29 @@
             #book {
                 padding:0px 0px 0px!important;
             }
+            #navDemo {
+                width: 30%;
+                right: 0px;
+            }
         }
     </style>
+    <script>
+        function myFunction() {
+            var x = document.getElementById("navDemo");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        var modal = document.getElementById('ticketModal');
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
     </body>
 @include('partials.footer')

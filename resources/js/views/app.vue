@@ -1,7 +1,7 @@
 <template>
 	<v-app>
-		<v-container style="max-width: 800px">
-			<div class="pa-2">
+		<v-container style="max-width: 800px" class="bookingpadding0mobile">
+			<div class="pa-2 bookingpadding0mobile">
 				<tabs></tabs>
 			</div>
 		</v-container>
@@ -83,5 +83,14 @@ export default {
 .v-application--wrap {
     min-height: unset!important;
 }
+@media only screen and (max-width: 600px) {
+    .bookingpadding0mobile {
+        padding: 0px!important;
+    }
+    .v-application .pa-2 {
+        padding: 0px!important;
+    }
+}
+
 </style>
 
