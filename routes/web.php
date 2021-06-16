@@ -1,5 +1,6 @@
 <?php
 
+use App\Application\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('app');
 });
+
+Route::get('cancel', [BookingController::class, 'cancel']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

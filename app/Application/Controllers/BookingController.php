@@ -6,13 +6,11 @@ use App\Application\Models\Booking;
 use App\Application\Models\User;
 use App\Application\Resources\BookingResource;
 use App\Http\Controllers\Controller;
+use App\Jobs\BookingCanceledEmail;
 use App\Jobs\BookingCreatedEmail;
 use App\Jobs\BookingPendingEmail;
-use App\Mail\BookingCreated;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -84,5 +82,17 @@ class BookingController extends Controller
         Booking::find($data['booking_id'])->delete();
 
         return view('cancel');
+    }
+
+    public function remove(Request $request, int $id)
+    {
+        $booking = Booking::find($id);
+        $user = $booking->user;
+
+        BookingCanceledEmail::dispatch($user);
+
+        $booking->delete();
+
+        return ['status' => "success"];
     }
 }

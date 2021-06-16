@@ -22,11 +22,16 @@
 						<td>
 							<v-btn
 								color="green"
-								text
 								@click="approveItem(item)"
 							>
 								Approve
 							</v-btn>
+                            <v-btn
+                                color="red"
+                                @click="cancelItem(item)"
+                            >
+                                Cancel
+                            </v-btn>
 						</td>
 					</tr>
 				</tbody>
@@ -72,6 +77,14 @@ export default {
 				}
 			});
 		},
+        cancelItem(item) {
+            axios.get("api/bookings/" + item.id + "/cancel").then((response) => {
+                console.log(response);
+                if (response.data.status === "success") {
+                    this.getPendingBookings();
+                }
+            });
+        },
 	},
 	mounted: function () {
 		this.getPendingBookings();
