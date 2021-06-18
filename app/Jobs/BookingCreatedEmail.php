@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Application\Models\Booking;
 use App\Application\Models\User;
 use App\Mail\BookingCreated;
 use Illuminate\Bus\Queueable;
@@ -19,15 +20,18 @@ class BookingCreatedEmail implements ShouldQueue
 
     public string $token;
 
+    public Booking $booking;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, string $token)
+    public function __construct(User $user, string $token, Booking $booking)
     {
         $this->user = $user;
         $this->token = $token;
+        $this->booking = $booking;
     }
 
     /**
@@ -38,6 +42,6 @@ class BookingCreatedEmail implements ShouldQueue
     public function handle()
     {
         Mail::to($this->user->email)->bcc("karinlkeight@gmail.com")
-            ->send(new BookingCreated($this->token));
+            ->send(new BookingCreated($this->token, $this->booking, $this->user->name));
     }
 }

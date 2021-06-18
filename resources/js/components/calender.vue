@@ -51,6 +51,7 @@ export default {
 		start: moment().add(2, "days").format("Y-MM-DD"),
 		selected_date: "",
 		formated_date: "",
+        blockedDates: [],
 		type: "month",
 		mode: "stack",
 		weekday: [0, 1, 2, 3, 4, 5, 6],
@@ -66,18 +67,27 @@ export default {
 			bus.$emit("move_next");
 		},
 		clickTime(event) {
-			if (moment(event.date).isAfter(moment(this.today).add(1, "days"))) {
+		    let tomorrowsDate = moment(this.today).add(1, "days");
+
+            if(this.blockedDates.indexOf(event.date) !== -1){
+                Swal.fire("Sorry this date is unavailable");
+            }else if (moment(event.date).isAfter(tomorrowsDate)) {
 				this.showEvent();
 				this.selected_date = new Date(`${event.date} ${event.time}`);
 			} else if (
-				moment(event.date).isBefore(
-					moment(this.today).add(1, "days")
-				) &&
+				moment(event.date).isBefore(tomorrowsDate) &&
 				moment(event.date).isAfter(moment(this.today))
 			) {
 				Swal.fire("Day fully booked");
 			}
 		},
+        getBlockedDates() {
+            axios.get("api/blocked").then((response) => {
+                response.data["data"].forEach((blockedDate) => {
+                    this.blockedDates.push(blockedDate.date);
+                });
+            });
+        },
 		getEvents() {
 			axios.get("api/bookings").then((response) => {
 				this.events = [];
@@ -97,6 +107,7 @@ export default {
 	},
 	mounted: function () {
 		this.today = moment().format("Y-MM-DD HH:mm:ss");
+		this.getBlockedDates();
 	},
 	watch: {
 		selected_date: function (newVal, oldVal) {

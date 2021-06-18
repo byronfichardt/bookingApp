@@ -2,8 +2,10 @@
 
 namespace App\Application\Controllers;
 
+use App\Application\Models\BlockedDate;
 use App\Application\Models\Booking;
 use App\Application\Models\User;
+use App\Application\Resources\BlockedDatesResource;
 use App\Application\Resources\BookingResource;
 use App\Http\Controllers\Controller;
 use App\Jobs\BookingCanceledEmail;
@@ -70,7 +72,7 @@ class BookingController extends Controller
 
         $token = base64_encode(json_encode(['booking_id' => $booking->id]));
 
-        BookingCreatedEmail::dispatch($user, $token);
+        BookingCreatedEmail::dispatch($user, $token, $booking);
 
         return ['status' => "success"];
     }

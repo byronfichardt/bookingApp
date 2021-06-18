@@ -1,5 +1,6 @@
 <?php
 
+use App\Application\Controllers\BlockedDatesController;
 use App\Application\Controllers\BookingController;
 use App\Application\Controllers\ProductController;
 use Illuminate\Http\Request;
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('bookings', [BookingController::class, 'index']);
+Route::post('blocked', [BlockedDatesController::class, 'store']);
+Route::delete('blocked/{id}', [BlockedDatesController::class, 'delete']);
+Route::get('blocked', [BlockedDatesController::class, 'index']);
 Route::get('bookings/pending', [BookingController::class, 'pending']);
 Route::get('bookings/{id}/approve', [BookingController::class, 'approve']);
 Route::get('bookings/{id}/cancel', [BookingController::class, 'remove']);

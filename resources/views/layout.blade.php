@@ -55,12 +55,11 @@
                 <div class="w3-col s3 w3-center"><p></p></div>
                 <div class="w3-col s6 w3-center">
                     <h2>ABOUT</h2>
-                        <p>My Name in Karin Keight. I am a newly qualifed
-                            nail technician through <a href="https://www.youngnails.com/">Young Nails</a>. I recently started my home based salon in the Copenhagen Central Area.
+                        <p>My name in Karin Keight. I am a newly qualified
+                            acrylic nail technician through <a href="https://www.youngnails.com/">Young Nails</a>. I recently started my home based salon in Copenhagen Central.
                             I use top quality products. I absolutely love what I do, making nails beautiful is my passion and hope for my clients
-                            to share in my passion.</p>
+                            to share in my passion.
                         </p>
-
                     </div>
                 </div>
                 <div class="w3-col s3 w3-center"><p></p></div>
@@ -73,9 +72,15 @@
             <div class="w3-row">
                 <div class="w3-col s3 w3-center"><p></p></div>
                 <div class="w3-col s6 w3-center">
-                    <h1 class="w3-margin w3-large" style="color:red">Important Notice</h1>
-                    <p class="w3-medium" style="color: black">Please wear a mask to your appointment. If you are unable to purchase one, please
-                        let me know before your appointment and i can supply this for you on your arrival.</p>
+                    <h3 style="color:#e20c0c">Important</h3>
+                    <ul style="text-align: left!important;">
+                        <li>Please wear a mask to your appointment. If you are unable to purchase one, please
+                            let me know before your appointment and i can supply this for you on your arrival.</li>
+                        <li>In case of a delay, please let me know how long, if the delay exceeds 15 min, the appointment will be cancelled.</li>
+                        <li>When booking online, please ensure that you request all services required to ensure the correct amount of time is allocated to your appointment.</li>
+                        <li>I do not do refills on other nail technician’s work. If you have a set from another nail technician, please also book for a removal.</li>
+                    </ul>
+                    <p class="w3-medium" style="color: black">**If you have any questions or are unsure of anything, please don’t hesitate to ask**</p>
                 </div>
                 <div class="w3-col s3 w3-center"><p></p></div>
             </div>
@@ -104,7 +109,7 @@
                         Mobile +45 52 81 37 11
                         Email:  impulsenailscph@gmail.com</p>
                     <p class="w3-medium" style="color: black">
-                        Axel Hedies Gade,
+                        Axel Heides Gade,
                         Kobenhavn S,
                         2300</p>
                 </div>
@@ -148,6 +153,20 @@
         .fa-instagram {
             background: #125688;
             color: white;
+        }
+        ul {
+            list-style: none;
+        }
+        ul li::before {
+            content: "\2022";
+            color: #e20c0c;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        ul li {
+            margin-top: 15px;
         }
     </style>
     <script>
