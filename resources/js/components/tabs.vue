@@ -7,7 +7,7 @@
 			<v-tab href="#finished" disabled> Thank You </v-tab>
 		</v-tabs>
 
-		<v-tabs-items v-model="tab">
+		<v-tabs-items v-model="tab" touchless>
 			<v-tab-item :value="'tab-1'">
 				<productForm></productForm>
 			</v-tab-item>
