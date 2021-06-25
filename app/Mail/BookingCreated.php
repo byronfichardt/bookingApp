@@ -10,7 +10,8 @@ use Illuminate\Queue\SerializesModels;
 
 class BookingCreated extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public string $cancelUrl;
 
@@ -23,7 +24,21 @@ class BookingCreated extends Mailable
     public $city;
 
     public $zip;
+
     public string $name;
+
+    /**
+     * @var mixed
+     */
+    public $products;
+    /**
+     * @var int|mixed
+     */
+    public $totalTime;
+    /**
+     * @var int|mixed
+     */
+    public $totalPrice;
 
     /**
      * Create a new message instance.
@@ -34,6 +49,9 @@ class BookingCreated extends Mailable
     {
         $this->cancelUrl = config('app.url') . '/cancel?token=' . $token;
         $this->bookingDate = $booking->start_time;
+        $this->products = $booking->products->toArray();
+        $this->totalTime = $booking->products()->sum('minutes');
+        $this->totalPrice = $booking->products()->sum('price');
         $this->co_address = config('admin.address.co');
         $this->address_line = config('admin.address.line');
         $this->city = config('admin.address.city');
@@ -41,12 +59,7 @@ class BookingCreated extends Mailable
         $this->name = $name;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): BookingCreated
     {
         return $this->markdown('emails.bookings.created')
             ->subject('Impulse Nails - Appointment confirmation.');

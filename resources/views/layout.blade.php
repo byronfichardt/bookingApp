@@ -74,11 +74,10 @@
                 <div class="w3-col s6 w3-center">
                     <h3 style="color:#e20c0c">Important</h3>
                     <ul style="text-align: left!important;">
-                        <li>Please wear a mask to your appointment. If you are unable to purchase one, please
-                            let me know before your appointment and i can supply this for you on your arrival.</li>
+                        <li>Payments, Cash only, unfortunately I do not have MobilePay.</li>
                         <li>In case of a delay, please let me know how long, if the delay exceeds 15 min, the appointment will be cancelled.</li>
                         <li>When booking online, please ensure that you request all services required to ensure the correct amount of time is allocated to your appointment.</li>
-                        <li>I do not do refills on other nail technician’s work. If you have a set from another nail technician, please also book for a removal.</li>
+                        <li>Prices are subject to change at any time.</li>
                     </ul>
                     <p class="w3-medium" style="color: black">**If you have any questions or are unsure of anything, please don’t hesitate to ask**</p>
                 </div>

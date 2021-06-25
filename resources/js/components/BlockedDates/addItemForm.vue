@@ -10,7 +10,7 @@
 						<v-row>
 							<v-col cols="12">
 								<v-text-field
-									label="Date*"
+									label="Date YYYY-MM-DD"
 									v-model="item.date"
 									required
 								></v-text-field>

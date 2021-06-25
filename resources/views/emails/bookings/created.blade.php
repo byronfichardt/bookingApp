@@ -1,5 +1,5 @@
 @component('mail::message')
-# Your appointment has been confirmed.
+# Appointment confirmed.
 
 Hi, {{$name}}!
 
@@ -10,6 +10,21 @@ Address:
 {{$address_line}}<br/>
 {{$city}}<br/>
 {{$zip}}
+
+
+@component('mail::panel')
+@component('mail::table')
+Products:
+
+| Description           | Price                      | Time (minutes)               |
+| --------------------- |:--------------------------:| ----------------------------:|
+@foreach($products as $product)
+| {{$product['name']}}  | {{$product['price']}}      | {{$product['minutes']}}      |
+@endforeach
+| Totals                | {{$totalPrice}}            | {{$totalTime}}               |
+
+@endcomponent
+@endcomponent
 
 ## Please avoid cancelling or changes, up to 24 hours before the appointment date.
 
