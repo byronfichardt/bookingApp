@@ -80,7 +80,8 @@ export default {
 						products: event.products,
 						user: event.user,
 						end: event.end.slice(0, -3),
-						name: event.name,
+						name: event.user ? event.user.name : event.name,
+                        note: event.name,
 					});
 				});
 				bus.$emit("all_events", this.events);

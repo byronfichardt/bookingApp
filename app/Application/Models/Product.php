@@ -11,6 +11,10 @@ class Product extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'minutes' => 'integer'
+    ];
+
     public function bookings()
     {
         return $this->belongsToMany(Booking::class);

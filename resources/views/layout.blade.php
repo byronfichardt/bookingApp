@@ -55,7 +55,7 @@
                 <div class="w3-col s3 w3-center"><p></p></div>
                 <div class="w3-col s6 w3-center">
                     <h2>ABOUT</h2>
-                        <p>My name in Karin Keight. I am a newly qualified
+                        <p>My name is Karin Keight. I am a newly qualified
                             acrylic nail technician through <a href="https://www.youngnails.com/">Young Nails</a>. I recently started my home based salon in Copenhagen Central.
                             I use top quality products. I absolutely love what I do, making nails beautiful is my passion and hope for my clients
                             to share in my passion.
@@ -77,7 +77,7 @@
                         <li>Payments, Cash only, unfortunately I do not have MobilePay.</li>
                         <li>In case of a delay, please let me know how long, if the delay exceeds 15 min, the appointment will be cancelled.</li>
                         <li>When booking online, please ensure that you request all services required to ensure the correct amount of time is allocated to your appointment.</li>
-                        <li>Prices are subject to change at any time.</li>
+                        <li>Prices are subject to change.</li>
                     </ul>
                     <p class="w3-medium" style="color: black">**If you have any questions or are unsure of anything, please don’t hesitate to ask**</p>
                 </div>

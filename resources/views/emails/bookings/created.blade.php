@@ -14,7 +14,6 @@ Address:
 
 @component('mail::panel')
 @component('mail::table')
-Products:
 
 | Description           | Price                      | Time (minutes)               |
 | --------------------- |:--------------------------:| ----------------------------:|
