@@ -68,7 +68,8 @@
         </div>
 
         <!-- Header -->
-        <div id="book" class="w3-container w3-center" style="margin-top: 40px; padding:5px 16px; background-color:#d6dfe2;">
+        <span class="important-anchor" id="book"></span>
+        <div class="w3-container w3-center important-notice" style="padding:5px 16px; background-color:#d6dfe2;">
             <div class="w3-row">
                 <div class="w3-col s3 w3-center"><p></p></div>
                 <div class="w3-col s6 w3-center">
@@ -85,7 +86,7 @@
             </div>
 
         </div>
-        <div  class="w3-container " style="padding:50px 16px;" >
+        <div  class="w3-container " style="padding:0px 16px;" >
             <div class="w3-row">
                 <div class="w3-col m3 w3-center"><p></p></div>
                 <div class="w3-col m6 w3-center">
@@ -195,6 +196,12 @@
         * {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+        .important-anchor {
+            display: block;
+            height: 40px;
+            margin-top: -40px;
+            visibility: hidden;
         }
     </style>
     <script>
