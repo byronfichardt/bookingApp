@@ -63,11 +63,9 @@ export default {
 <style>
 .theme--light.v-tabs > .v-tabs-bar {
 	background: rgb(139, 225, 255);
-	background: linear-gradient(
-		180deg,
-		rgba(139, 225, 255, 1) 0%,
-		rgba(0, 241, 255, 1) 100%
-	);
+    background: linear-gradient(
+        180deg
+        , rgb(192 232 243) 0%, rgb(208 229 236) 100% );
 	color: black;
 }
 .theme--light.v-tabs > .v-tabs-bar .v-tab--disabled {
