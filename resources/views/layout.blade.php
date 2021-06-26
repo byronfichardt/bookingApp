@@ -32,7 +32,7 @@
             </div>
         </div>
         <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-        <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:38px">
+        <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:45px">
             <a href="#about" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">About</a>
             <a href="#book" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Pricing</a>
             <a href="#book" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Book Now</a>
@@ -132,8 +132,8 @@
         }
         .fa {
             padding: 5px;
-            font-size: 35px;
-            width: 45px;
+            font-size: 15px;
+            width: 25px;
             text-align: center;
             text-decoration: none;
             margin: 5px 2px;
@@ -150,12 +150,16 @@
         .fa-facebook {
             background: #3B5998;
             color: white;
+            font-size: 35px;
+            width: 45px;
         }
 
         /* Twitter */
         .fa-instagram {
             background: #125688;
             color: white;
+            font-size: 35px;
+            width: 45px;
         }
         ul {
             list-style: none;
