@@ -54,7 +54,7 @@
             <div class="w3-row">
                 <div class="w3-col s2 m3 w3-center"><p></p></div>
                 <div class="w3-col s8 m6 w3-center">
-                    <h2>ABOUT</h2>
+                    <h2>About</h2>
                         <p>My name is Karin Keight. I am a newly qualified
                             acrylic nail technician through <a href="https://www.youngnails.com/">Young Nails</a>. I recently started my home based salon in Copenhagen Central.
                             I use top quality products. I absolutely love what I do, making nails beautiful is my passion and hope for my clients
@@ -73,7 +73,7 @@
             <div class="w3-row">
                 <div class="w3-col s2 m3 w3-center"><p></p></div>
                 <div class="w3-col s8 m6 w3-center">
-                    <h3 style="color:#e20c0c">Important</h3>
+                    <h2 style="color:#e20c0c">Important</h2>
                     <ul style="text-align: left!important;">
                         <li>Payments, Cash only, unfortunately I do not have MobilePay.</li>
                         <li>In case of a delay, please let me know how long, if the delay exceeds 15 min, the appointment will be cancelled.</li>
@@ -90,7 +90,7 @@
             <div class="w3-row">
                 <div class="w3-col m3 w3-center"><p></p></div>
                 <div class="w3-col m6 w3-center">
-                    <h2>Book Now!!</h2>
+                    <h2>Book Now</h2>
                     @yield('content')
 
                 </div>
