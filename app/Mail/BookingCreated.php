@@ -67,6 +67,6 @@ class BookingCreated extends Mailable
 
     private function sumTime($booking)
     {
-        return $booking->products()->map(fn ($product) => (int)$product->minutes)->sum();
+        return $booking->products()->get()->map(fn ($product) => (int)$product->minutes)->sum();
     }
 }
