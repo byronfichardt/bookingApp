@@ -52,8 +52,8 @@
         <!-- About Section -->
         <div class="w3-container" style="padding:50px 16px" id="about">
             <div class="w3-row">
-                <div class="w3-col s3 w3-center"><p></p></div>
-                <div class="w3-col s6 w3-center">
+                <div class="w3-col s2 m3 w3-center"><p></p></div>
+                <div class="w3-col s8 m6 w3-center">
                     <h2>ABOUT</h2>
                         <p>My name is Karin Keight. I am a newly qualified
                             acrylic nail technician through <a href="https://www.youngnails.com/">Young Nails</a>. I recently started my home based salon in Copenhagen Central.
@@ -62,7 +62,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="w3-col s3 w3-center"><p></p></div>
+                <div class="w3-col s2 m3 w3-center"><p></p></div>
             </div>
 
         </div>
@@ -71,8 +71,8 @@
         <span class="important-anchor" id="book"></span>
         <div class="w3-container w3-center important-notice" style="padding:5px 16px; background-color:#d6dfe2;">
             <div class="w3-row">
-                <div class="w3-col s3 w3-center"><p></p></div>
-                <div class="w3-col s6 w3-center">
+                <div class="w3-col s2 m3 w3-center"><p></p></div>
+                <div class="w3-col s8 m6 w3-center">
                     <h3 style="color:#e20c0c">Important</h3>
                     <ul style="text-align: left!important;">
                         <li>Payments, Cash only, unfortunately I do not have MobilePay.</li>
@@ -80,9 +80,9 @@
                         <li>When booking online, please ensure that you request all services required to ensure the correct amount of time is allocated to your appointment.</li>
                         <li>Prices are subject to change.</li>
                     </ul>
-                    <p class="w3-medium" style="color: black">**If you have any questions or are unsure of anything, please don’t hesitate to ask**</p>
+                    <p class="w3-medium" style="color: black">If you have any questions or are unsure of anything, please don’t hesitate to ask</p>
                 </div>
-                <div class="w3-col s3 w3-center"><p></p></div>
+                <div class="w3-col s2 m3 w3-center"><p></p></div>
             </div>
 
         </div>
@@ -127,13 +127,13 @@
                 right: 0px;
             }
             .splash-background{
-                background-position-x: -300px;
+                background-position-x: -300px!important;
             }
         }
         .fa {
             padding: 5px;
-            font-size: 15px;
-            width: 25px;
+            font-size: 35px;
+            width: 45px;
             text-align: center;
             text-decoration: none;
             margin: 5px 2px;

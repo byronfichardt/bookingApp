@@ -5,24 +5,24 @@
 				v-model="name"
 				:counter="10"
 				:rules="nameRules"
-				label="Name"
+				label="Name *"
 				required
 			></v-text-field>
 
 			<v-text-field
 				v-model="phone"
-				label="Phone"
+				label="Phone *"
 				required
 			></v-text-field>
 
 			<v-text-field
 				v-model="email"
 				:rules="emailRules"
-				label="E-mail"
+				label="E-mail *"
 				required
 			></v-text-field>
 
-			<v-text-field v-model="booking_note" label="Note"></v-text-field>
+			<v-text-field v-model="booking_note" label="Note (optional)"></v-text-field>
 
 			<v-btn
 				:disabled="!valid"
