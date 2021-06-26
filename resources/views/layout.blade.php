@@ -39,14 +39,14 @@
             <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Contact</a>
         </div>
 
-        <header class="w3-container w3-center" style="padding:100px 16px;background: linear-gradient( 180deg, rgba(139, 225, 255, 1) 0%, rgba(0, 241, 255, 1) 100% );">
-            <h1 class="w3-margin w3-jumbo">Impulse Nails</h1>
-            <div>
+        <header class="w3-container w3-center splash-background">
+            <h1 class="w3-margin w3-jumbo title-heading">Impulse Nails</h1>
+            <div style="margin: 10px auto 10px auto!important;">
                 <a href="https://www.facebook.com/ImpulseNailsCph" class="fa fa-facebook"></a>
                 <a href="https://www.instagram.com/impulsenailscph/" class="fa fa-instagram"></a>
             </div>
 
-            <a class="w3-button w3-black w3-padding-large w3-large w3-margin-top" href="#book">Book Now!</a>
+            <a class="w3-button w3-black w3-padding-large w3-large w3-margin-top call-to-action" href="#book">Book Now!</a>
         </header>
 
         <!-- About Section -->
@@ -68,7 +68,7 @@
         </div>
 
         <!-- Header -->
-        <div class="w3-container w3-center" style="padding:5px 16px; background-color:#d6dfe2;">
+        <div id="book" class="w3-container w3-center" style="margin-top: 40px; padding:5px 16px; background-color:#d6dfe2;">
             <div class="w3-row">
                 <div class="w3-col s3 w3-center"><p></p></div>
                 <div class="w3-col s6 w3-center">
@@ -85,7 +85,7 @@
             </div>
 
         </div>
-        <div id="book" class="w3-container " style="padding:50px 16px;" >
+        <div  class="w3-container " style="padding:50px 16px;" >
             <div class="w3-row">
                 <div class="w3-col m3 w3-center"><p></p></div>
                 <div class="w3-col m6 w3-center">
@@ -124,6 +124,9 @@
             #navDemo {
                 width: 30%;
                 right: 0px;
+            }
+            .splash-background{
+                background-position-x: -300px;
             }
         }
         .fa {
@@ -166,6 +169,32 @@
         }
         ul li {
             margin-top: 15px;
+        }
+        .splash-background {
+            padding:100px 16px;
+            background: url("img/splash1.png");
+            background-repeat: no-repeat;
+            background-size: auto;
+            display: flex;
+            flex-direction: column;
+            height:100vh;
+            width:100vw;
+            background-size: cover;
+        }
+        .title-heading {
+            margin: auto auto 10px auto!important;
+            font-weight: 600;
+            font-size:80px;
+            color: #1d2124;
+            anti
+        }
+        .call-to-action{
+            margin: 10px auto auto auto!important;
+            background-color: #1d2124!important;
+        }
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
     </style>
     <script>

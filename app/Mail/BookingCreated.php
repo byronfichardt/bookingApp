@@ -50,7 +50,7 @@ class BookingCreated extends Mailable
         $this->cancelUrl = config('app.url') . '/cancel?token=' . $token;
         $this->bookingDate = $booking->start_time;
         $this->products = $booking->products->toArray();
-        $this->totalTime = $booking->products()->sum('minutes');
+        $this->totalTime = $this->sumTime($booking);
         $this->totalPrice = $booking->products()->sum('price');
         $this->co_address = config('admin.address.co');
         $this->address_line = config('admin.address.line');
@@ -63,5 +63,10 @@ class BookingCreated extends Mailable
     {
         return $this->markdown('emails.bookings.created')
             ->subject('Impulse Nails - Appointment confirmation.');
+    }
+
+    private function sumTime($booking)
+    {
+        return $booking->products()->map(fn ($product) => (int)$product->minutes)->sum();
     }
 }
