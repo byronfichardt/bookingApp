@@ -6,13 +6,13 @@
 
                 <!-- Right-sided navbar links -->
                 <div class="w3-right w3-hide-small">
+                    @guest
                     <a href="#about" class="w3-bar-item w3-button">About</a>
                     <a href="#book" class="w3-bar-item w3-button">Pricing</a>
                     <a href="#book" class="w3-bar-item w3-button">Book Now</a>
                     <a href="#contact" class="w3-bar-item w3-button">Contact</a>
-                    @guest
-                        <a class="w3-bar-item w3-button" href="{{ route('login') }}">{{ __('Login') }}</a>
-                    @else
+                    @endguest
+                    @auth
                         <a class="w3-bar-item w3-button" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
@@ -22,7 +22,7 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
-                    @endguest
+                    @endauth
                 </div>
                 <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
