@@ -27,15 +27,15 @@
                 <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
                 <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="myFunction()">
-                    <i class="fa fa-bars"></i>
+                    <i id="menuiconmobile" class="fa fa-bars"></i>
                 </a>
             </div>
         </div>
         <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-        <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:45px">
+        <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-top">
             <a href="#about" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">About</a>
             <a href="#book" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Pricing</a>
-            <a href="#book" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Book Now</a>
+            <a href="#book" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Book</a>
             <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-right-align" onclick="myFunction()">Contact</a>
         </div>
 
@@ -123,7 +123,6 @@
                 padding:0px 0px 0px!important;
             }
             #navDemo {
-                width: 30%;
                 right: 0px;
             }
             .splash-background{
@@ -207,14 +206,36 @@
             margin-top: -40px;
             visibility: hidden;
         }
+        .w3-show-block, .w3-show {
+            display: flex!important;
+            width: 100%!important;
+        }
+        .w3-hide {
+            width: 0;
+        }
+        #navDemo {
+            right: 61px;
+            align-content: flex-end;
+            justify-content: flex-end;
+            margin-top: 5px;
+        }
+        .w3-bar-item {
+            padding: 12px 12px!important;
+            width: unset!important;
+        }
     </style>
     <script>
         function myFunction() {
             var x = document.getElementById("navDemo");
+            var w = document.getElementById("menuiconmobile");
             if (x.className.indexOf("w3-show") == -1) {
                 x.className += " w3-show";
+                w.classList.remove('fa-bars');
+                w.classList.add('fa-times');
             } else {
                 x.className = x.className.replace(" w3-show", "");
+                w.classList.remove('fa-times');
+                w.classList.add('fa-bars');
             }
         }
 
