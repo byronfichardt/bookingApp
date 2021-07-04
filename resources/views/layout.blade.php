@@ -176,7 +176,7 @@
         }
         .splash-background {
             padding:100px 16px;
-            background: url("img/splash1.png");
+            background: url("img/splash1.webp");
             background-repeat: no-repeat;
             background-size: auto;
             display: flex;

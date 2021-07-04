@@ -37,7 +37,8 @@ class BookingPendingEmail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user->email)->bcc("karinlkeight@gmail.com")
+        $email = config('admin.email');
+        Mail::to($this->user->email)->bcc($email)
             ->send(new BookingPending());
     }
 }
