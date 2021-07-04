@@ -11,12 +11,12 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return Product::all()->toJson();
+        return Product::orderBy('name')->get()->toJson();
     }
 
     public function fetch(Request $request, string $date)
     {
-        return Product::where('created_at', $date)->get()->toJson();
+        return Product::where('created_at', $date)->orderBy('name')->get()->toJson();
     }
 
     public function store(Request $request)
