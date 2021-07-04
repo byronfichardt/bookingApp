@@ -1,7 +1,7 @@
 @component('mail::message')
 # We are sad to see you go :(
 
-@component('mail::button', ['url' => config('app.url'), 'color' => '#90ee90'])
+@component('mail::button', ['url' => config('app.url'), 'color' => 'success'])
     Should you want to book again.
 @endcomponent
 
