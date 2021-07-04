@@ -1,5 +1,9 @@
 @component('mail::message')
-# Sorry we dont have time for you :(BookingController.php
+# We are sad to see you go :(
+
+@component('mail::button', ['url' => config('app.url'), 'color' => '#90ee90'])
+    Should you want to book again.
+@endcomponent
 
 We hope to see you soon!!
 

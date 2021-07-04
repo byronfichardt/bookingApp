@@ -27,7 +27,7 @@ Address:
 
 ## Please avoid cancelling or changes, up to 24 hours before the appointment date.
 
-@component('mail::button', ['url' => $cancelUrl, 'color' => '#00897b'])
+@component('mail::button', ['url' => $cancelUrl, 'color' => '#FF7F7F'])
 Should you want to cancel :(
 @endcomponent
 
