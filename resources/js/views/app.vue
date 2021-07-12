@@ -36,30 +36,7 @@ export default {
 		selected_products: function selectedProduct(newVal) {
 			this.minutes_total = 0;
 			newVal.forEach((element) => {
-				this.minutes_total += parseInt(element.minutes);
-			});
-		},
-		selected_date_time: function selectedDateTime(newVal) {
-			let bookingstart = moment(newVal);
-			let bookingend = moment(newVal).add(this.minutes_total, "m");
-			this.events.forEach((element) => {
-				let eventStart = moment(element.start);
-				let eventEnd = moment(element.end);
-				if (
-					this.intercept(
-						bookingstart,
-						bookingend,
-						eventStart,
-						eventEnd
-					)
-				) {
-					bus.$emit("intercept_alert", [
-						bookingstart,
-						bookingend,
-						eventStart,
-						eventEnd,
-					]);
-				}
+				this.minutes_total += parseInt(element.minutes) * parseInt(element.hasOwnProperty('quantity') ? element.quantity : 1);
 			});
 		},
 	},

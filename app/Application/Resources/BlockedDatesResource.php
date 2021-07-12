@@ -18,6 +18,7 @@ class BlockedDatesResource extends JsonResource
         return [
             'id' => $this->id,
             'date' => $this->blocked_date,
+            'times' => $this->times
         ];
     }
 }

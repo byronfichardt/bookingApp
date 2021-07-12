@@ -35,7 +35,7 @@
 			>
 			</v-calendar>
 		</v-sheet>
-		<eventForm :startDate="selected_date" :events="events"></eventForm>
+		<eventForm :startDate="selected_date" :events="events" :blockedDates="blockedDates"></eventForm>
 	</div>
 </template>
 <script>
@@ -68,9 +68,14 @@ export default {
 		},
 		clickTime(event) {
 		    let tomorrowsDate = moment(this.today).add(1, "days");
-
-            if(this.blockedDates.indexOf(event.date) !== -1){
-                Swal.fire("Sorry this date is unavailable");
+            let obj = this.blockedDates.find(o => o.date === event.date);
+            if(obj !== undefined){
+                if(obj.times.split(',').length === 3) {
+                    Swal.fire("Sorry this date is unavailable");
+                }else {
+                    this.showEvent();
+                    this.selected_date = new Date(`${event.date} ${event.time}`);
+                }
             }else if (moment(event.date).isAfter(tomorrowsDate)) {
 				this.showEvent();
 				this.selected_date = new Date(`${event.date} ${event.time}`);
@@ -84,7 +89,7 @@ export default {
         getBlockedDates() {
             axios.get("api/blocked").then((response) => {
                 response.data["data"].forEach((blockedDate) => {
-                    this.blockedDates.push(blockedDate.date);
+                    this.blockedDates.push({'date' : blockedDate.date, 'times' : blockedDate.times });
                 });
             });
         },

@@ -76,6 +76,7 @@ export default {
 				this.events = [];
 				response.data["data"].forEach((event) => {
 					this.events.push({
+                        id: event.id,
 						start: event.start.slice(0, -3),
 						products: event.products,
 						user: event.user,

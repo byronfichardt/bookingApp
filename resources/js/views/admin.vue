@@ -21,31 +21,6 @@ export default {
 			events: [],
 		};
 	},
-	watch: {
-		selected_date_time: function selectedDateTime(newVal) {
-			let bookingstart = moment(newVal);
-			let bookingend = moment(newVal).add(this.minutes_total, "m");
-			this.events.forEach((element) => {
-				let eventStart = moment(element.start);
-				let eventEnd = moment(element.end);
-				if (
-					this.intercept(
-						bookingstart,
-						bookingend,
-						eventStart,
-						eventEnd
-					)
-				) {
-					bus.$emit("intercept_alert", [
-						bookingstart,
-						bookingend,
-						eventStart,
-						eventEnd,
-					]);
-				}
-			});
-		},
-	},
 	created: function () {
 		this.selected_date_time = moment();
 	},

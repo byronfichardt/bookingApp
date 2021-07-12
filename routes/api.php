@@ -1,7 +1,9 @@
 <?php
 
+use App\Application\Controllers\AuthorizeController;
 use App\Application\Controllers\BlockedDatesController;
 use App\Application\Controllers\BookingController;
+use App\Application\Controllers\BookingSyncController;
 use App\Application\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +28,8 @@ Route::get('bookings/{id}/approve', [BookingController::class, 'approve']);
 Route::get('bookings/{id}/cancel', [BookingController::class, 'remove']);
 Route::post('bookings', [BookingController::class, 'store']);
 Route::get('bookings/{date}', [BookingController::class, 'fetch']);
+Route::get('redirected', [AuthorizeController::class, 'redirected']);
+Route::get('authorize', [AuthorizeController::class, 'authorizeWithGoogle']);
 
 Route::get('products', [ProductController::class, 'index']);
 Route::post('products', [ProductController::class, 'store']);

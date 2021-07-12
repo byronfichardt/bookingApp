@@ -49,7 +49,7 @@ import { bus } from "../app";
 import { Datetime } from "vue-datetime";
 import moment from "moment";
 export default {
-	props: ["startDate", 'events'],
+	props: ["startDate", 'events', "blockedDates"],
 	components: {
 		datetime: Datetime,
 	},
@@ -71,28 +71,56 @@ export default {
             return ('0' + time).slice(-2) + ":00"
         },
 		setDateTime(time) {
-			this.intercept_alert = false;
 			let dateTime = moment(this.date_start)
 				.set("hour", time)
 				.set("minute", 0)
 				.set("second", 0);
 			bus.$emit("selected_date_time", dateTime);
 			setTimeout(() => {
-				if (this.intercept_alert === false) {
-					this.selected_open = false;
-					bus.$emit("move_next");
-				}
-			}, 1000);
+                this.selected_open = false;
+                bus.$emit("move_next");
+			}, 500);
 		},
+        intercept(start1, end1, start2, end2) {
+            return (
+                Math.max(
+                    0,
+                    Math.min(end2, end1) - Math.max(start1, start2) + 1
+                ) > 0
+            );
+        },
+        arraySearch(arr,val) {
+            for (var i=0; i<arr.length; i++)
+                if (arr[i] === val)
+                    return i;
+            return false;
+        },
         checkTimes() {
+	        let alltimes = [9, 13, 16];
 	        this.times = [];
+	        let length = 0;
+            this.blockedDates.forEach((element) => {
+                if(element.date === this.date_start_date) {
+                    let blocked_times = element.times.split(',')
+                    blocked_times.forEach((time) => {
+                        this.times.push(parseInt(time.trim()));
+                    })
+                }
+            })
             for (const event of this.events){
                 let start = moment(event.start).format('YYYY-MM-DD');
 		        if(start === this.date_start_date) {
-                    this.times.push(new Date(event.start).getHours());
+		            let starthour = new Date(event.start).getHours();
+                    this.times.push(starthour);
+                    length = moment(event.end).diff(moment(event.start), 'hours');
+                    alltimes.forEach( (element, index) => {
+                        if((starthour + length) > alltimes[index]) {
+                            this.times.push(alltimes[index]);
+                        }
+                    })
                 }
             }
-            this.available_times = [9, 13, 16].filter(x => !this.times.includes(x));
+            this.available_times = alltimes.filter(x => !this.times.includes(x));
         },
 	},
 	watch: {
@@ -106,13 +134,6 @@ export default {
 		bus.$on("open_event_form", () => {
 			this.selected_open = true;
 		});
-	},
-	created: function () {
-		bus.$on("intercept_alert", (event) => {
-			this.intercept_alert = true;
-			this.intercept_alert_message =
-				"Unfortunately the booking will not fit in this time slot please select another";
-		});
-	},
+	}
 };
 </script>

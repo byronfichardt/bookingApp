@@ -18,7 +18,7 @@ Address:
 | Description           | Price                      | Time (minutes)               |
 | --------------------- |:--------------------------:| ----------------------------:|
 @foreach($products as $product)
-| {{$product['name']}}  | {{$product['price']}}      | {{$product['minutes']}}      |
+| {{$product['name']}}  | {{$product['price']}}      | {{$product['minutes'] * $product['pivot']['quantity']}}      |
 @endforeach
 | Totals                | {{$totalPrice}}            | {{$totalTime}}               |
 

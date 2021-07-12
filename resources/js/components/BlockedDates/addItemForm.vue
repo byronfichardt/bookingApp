@@ -14,6 +14,11 @@
 									v-model="item.date"
 									required
 								></v-text-field>
+                                <v-text-field
+                                    label="times (9, 13, 16)"
+                                    v-model="item.times"
+                                    required
+                                ></v-text-field>
 							</v-col>
 						</v-row>
 					</v-container>
@@ -40,6 +45,7 @@ export default {
 		dialog: false,
 		item: {
 			date: null,
+            times: ""
 		},
 	}),
 	methods: {

@@ -2,23 +2,36 @@
 
 namespace App\Application\Controllers;
 
-use App\Application\Models\BlockedDate;
 use App\Application\Models\Booking;
 use App\Application\Models\User;
-use App\Application\Resources\BlockedDatesResource;
 use App\Application\Resources\BookingResource;
+use App\Domain\CalendarEventInserter;
+use App\Domain\CalendarEventRemover;
 use App\Http\Controllers\Controller;
-use App\Jobs\BookingCanceledEmail;
-use App\Jobs\BookingCreatedEmail;
-use App\Jobs\BookingPendingEmail;
+use App\Application\Jobs\BookingCanceledEmail;
+use App\Application\Jobs\BookingCreatedEmail;
+use App\Application\Jobs\BookingPendingEmail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
+    private CalendarEventInserter $calendarEventInserter;
+    private CalendarEventRemover $calendarEventRemover;
+
+    public function __construct(CalendarEventInserter $calendarEventInserter, CalendarEventRemover $calendarEventRemover)
+    {
+        $this->calendarEventInserter = $calendarEventInserter;
+        $this->calendarEventRemover = $calendarEventRemover;
+    }
+
     public function index()
     {
-        return BookingResource::collection(Booking::with('user')->where('status', 'active')->get());
+        return BookingResource::collection(
+            Booking::with('user')
+                ->where('status', 'active')
+                ->get()
+        );
     }
 
     public function pending()
@@ -67,7 +80,16 @@ class BookingController extends Controller
 
         $user = User::find($booking->user_id);
 
+        $products = $booking->products()->pluck('name')->toArray();
+        $description = implode(', ', $products);
+
+        $start = Carbon::parse($booking->start_time, 'Europe/Copenhagen')->toIso8601String();
+        $end = Carbon::parse($booking->end_time, 'Europe/Copenhagen')->toIso8601String();
+
+        $event = $this->calendarEventInserter->addEvent($user->name, $description, $start, $end);
+
         $booking->status = 'active';
+        $booking->event_id = $event->getId();
         $booking->save();
 
         $token = base64_encode(json_encode(['booking_id' => $booking->id]));
@@ -81,7 +103,14 @@ class BookingController extends Controller
     {
         $token = $request->token;
         $data = json_decode(base64_decode($token),true);
-        Booking::find($data['booking_id'])->delete();
+        $booking = Booking::find($data['booking_id']);
+        $user = $booking->user;
+
+        BookingCanceledEmail::dispatch($user);
+
+        $booking->delete();
+
+        $this->calendarEventRemover->remove($booking);
 
         return view('cancel');
     }
@@ -94,6 +123,8 @@ class BookingController extends Controller
         BookingCanceledEmail::dispatch($user);
 
         $booking->delete();
+
+        $this->calendarEventRemover->remove($booking);
 
         return ['status' => "success"];
     }
