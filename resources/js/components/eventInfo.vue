@@ -23,8 +23,8 @@
                 <h5>Total price: {{ eventPrice() }} Dkk</h5>
                 <h5>Total Time: {{ eventTime() }} minutes</h5>
 			</v-card-text>
-			<v-card-actions class="justify-end">
-				<v-btn @click="selected_open = false" color="error"
+			<v-card-actions style="display: block">
+				<v-btn @click="selected_open = false" color="info" style="float: right"
 					>Close</v-btn
 				>
                 <v-btn @click="cancelEvent()" color="error"
