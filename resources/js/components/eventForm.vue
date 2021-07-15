@@ -25,16 +25,6 @@
 
                 <v-btn v-for="time in available_times" :key="time" elevation="2" @click="setDateTime(time)">{{ hourToString(time) }}</v-btn>
 
-				<v-alert
-					class="mt-2"
-					v-if="intercept_alert"
-					color="red"
-					dense
-					outlined
-					type="error"
-					>{{ intercept_alert_message }}</v-alert
-				>
-
 			</v-card-text>
 			<v-card-actions class="justify-end">
 				<v-btn @click="selected_open = false" color="error"
@@ -48,6 +38,7 @@
 import { bus } from "../app";
 import { Datetime } from "vue-datetime";
 import moment from "moment";
+import Swal from "sweetalert2";
 export default {
 	props: ["startDate", 'events', "blockedDates"],
 	components: {
@@ -59,8 +50,6 @@ export default {
 			valid: true,
 			date_start: "",
 			date_end: "",
-			intercept_alert: false,
-			intercept_alert_message: "",
             available_times : [],
             times: [],
             date_start_date: ""
@@ -81,53 +70,17 @@ export default {
                 bus.$emit("move_next");
 			}, 500);
 		},
-        intercept(start1, end1, start2, end2) {
-            return (
-                Math.max(
-                    0,
-                    Math.min(end2, end1) - Math.max(start1, start2) + 1
-                ) > 0
-            );
-        },
-        arraySearch(arr,val) {
-            for (var i=0; i<arr.length; i++)
-                if (arr[i] === val)
-                    return i;
-            return false;
-        },
-        checkTimes() {
-	        let alltimes = [9, 13, 16];
-	        this.times = [];
-	        let length = 0;
-            this.blockedDates.forEach((element) => {
-                if(element.date === this.date_start_date) {
-                    let blocked_times = element.times.split(',')
-                    blocked_times.forEach((time) => {
-                        this.times.push(parseInt(time.trim()));
-                    })
-                }
-            })
-            for (const event of this.events){
-                let start = moment(event.start).format('YYYY-MM-DD');
-		        if(start === this.date_start_date) {
-		            let starthour = new Date(event.start).getHours();
-                    this.times.push(starthour);
-                    length = moment(event.end).diff(moment(event.start), 'hours');
-                    alltimes.forEach( (element, index) => {
-                        if((starthour + length) > alltimes[index]) {
-                            this.times.push(alltimes[index]);
-                        }
-                    })
-                }
-            }
-            this.available_times = alltimes.filter(x => !this.times.includes(x));
+        getAvailableTimes(date) {
+            axios.get("api/bookings/availableTimes?date=" + date).then((response) => {
+                this.available_times = response.data;
+            });
         },
 	},
 	watch: {
 		startDate: function (newVal) {
 			this.date_start = moment(newVal).format("YYYY-MM-DD HH:mm:ss");
             this.date_start_date = moment(newVal).format("YYYY-MM-DD");
-            this.checkTimes();
+            this.getAvailableTimes(this.date_start_date);
 		},
 	},
 	mounted: function () {

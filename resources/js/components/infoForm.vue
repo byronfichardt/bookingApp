@@ -3,7 +3,6 @@
 		<v-form ref="form" v-model="valid" lazy-validation>
 			<v-text-field
 				v-model="name"
-				:counter="10"
 				:rules="nameRules"
 				label="Name *"
 				required
@@ -25,8 +24,7 @@
 			<v-text-field v-model="booking_note" label="Note (optional)"></v-text-field>
 
 			<v-btn
-				:disabled="!valid"
-				color="success"
+				color="green"
 				class="mr-4"
 				@click="validate"
 			>
@@ -37,10 +35,11 @@
 </template>
 <script>
 import { bus } from "../app";
+import Swal from "sweetalert2";
 export default {
 	data: () => ({
 		phone: "",
-		valid: true,
+		valid: false,
 		booking_note: "",
 		name: "",
 		nameRules: [(v) => !!v || "Name is required"],
@@ -53,6 +52,9 @@ export default {
 
 	methods: {
 		validate() {
+		    if(! this.valid ) {
+                Swal.fire("Please make sure to fill in your name, phone and email.");
+            }
 			let details = {
 				products: this.$root.$children[0].selected_products,
 				date_time: this.$root.$children[0].selected_date_time,
