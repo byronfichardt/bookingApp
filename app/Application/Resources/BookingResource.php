@@ -16,7 +16,7 @@ class BookingResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'note' => $this->note,
             'start' => $this->start_time,
             'end' => $this->end_time,
             'products' => ProductResource::collection($this->products),

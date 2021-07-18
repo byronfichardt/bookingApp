@@ -74,12 +74,7 @@ export default {
 			"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 		valid: true,
 		selected_products: [],
-		products: [
-			{ name: "baby boomer", price: 160, minutes: 60 },
-			{ name: "baby boomer 1", price: 160, minutes: 60 },
-			{ name: "baby boomer 2", price: 160, minutes: 60 },
-			{ name: "baby boomer 3", price: 160, minutes: 60 },
-		],
+		products: [],
 		sum: {
 			price: 0.0,
 			minutes: 0,

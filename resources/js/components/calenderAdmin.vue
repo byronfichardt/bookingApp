@@ -82,7 +82,7 @@ export default {
 						user: event.user,
 						end: event.end.slice(0, -3),
 						name: event.user ? event.user.name : event.name,
-                        note: event.name,
+                        note: event.note,
 					});
 				});
 				bus.$emit("all_events", this.events);

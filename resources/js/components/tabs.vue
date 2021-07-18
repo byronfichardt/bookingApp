@@ -22,7 +22,6 @@
 			</v-tab-item>
 			<v-tab-item :value="'finished'">
 				<div class="ma-3 text-center">
-					<p class="display-1 text--primary">Thank you!!</p>
 					<div class="text--primary">
 						Thank you for booking with us. We look forward to seeing
 						you!

@@ -71,15 +71,11 @@ export default {
 		},
         getAvailableTimes(event) {
             axios.get("api/bookings/availableTimes?date=" + event.date).then((response) => {
-                console.log(response.data);
                 if(response.data.length === 0 ) {
                     Swal.fire("Day fully booked");
                 }else {
                     let tomorrowsDate = moment(this.today).add(1, "days");
-                    if (
-                        moment(event.date).isBefore(tomorrowsDate) &&
-                        moment(event.date).isAfter(moment(this.today))
-                    ) {
+                    if (moment(event.date).isBetween(moment(this.today), tomorrowsDate)) {
                         Swal.fire("Day fully booked");
                     } else if (moment(event.date).isAfter(tomorrowsDate)) {
                         this.showEvent();
@@ -100,9 +96,6 @@ export default {
 				});
 				bus.$emit("all_events", this.events);
 			});
-		},
-		rnd(a, b) {
-			return Math.floor((b - a + 1) * Math.random()) + a;
 		},
 	},
 	mounted: function () {

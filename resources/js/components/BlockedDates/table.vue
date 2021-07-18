@@ -63,7 +63,6 @@ export default {
         },
         deleteItem(item) {
             axios.delete("api/blocked/" + item.id ).then((response) => {
-                console.log(response);
                 if (response.data.status === "success") {
                     this.getBlockedDates();
                 }

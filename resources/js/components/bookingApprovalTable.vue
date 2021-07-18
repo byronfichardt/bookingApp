@@ -43,6 +43,7 @@
 import { bus } from "../app";
 import addItemForm from "./addItemForm.vue";
 import editItemForm from "./editItemForm.vue";
+import Swal from "sweetalert2";
 export default {
 	components: { addItemForm, editItemForm },
 	data() {
@@ -75,6 +76,9 @@ export default {
 				if (response.data.status === "success") {
 					this.getPendingBookings();
 				}
+				if (response.data.status === "exists") {
+                    Swal.fire("A booking is already active for this date and time.");
+                }
 			});
 		},
         cancelItem(item) {

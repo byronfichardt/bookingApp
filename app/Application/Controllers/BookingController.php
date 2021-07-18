@@ -5,24 +5,30 @@ namespace App\Application\Controllers;
 use App\Application\Models\Booking;
 use App\Application\Models\User;
 use App\Application\Resources\BookingResource;
+use App\Domain\BookingCreator;
 use App\Domain\CalendarEventInserter;
 use App\Domain\CalendarEventRemover;
 use App\Http\Controllers\Controller;
 use App\Application\Jobs\BookingCanceledEmail;
 use App\Application\Jobs\BookingCreatedEmail;
 use App\Application\Jobs\BookingPendingEmail;
-use Carbon\Carbon;
+use App\Http\Requests\Auth\BookingStoreRequest;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    private CalendarEventInserter $calendarEventInserter;
-    private CalendarEventRemover $calendarEventRemover;
+    protected CalendarEventInserter $calendarEventInserter;
+    protected CalendarEventRemover $calendarEventRemover;
+    protected BookingCreator $bookingCreator;
 
-    public function __construct(CalendarEventInserter $calendarEventInserter, CalendarEventRemover $calendarEventRemover)
-    {
+    public function __construct(
+        CalendarEventInserter $calendarEventInserter,
+        CalendarEventRemover $calendarEventRemover,
+        BookingCreator $bookingCreator
+    ) {
         $this->calendarEventInserter = $calendarEventInserter;
         $this->calendarEventRemover = $calendarEventRemover;
+        $this->bookingCreator = $bookingCreator;
     }
 
     public function index()
@@ -44,30 +50,26 @@ class BookingController extends Controller
         return Booking::where('created_at', $date)->where('status', 'active')->get()->toJson();
     }
 
-    public function store(Request $request)
+    public function store(BookingStoreRequest $request)
     {
         //create  user or check if they already exist
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->getEmail())->first();
 
         if (!$user) {
             $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone
+                'name' => $request->getName(),
+                'email' => $request->getEmail(),
+                'phone' => $request->getPhone()
             ]);
         }
 
-        $booking = Booking::create([
-            'start_time' => Carbon::parse($request->date_time),
-            'end_time' => Carbon::parse($request->date_time)->addMinutes($request->minutes_total),
-            'user_id' => $user->id,
-            'name' => $request->booking_note,
-            'status' => 'pending'
-        ]);
-
-        foreach ($request->products as $product) {
-            $booking->products()->attach($product['id'], ['quantity' => (int) data_get($product, 'quantity', 1)]);
-        }
+        $this->bookingCreator->create(
+            $user,
+            $request->getDateTime(),
+            $request->getMinutesTotal(),
+            $request->getBookingNote(),
+            $request->getProducts()
+        );
 
         BookingPendingEmail::dispatch($user);
 
@@ -78,15 +80,17 @@ class BookingController extends Controller
     {
         $booking = Booking::find($bookingId);
 
+        $existingBooking = Booking::where('start_time', $booking->start_time)->active()->first();
+
+        if($existingBooking) {
+            return ['status' => 'exists'];
+        }
+
         $user = User::find($booking->user_id);
 
         $products = $booking->products()->pluck('name')->toArray();
-        $description = implode(', ', $products);
 
-        $start = Carbon::parse($booking->start_time, 'Europe/Copenhagen')->toIso8601String();
-        $end = Carbon::parse($booking->end_time, 'Europe/Copenhagen')->toIso8601String();
-
-        $event = $this->calendarEventInserter->addEvent($user->name, $description, $start, $end);
+        $event = $this->calendarEventInserter->addEvent($user->name, $products, $booking);
 
         $booking->status = 'active';
         $booking->event_id = $event->getId();

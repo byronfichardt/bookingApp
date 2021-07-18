@@ -35,6 +35,13 @@
 									:label="`Display Quantity?`"
 								></v-checkbox>
 							</v-col>
+                            <v-col cols="12">
+                                <v-text-field
+                                    required
+                                    v-model="item.sort_order"
+                                    label="Sort Order starting from 1 and sorting desc the higher the number"
+                                ></v-text-field>
+                            </v-col>
 						</v-row>
 					</v-container>
 					<small>*indicates required field</small>
@@ -63,6 +70,7 @@ export default {
 			price: 0,
 			minutes: 0,
 			display_quantity: null,
+            sort_order: null,
 		},
 	}),
 	methods: {

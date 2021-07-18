@@ -8,7 +8,6 @@ import VueRouter from 'vue-router'
 import AdminCalender from './components/calenderAdmin.vue'
 import table from './components/table.vue'
 import blocked_dates_table from './components/BlockedDates/table.vue'
-import Swal from 'sweetalert2'
 
 Vue.use(VueRouter)
 

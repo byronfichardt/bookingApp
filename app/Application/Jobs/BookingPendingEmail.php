@@ -3,7 +3,9 @@
 namespace App\Application\Jobs;
 
 use App\Application\Mail\BookingPending;
+use App\Application\Models\Booking;
 use App\Application\Models\User;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -16,8 +18,6 @@ class BookingPendingEmail implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public User $user;
-
-    public string $token;
 
     /**
      * Create a new job instance.

@@ -2,7 +2,8 @@
 
 namespace App\Application\Models;
 
-use Database\Factories\BookingFactory;
+use Database\Factories\Application\Models\BookingFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,5 +28,10 @@ class Booking extends Model
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', 'active');
     }
 }

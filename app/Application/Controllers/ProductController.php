@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return Product::orderBy('name')->get()->toJson();
+        return Product::orderBy('sort_order')->get()->toJson();
     }
 
     public function fetch(Request $request, string $date)
@@ -26,6 +26,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'minutes' => $request->minutes,
             'display_quantity' => $request->display_quantity ?? false,
+            'sort_order' => $request->sort_order,
         ]);
         return 'success';
     }
@@ -43,6 +44,7 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->minutes = $request->minutes;
         $product->display_quantity = $request->display_quantity;
+        $product->sort_order = $request->sort_order;
         $product->save();
 
         return 'success';

@@ -24,6 +24,7 @@
 						<th class="text-left">Price</th>
 						<th class="text-left">Time</th>
 						<th class="text-left">Should display Qty</th>
+                        <th class="text-left">Sort Order</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -35,6 +36,7 @@
 						<td>
 							{{ item.display_quantity == 1 ? "Yes" : "No" }}
 						</td>
+                        <td>{{ item.sort_order }}</td>
 						<td>
 							<v-btn
 								color="red"
