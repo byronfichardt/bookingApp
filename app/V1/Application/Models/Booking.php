@@ -36,4 +36,11 @@ class Booking extends Model
     {
         return $query->where('status', 'active');
     }
+
+    public function setActive(string $eventId)
+    {
+        $this->status = 'active';
+        $this->event_id = $eventId;
+        $this->save();
+    }
 }

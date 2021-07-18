@@ -94,9 +94,7 @@ class BookingController extends Controller
 
         $event = $this->calendarEventInserter->addEvent($user->name, $products, $booking);
 
-        $booking->status = 'active';
-        $booking->event_id = $event->getId();
-        $booking->save();
+        $booking->setActive($event->getId());
 
         $token = base64_encode(json_encode(['booking_id' => $booking->id]));
 
@@ -116,8 +114,9 @@ class BookingController extends Controller
         BookingCanceledEmail::dispatch($user);
 
         $booking->delete();
-
-        $this->calendarEventRemover->remove($booking);
+        if(! $booking->event_id) {
+            $this->calendarEventRemover->remove($booking);
+        }
 
         return view('cancel');
     }
@@ -131,7 +130,9 @@ class BookingController extends Controller
 
         $booking->delete();
 
-        $this->calendarEventRemover->remove($booking);
+        if(! $booking->event_id) {
+            $this->calendarEventRemover->remove($booking);
+        }
 
         return ['status' => "success"];
     }
