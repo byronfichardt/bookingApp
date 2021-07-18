@@ -1,13 +1,13 @@
-import bookingApprovalTable from "./components/bookingApprovalTable";
+import bookingApprovalTable from "./components/Admin/bookingApprovalTable";
 
 require('./bootstrap');
 
 import Vue from 'vue'
 import vuetify from './vuetify'
 import VueRouter from 'vue-router'
-import AdminCalender from './components/calenderAdmin.vue'
-import table from './components/table.vue'
-import blocked_dates_table from './components/BlockedDates/table.vue'
+import AdminCalender from './components/Admin/calenderAdmin.vue'
+import table from './components/Admin/productTable.vue'
+import blocked_dates_table from './components/Admin/BlockedDates/blockedDateTable.vue'
 
 Vue.use(VueRouter)
 

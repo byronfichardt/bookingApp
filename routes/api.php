@@ -1,10 +1,9 @@
 <?php
 
-use App\Application\Controllers\AuthorizeController;
-use App\Application\Controllers\BlockedDatesController;
-use App\Application\Controllers\BookingController;
-use App\Application\Controllers\BookingSyncController;
-use App\Application\Controllers\ProductController;
+use App\V1\Application\Controllers\AuthorizeController;
+use App\V1\Application\Controllers\BlockedDatesController;
+use App\V1\Application\Controllers\BookingController;
+use App\V1\Application\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

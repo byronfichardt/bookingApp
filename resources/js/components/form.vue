@@ -32,20 +32,12 @@
 							<td style="text-align: left" colspan="2">Cost:</td>
 							<td colspan="2">
                                 <label>Dkk {{sumtotal('price')}}</label>
-<!--								<v-text-field-->
-<!--									v-model="sumPrice"-->
-<!--									disabled-->
-<!--								></v-text-field>-->
 							</td>
 						</tr>
 						<tr>
 							<td style="text-align: left" colspan="2">Total time:</td>
 							<td colspan="2">
                                 <label>Hours {{sumIntoHours}}</label>
-<!--								<v-text-field-->
-<!--									v-model="sumIntoHours"-->
-<!--									disabled-->
-<!--								></v-text-field>-->
 							</td>
 						</tr>
 					</tfoot>
@@ -66,12 +58,8 @@
 </template>
 <script>
 import { bus } from "../app";
-import productTable from "./table.vue";
 export default {
-	components: { productTable },
 	data: () => ({
-		intro:
-			"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 		valid: true,
 		selected_products: [],
 		products: [],
@@ -145,17 +133,6 @@ export default {
                 return value * parseInt(itemQty);
             }
         },
-		sumMinutes() {
-			let sum = 0.0;
-			this.products.forEach((element) => {
-				if (element.selected) {
-					let minutes = parseInt(element.minutes);
-                    total = this.checkQuantity(minutes, element);
-					sum = parseInt(sum) + parseInt(total);
-				}
-			});
-			return sum;
-		},
 	},
 	mounted: function () {
 		this.getProducts();

@@ -41,7 +41,7 @@
 <script>
 import moment from "moment";
 import { bus } from "../app";
-import eventForm from "../components/eventForm.vue";
+import eventForm from "./chooseTimeForm.vue";
 import Swal from "sweetalert2";
 export default {
 	components: { eventForm },

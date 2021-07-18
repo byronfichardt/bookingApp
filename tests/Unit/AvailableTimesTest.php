@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Application\Models\BlockedDate;
-use App\Application\Models\Booking;
-use App\Domain\AvailableTimes;
+use App\V1\Application\Models\BlockedDate;
+use App\V1\Application\Models\Booking;
+use App\V1\Domain\AvailableTimes;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
