@@ -14,7 +14,7 @@ class AddSortOrderToProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->integer('sort_order');
+            $table->integer('sort_order')->default(0);
         });
     }
 
