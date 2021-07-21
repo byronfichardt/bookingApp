@@ -30,7 +30,7 @@ class GoogleCalendarService
         return $this->getCredentials($authCode)['access_token'];
     }
 
-    public function getCalenderId($accessToken): ?int
+    public function getCalenderId($accessToken): ?string
     {
         $calendarClient = $this->authorizeClient($accessToken);
 
