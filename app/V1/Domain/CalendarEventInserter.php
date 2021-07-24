@@ -20,7 +20,7 @@ class CalendarEventInserter
 
     public function addEvent(string $summary, array $products, Booking $booking): Event
     {
-        $description = implode(', ', $products);
+        $description = "Name: $booking->note. Products: " . implode(', ', $products);
 
         $startTime = $this->setStartEventDateTime($booking->start_time);
         $endTime = $this->setEndEventDateTime($booking->end_time);
