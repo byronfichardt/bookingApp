@@ -69,7 +69,7 @@ class BookingController extends Controller
             $user,
             $request->getDateTime(),
             $request->getMinutesTotal(),
-            $request->getBookingNote(),
+            'name: ' . $request->getName() . ' Note: ' . $request->getBookingNote(),
             $request->getProducts()
         );
 
