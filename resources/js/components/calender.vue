@@ -59,14 +59,15 @@ export default {
 		events: [],
 	}),
 	methods: {
-		showEvent() {
-			bus.$emit("open_event_form");
+		showEvent(data) {
+			bus.$emit("open_event_form", data);
 		},
 		viewDay(event) {
 			bus.$emit("date_selected", event);
 			bus.$emit("move_next");
 		},
 		clickTime(event) {
+		    console.log(event.name);
 		    this.getAvailableTimes(event);
 		},
         getAvailableTimes(event) {
@@ -78,8 +79,9 @@ export default {
                     if (moment(event.date).isBetween(moment(this.today), tomorrowsDate)) {
                         Swal.fire("Day fully booked");
                     } else if (moment(event.date).isAfter(tomorrowsDate)) {
-                        this.showEvent();
-                        this.selected_date = new Date(`${event.date} ${event.time}`);
+                        this.showEvent(response.data);
+                        console.log(event);
+                        this.selected_date = new Date(`${event.date}`);
                     }
                 }
             });

@@ -71,22 +71,17 @@ export default {
                 bus.$emit("move_next");
 			}, 500);
 		},
-        getAvailableTimes(date) {
-            axios.get("api/bookings/availableTimes?date=" + date).then((response) => {
-                this.available_times = response.data;
-            });
-        },
 	},
 	watch: {
 		startDate: function (newVal) {
 			this.date_start = moment(newVal).format("YYYY-MM-DD HH:mm:ss");
             this.date_start_date = moment(newVal).format("YYYY-MM-DD");
-            this.getAvailableTimes(this.date_start_date);
 		},
 	},
 	mounted: function () {
-		bus.$on("open_event_form", () => {
+		bus.$on("open_event_form", (data) => {
 			this.opened_form = true;
+			this.available_times = data
 		});
 	}
 };
