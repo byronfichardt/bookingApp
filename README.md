@@ -21,6 +21,30 @@ ADMIN_USER_EMAIL=
 ADMIN_PASSWORD=
 ```
 
+Make sure to add the following 
+Email credentials
+Google calender details
+Address info
+
+```
+CO_ADDRESS=
+ADDRESS=
+CITY=
+ZIP=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_PROJECT_ID=
+GOOGLE_CLIENT_SECRET=
+
+MAIL_MAILER=
+MAIL_HOST=
+MAIL_PORT=
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=
+MAIL_FROM_NAME=
+```
+
 then you can run 
 ```
 php artisan migrate
