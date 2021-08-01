@@ -24,7 +24,7 @@ class Booking extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class)->withPivot('quantity')->withPivot('quantity');
+        return $this->belongsToMany(Product::class)->withPivot('quantity');
     }
 
     public function user(): HasOne

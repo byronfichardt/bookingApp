@@ -49,7 +49,7 @@
 
             tile
 			color="info"
-			class="mr-4 mt-2 mb-2 float-right"
+			class="mr-4 mt-2 mb-2 float-right next-button"
 			@click="saveProducts"
 		>
 			Next

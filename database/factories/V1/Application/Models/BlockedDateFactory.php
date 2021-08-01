@@ -23,7 +23,7 @@ class BlockedDateFactory extends Factory
     {
         return [
             'blocked_date' => now()->format('Y-m-d'),
-            'times' => null,
+            'times' => $this->faker->randomElement(['9,16','13,16','9,13,16']),
         ];
     }
 }

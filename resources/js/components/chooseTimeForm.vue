@@ -23,7 +23,7 @@
 					<v-label class="disabled">Available times</v-label>
 				</div>
 
-                <v-btn v-for="time in available_times" :key="time" elevation="2" @click="setDateTime(time)">{{ hourToString(time) }}</v-btn>
+                <v-btn v-for="time in available_times" :key="time" elevation="2" @click="setDateTime(time)" :class="timeClass(time)">{{ hourToString(time) }}</v-btn>
 
 			</v-card-text>
 			<v-card-actions class="justify-end">
@@ -56,6 +56,9 @@ export default {
 		};
 	},
 	methods: {
+	    timeClass(time) {
+	        return "time-button-" + time;
+        },
 	    hourToString(time) {
             return ('0' + time).slice(-2) + ":00"
         },

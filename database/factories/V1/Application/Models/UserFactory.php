@@ -27,4 +27,23 @@ class UserFactory extends Factory
             'phone' => $this->faker->unique()->phoneNumber,
         ];
     }
+
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'refresh_token' => $this->faker->uuid,
+                'type' => 'admin'
+            ];
+        });
+    }
+
+    public function adminNotAuthorized()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => 'admin'
+            ];
+        });
+    }
 }

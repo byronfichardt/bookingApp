@@ -66,7 +66,7 @@ class BookingController extends Controller
         }
 
         $this->bookingCreator->create(
-            $user,
+            $user->id,
             $request->getDateTime(),
             $request->getMinutesTotal(),
             'name: ' . $request->getName() . ' Note: ' . $request->getBookingNote(),
@@ -96,7 +96,7 @@ class BookingController extends Controller
 
         $booking->setActive($event->getId());
 
-        $token = base64_encode(json_encode(['booking_id' => $booking->id]));
+        $token = Decoder::encode(['booking_id' => $booking->id]);
 
         BookingCreatedEmail::dispatch($user, $token, $booking);
 
@@ -114,7 +114,8 @@ class BookingController extends Controller
         BookingCanceledEmail::dispatch($user);
 
         $booking->delete();
-        if(! $booking->event_id) {
+
+        if(! is_null($booking->event_id)) {
             $this->calendarEventRemover->remove($booking);
         }
 
@@ -130,7 +131,7 @@ class BookingController extends Controller
 
         $booking->delete();
 
-        if(! $booking->event_id) {
+        if(! is_null($booking->event_id)) {
             $this->calendarEventRemover->remove($booking);
         }
 

@@ -5,18 +5,21 @@
 				v-model="name"
 				:rules="nameRules"
 				label="Name *"
+                class="name-form-field"
 				required
 			></v-text-field>
 
 			<v-text-field
 				v-model="phone"
 				label="Phone *"
+                class="phone-form-field"
 				required
 			></v-text-field>
 
 			<v-text-field
 				v-model="email"
 				:rules="emailRules"
+                class="email-form-field"
 				label="E-mail *"
 				required
 			></v-text-field>
@@ -25,7 +28,7 @@
 
 			<v-btn
 				color="green"
-				class="mr-4"
+				class="mr-4 book-button"
 				@click="validate"
 			>
 				Book

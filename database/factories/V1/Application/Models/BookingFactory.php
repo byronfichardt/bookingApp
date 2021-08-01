@@ -23,9 +23,11 @@ class BookingFactory extends Factory
     {
         return [
             'note' => $this->faker->name,
-            'start_time' => now(),
-            'end_time' => now(),
+            'start_time' => now()->toDateTimeString(),
+            'end_time' => now()->toDateTimeString(),
             'status' => 'active',
+            'event_id' => null,
+            'deleted_at' => null,
             'user_id' => $this->faker->randomDigitNotNull,
         ];
     }

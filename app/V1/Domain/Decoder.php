@@ -8,4 +8,9 @@ class Decoder
     {
         return json_decode(base64_decode($token), true);
     }
+
+    public static function encode(array $values): string
+    {
+        return base64_encode(json_encode($values));
+    }
 }
