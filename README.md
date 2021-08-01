@@ -1,3 +1,8 @@
+<p align="center">
+<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
+
 ## About BookingApp
 
 BookingApp is a free booking application with an easy-to-use interface. I believe in providing the best experience when using the application.
