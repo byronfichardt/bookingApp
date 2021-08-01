@@ -36,6 +36,7 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
-      # Runs a single command using the runners shell
-    - name: Run unit tests
-      run: php artisan test
+    - name: Laravel PHPUnit
+      # You may pin to the exact commit or the version.
+      # uses: nathanheffley/laravel-phpunit-action@1ac680fbc5f20621343f0d7ba450a02b807c576e
+      uses: nathanheffley/laravel-phpunit-action@v0.1.0
