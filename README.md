@@ -1,5 +1,5 @@
 <p align="center">
-![Tests](https://github.com/byronfichardt/bookingApp/actions/workflows/tests.yml/badge.svg)](https://github.com/byronfichardt/bookingApp/actions/workflows/tests.yml)
+[![Tests](https://github.com/byronfichardt/bookingApp/actions/workflows/tests.yml/badge.svg)]
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
