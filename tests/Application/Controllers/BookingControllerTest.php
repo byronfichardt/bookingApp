@@ -28,8 +28,8 @@ class BookingControllerTest extends TestCase
         $response->assertJsonFragment([
             'id' => $bookings->first()->id,
             'note' => $bookings->first()->note,
-            'start' => $bookings->first()->start_time->toDateTimeString(),
-            'end' => $bookings->first()->end_time->toDateTimeString(),
+            'start' => $bookings->first()->start_time,
+            'end' => $bookings->first()->end_time,
             'products' => $bookings->first()->products,
             'user' => $bookings->first()->user,
         ]);
@@ -62,8 +62,8 @@ class BookingControllerTest extends TestCase
         $response->assertJsonFragment([
             'id' => $bookings->first()->id,
             'note' => $bookings->first()->note,
-            'start' => $bookings->first()->start_time->toDateTimeString(),
-            'end' => $bookings->first()->end_time->toDateTimeString(),
+            'start' => $bookings->first()->start_time,
+            'end' => $bookings->first()->end_time,
             'products' => $bookings->first()->products,
             'user' => $bookings->first()->user,
         ]);
@@ -98,8 +98,8 @@ class BookingControllerTest extends TestCase
         $response->assertJsonFragment([
             'id' => $bookings->first()->id,
             'note' => $bookings->first()->note,
-            'start_time' => $bookings->first()->start_time->toDateTimeString(),
-            'end_time' => $bookings->first()->end_time->toDateTimeString(),
+            'start_time' => $bookings->first()->start_time,
+            'end_time' => $bookings->first()->end_time,
             'user_id' => (string) $bookings->first()->user_id,
         ]);
 
