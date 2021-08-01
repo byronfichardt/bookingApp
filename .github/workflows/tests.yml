@@ -1,8 +1,5 @@
-name: Laravel
-
-on:
-  push:
-    branches: [ main ]
+name: Tests
+on: [push]
 
 jobs:
   laravel-tests:
