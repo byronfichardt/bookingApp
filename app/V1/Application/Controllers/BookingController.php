@@ -64,14 +64,19 @@ class BookingController extends Controller
                 'phone' => $request->getPhone()
             ]);
         }
+        $year = now()->year;
+        $path = $request->file('file')->storePublicly("$year",'s3');
 
-        $this->bookingCreator->create(
+        $booking = $this->bookingCreator->create(
             $user->id,
             $request->getDateTime(),
             $request->getMinutesTotal(),
             'name: ' . $request->getName() . ' Note: ' . $request->getBookingNote(),
-            $request->getProducts()
+            $request->getProducts(),
         );
+
+        $booking->path = $path;
+        $booking->save();
 
         BookingPendingEmail::dispatch($user);
 
@@ -92,9 +97,9 @@ class BookingController extends Controller
 
         $products = $booking->products()->pluck('name')->toArray();
 
-        $event = $this->calendarEventInserter->addEvent($user->name, $products, $booking);
+        //$event = $this->calendarEventInserter->addEvent($user->name, $products, $booking);
 
-        $booking->setActive($event->getId());
+        $booking->setActive(123);
 
         $token = Decoder::encode(['booking_id' => $booking->id]);
 

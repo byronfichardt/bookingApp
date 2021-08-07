@@ -24,6 +24,13 @@
 				required
 			></v-text-field>
 
+            <v-file-input
+                v-model="file"
+                show-size
+                accept="image/*"
+                label="Show us what you want.  (Optional)"
+            ></v-file-input>
+
 			<v-text-field v-model="booking_note" label="Note (optional)"></v-text-field>
 
 			<v-btn
@@ -47,6 +54,8 @@ export default {
 		name: "",
 		nameRules: [(v) => !!v || "Name is required"],
 		email: "",
+        image: null,
+        file: null,
 		emailRules: [
 			(v) => !!v || "E-mail is required",
 			(v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -58,16 +67,24 @@ export default {
 		    if(! this.valid ) {
                 Swal.fire("Please make sure to fill in your name, phone and email.");
             }
-			let details = {
-				products: this.$root.$children[0].selected_products,
-				date_time: this.$root.$children[0].selected_date_time,
-				minutes_total: this.$root.$children[0].minutes_total,
-				email: this.email,
-				name: this.name,
-				phone: this.phone,
-				booking_note: this.booking_note,
-			};
-			axios.post("api/bookings", details).then((response) => {
+
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+
+            let data = new FormData();
+            data.append('file', this.file);
+            data.append('products', JSON.stringify(this.$root.$children[0].selected_products));
+            data.append('date_time', this.$root.$children[0].selected_date_time);
+            data.append('minutes_total', this.$root.$children[0].minutes_total);
+            data.append('email', this.email);
+            data.append('name', this.name);
+            data.append('phone', this.phone);
+            data.append('booking_note', this.booking_note);
+
+			axios.post("api/bookings", data, config).then((response) => {
 				bus.$emit("finished");
 			});
 		},

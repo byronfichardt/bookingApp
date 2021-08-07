@@ -3,6 +3,7 @@
 namespace App\V1\Application\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class BookingResource extends JsonResource
 {
@@ -15,6 +16,7 @@ class BookingResource extends JsonResource
             'end' => $this->end_time,
             'products' => ProductResource::collection($this->products),
             'user' => new UserResource($this->user),
+            'path' => $this->path ? Storage::url($this->path) : null
         ];
     }
 }

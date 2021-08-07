@@ -33,7 +33,7 @@ class BookingStoreRequest extends FormRequest
 
     public function getProducts()
     {
-        return $this->input('products');
+        return json_decode($this->input('products'),true);
     }
 
     public function getName()

@@ -20,6 +20,10 @@
 
 			<v-card-text>
 				<pre>{{ event }}</pre>
+                <v-img
+                    :lazy-src="event.path"
+                    :src="event.path"
+                ></v-img>
                 <h5>Total price: {{ eventPrice() }} Dkk</h5>
                 <h5>Total Time: {{ eventTime() }} minutes</h5>
 			</v-card-text>

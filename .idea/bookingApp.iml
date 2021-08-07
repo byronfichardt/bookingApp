@@ -129,6 +129,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/google/auth" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/php-webdriver/webdriver" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/dusk" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/mtdowling/jmespath.php" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/flysystem-aws-s3-v3" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/aws/aws-sdk-php" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
