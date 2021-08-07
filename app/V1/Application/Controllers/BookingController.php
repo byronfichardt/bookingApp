@@ -2,6 +2,7 @@
 
 namespace App\V1\Application\Controllers;
 
+use App\V1\Application\Jobs\SaveImage;
 use App\V1\Application\Models\Booking;
 use App\V1\Application\Models\User;
 use App\V1\Application\Resources\BookingResource;
@@ -16,6 +17,7 @@ use App\V1\Application\Requests\Auth\BookingStoreRequest;
 use App\V1\Domain\Decoder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Storage;
 
 class BookingController extends Controller
 {
@@ -64,8 +66,8 @@ class BookingController extends Controller
                 'phone' => $request->getPhone()
             ]);
         }
-        $year = now()->year;
-        $path = $request->file('file')->storePublicly("$year",'s3');
+
+        $image = $request->image;
 
         $booking = $this->bookingCreator->create(
             $user->id,
@@ -75,9 +77,7 @@ class BookingController extends Controller
             $request->getProducts(),
         );
 
-        $booking->path = $path;
-        $booking->save();
-
+        SaveImage::dispatch($image, $booking->id);
         BookingPendingEmail::dispatch($user);
 
         return ['status' => "success"];
