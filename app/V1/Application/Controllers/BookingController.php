@@ -67,8 +67,6 @@ class BookingController extends Controller
             ]);
         }
 
-        $image = $request->image;
-
         $booking = $this->bookingCreator->create(
             $user->id,
             $request->getDateTime(),
@@ -77,7 +75,10 @@ class BookingController extends Controller
             $request->getProducts(),
         );
 
-        SaveImage::dispatch($image, $booking->id);
+        if($image = $request->image) {
+            SaveImage::dispatch($image, $booking->id);
+        }
+
         BookingPendingEmail::dispatch($user);
 
         return ['status' => "success"];
