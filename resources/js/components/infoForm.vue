@@ -28,7 +28,7 @@
                 v-model="file"
                 show-size
                 accept="image/*"
-                label="Show us what you want. (optional)"
+                label="Inspiration picture. (optional)"
                 @change="onFileChange()"
             ></v-file-input>
 
