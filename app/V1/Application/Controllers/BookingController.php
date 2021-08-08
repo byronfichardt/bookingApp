@@ -98,9 +98,9 @@ class BookingController extends Controller
 
         $products = $booking->products()->pluck('name')->toArray();
 
-        //$event = $this->calendarEventInserter->addEvent($user->name, $products, $booking);
+        $event = $this->calendarEventInserter->addEvent($user->name, $products, $booking);
 
-        $booking->setActive(123);
+        $booking->setActive($event->getId());
 
         $token = Decoder::encode(['booking_id' => $booking->id]);
 
