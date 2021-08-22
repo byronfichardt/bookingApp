@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('cancel', [BookingController::class, 'cancel']);
+Route::get('bookings/{id}/approve', [BookingController::class, 'approve']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

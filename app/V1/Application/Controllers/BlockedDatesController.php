@@ -21,7 +21,7 @@ class BlockedDatesController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        $blockedDates = BlockedDate::all();
+        $blockedDates = BlockedDate::orderBy('blocked_date', 'desc')->limit(200)->get();
 
         return BlockedDatesResource::collection($blockedDates);
     }

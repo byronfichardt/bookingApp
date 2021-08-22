@@ -2,6 +2,7 @@
 
 namespace App\V1\Application\Controllers;
 
+use App\V1\Application\Jobs\BookingApprovalEmail;
 use App\V1\Application\Jobs\SaveImage;
 use App\V1\Application\Models\Booking;
 use App\V1\Application\Models\User;
@@ -78,6 +79,8 @@ class BookingController extends Controller
         if($image = $request->image) {
             SaveImage::dispatch($image, $booking->id);
         }
+
+        BookingApprovalEmail::dispatch($user, $booking);
 
         BookingPendingEmail::dispatch($user);
 

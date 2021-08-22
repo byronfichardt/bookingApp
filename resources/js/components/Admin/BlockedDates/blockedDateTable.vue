@@ -1,44 +1,44 @@
 <template>
     <div style="width: 100%">
-        <v-card
-            class="d-flex flex-row-reverse"
-            color="none"
-            flat
-            tile
-            style="padding-right: 15px"
-        >
+        <v-card>
+        <v-card-title>
+            Blocked Dates
+            <v-spacer></v-spacer>
+            <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Search"
+                single-line
+                hide-details
+            ></v-text-field>
             <v-btn
                 color="accent"
                 elevation="2"
                 outlined
                 small
                 @click="openAddItemForm"
-            >Add item</v-btn
-            >
-        </v-card>
-        <v-simple-table>
-            <template v-slot:default>
-                <thead>
-                <tr>
-                    <th class="text-left">Date</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="item in blockedDates" :key="item.id">
-                    <td>{{ item.date }}</td>
-                    <td>
-                        <v-btn
-                            color="red"
-                            @click="deleteItem(item)"
-                        >
-                            Delete
-                        </v-btn>
-                    </td>
-                </tr>
-                </tbody>
+            >Add item</v-btn>
+        </v-card-title>
+        <v-data-table
+            :headers="headers"
+            :items="blockedDates"
+            :search="search"
+        >
+            <template v-slot:item.actions="{ item }">
+                <v-btn
+                    color="red"
+                    @click="deleteItem(item)"
+                >
+                    Delete
+                </v-btn>
             </template>
-        </v-simple-table>
+            <template v-slot:no-results>
+                <v-alert :value="true" color="error" icon="warning">
+                    Your search for "{{ search }}" found no results.
+                </v-alert>
+            </template>
+        </v-data-table>
+        </v-card>
         <add-item-form></add-item-form>
     </div>
 </template>
@@ -49,6 +49,17 @@ export default {
     components: { addItemForm },
     data() {
         return {
+            search: '',
+            headers: [
+                {
+                    text: 'Date',
+                    align: 'left',
+                    sortable: false,
+                    value: 'date'
+                },
+                { text: 'Times', value: 'times' },
+                { text: 'Delete', value: 'actions' },
+            ],
             blockedDates: [],
         };
     },
