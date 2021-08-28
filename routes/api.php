@@ -24,6 +24,7 @@ Route::delete('blocked/{id}', [BlockedDatesController::class, 'delete']);
 Route::get('blocked', [BlockedDatesController::class, 'index']);
 Route::get('bookings/pending', [BookingController::class, 'pending']);
 Route::get('bookings/availableTimes', [BlockedDatesController::class, 'getAvailableTimes']);
+Route::patch('bookings/{id}', [BookingController::class, 'edit']);
 Route::get('bookings/{id}/approve', [BookingController::class, 'approve']);
 Route::get('bookings/{id}/cancel', [BookingController::class, 'remove']);
 Route::post('bookings', [BookingController::class, 'store']);

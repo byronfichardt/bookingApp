@@ -30,6 +30,9 @@ class CalendarEventInserter
         $user = User::admin();
         $creds = $this->calendarService->exchangeToken($user->refresh_token);
 
+        $user->refresh_token = $creds['refresh_token'];
+        $user->save();
+
         $calendarClient = $this->calendarService->authorizeClient($creds['access_token']);
 
         return $calendarClient->events->insert(

@@ -18,6 +18,7 @@ use App\V1\Application\Requests\Auth\BookingStoreRequest;
 use App\V1\Domain\Decoder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class BookingController extends Controller
@@ -87,6 +88,21 @@ class BookingController extends Controller
         return ['status' => "success"];
     }
 
+    public function edit(Request $request, int $bookingId): array
+    {
+        $booking = Booking::find($bookingId);
+
+        $minutes = $booking->products->map(function($product) {
+            return $product->minutes * $product->pivot->quantity;
+        })->sum();
+
+        $booking->start_time = $request->input('start');
+        $booking->end_time = Carbon::parse($booking->start_time)->addMinutes($minutes)->format('Y-m-d H:i:s');
+        $booking->save();
+
+        return ['status' => "success"];
+    }
+
     public function approve($bookingId): array
     {
         $booking = Booking::find($bookingId);
@@ -136,7 +152,9 @@ class BookingController extends Controller
         $booking = Booking::find($id);
         $user = $booking->user;
 
-        BookingCanceledEmail::dispatch($user);
+        if($request->sendEmail){
+            BookingCanceledEmail::dispatch($user);
+        }
 
         $booking->delete();
 

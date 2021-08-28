@@ -20,6 +20,12 @@
                         <td>{{ getBookingTimeNeeded(item) }} Hours</td>
                         <td>{{ getBookingStartTime(item) }}</td>
 						<td>
+                            <v-btn
+                                color="blue"
+                                @click="changeTime(item)"
+                            >
+                                Change Start Time
+                            </v-btn>
 							<v-btn
 								color="green"
 								@click="approveItem(item)"
@@ -32,11 +38,18 @@
                             >
                                 Cancel
                             </v-btn>
+                            <v-btn
+                                color="red"
+                                @click="cancelItem(item, 0)"
+                            >
+                                Cancel No Email
+                            </v-btn>
 						</td>
 					</tr>
 				</tbody>
 			</template>
 		</v-simple-table>
+        <change-time-form></change-time-form>
 	</div>
 </template>
 <script>
@@ -44,8 +57,9 @@ import { bus } from "../../app";
 import addItemForm from "./addItemForm.vue";
 import editItemForm from "./editItemForm.vue";
 import Swal from "sweetalert2";
+import ChangeTimeForm from "./ChangeTimeForm";
 export default {
-	components: { addItemForm, editItemForm },
+	components: {ChangeTimeForm, addItemForm, editItemForm },
 	data() {
 		return {
 			bookings: null,
@@ -81,17 +95,23 @@ export default {
                 }
 			});
 		},
-        cancelItem(item) {
-            axios.get("api/bookings/" + item.id + "/cancel").then((response) => {
+        cancelItem(item, sendEmail = 1) {
+            axios.get("api/bookings/" + item.id + "/cancel?sendEmail=" + sendEmail).then((response) => {
                 console.log(response);
                 if (response.data.status === "success") {
                     this.getPendingBookings();
                 }
             });
         },
+        changeTime(item) {
+            bus.$emit('open_change_time_form', item)
+        },
 	},
 	mounted: function () {
 		this.getPendingBookings();
+        bus.$on("time_saved", (event) => {
+            this.getPendingBookings();
+        });
 	},
 };
 </script>
