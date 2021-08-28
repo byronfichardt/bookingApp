@@ -1,12 +1,13 @@
 <template>
-    <div style="min-height: 800px">
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <div style="min-height: 800px; width: 0px">
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" style="z-index: 1000;"></v-app-bar-nav-icon>
 
         <v-navigation-drawer
             v-model="drawer"
             absolute
             top
             temporary
+            style="z-index: 2000;"
         >
             <v-list
                 nav

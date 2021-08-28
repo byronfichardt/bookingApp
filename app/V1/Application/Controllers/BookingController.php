@@ -19,7 +19,6 @@ use App\V1\Domain\Decoder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 class BookingController extends Controller
 {

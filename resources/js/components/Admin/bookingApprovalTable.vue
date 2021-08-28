@@ -1,54 +1,45 @@
 <template>
-	<div style="width: 100%">
-		<v-simple-table>
-			<template v-slot:default>
-				<thead>
-					<tr>
-						<th class="text-left">Name</th>
-                        <th class="text-left">Notes</th>
-						<th class="text-left">Date</th>
-						<th class="text-left">Time needed</th>
-                        <th class="text-left">Appointment time</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="item in bookings" :key="item.id">
-						<td>{{ item.user.name }}</td>
-                        <td>{{ item.name }}</td>
-						<td>{{ getBookingDate(item) }}</td>
-                        <td>{{ getBookingTimeNeeded(item) }} Hours</td>
-                        <td>{{ getBookingStartTime(item) }}</td>
-						<td>
-                            <v-btn
-                                color="blue"
-                                @click="changeTime(item)"
-                            >
-                                Change Start Time
-                            </v-btn>
-							<v-btn
-								color="green"
-								@click="approveItem(item)"
-							>
-								Approve
-							</v-btn>
-                            <v-btn
-                                color="red"
-                                @click="cancelItem(item)"
-                            >
-                                Cancel
-                            </v-btn>
-                            <v-btn
-                                color="red"
-                                @click="cancelItem(item, 0)"
-                            >
-                                Cancel No Email
-                            </v-btn>
-						</td>
-					</tr>
-				</tbody>
-			</template>
-		</v-simple-table>
+	<div style="width: 100%; margin-top: 30px">
+        <v-data-table
+            :headers="headers"
+            :items="bookings"
+        >
+            <template v-slot:item.actions="{ item }">
+                <v-btn
+                    color="blue"
+                    @click="changeTime(item)"
+                >
+                    Change
+                </v-btn>
+                <v-btn
+                    color="green"
+                    @click="approveItem(item)"
+                >
+                    Approve
+                </v-btn>
+                <v-btn
+                    color="red"
+                    @click="cancelItem(item)"
+                >
+                    Cancel
+                </v-btn>
+                <v-btn
+                    color="red"
+                    @click="cancelItem(item, 0)"
+                >
+                    No Email
+                </v-btn>
+            </template>
+            <template v-slot:item.date="{ item }">
+                {{ getBookingDate(item) }}
+            </template>
+            <template v-slot:item.time_needed="{ item }">
+                {{ getBookingTimeNeeded(item) }} Hours
+            </template>
+            <template v-slot:item.start_time="{ item }">
+                {{ getBookingStartTime(item) }}
+            </template>
+        </v-data-table>
         <change-time-form></change-time-form>
 	</div>
 </template>
@@ -62,7 +53,19 @@ export default {
 	components: {ChangeTimeForm, addItemForm, editItemForm },
 	data() {
 		return {
-			bookings: null,
+			bookings: [],
+            headers: [
+                {
+                    text: 'Name',
+                    align: 'left',
+                    value: 'user.name'
+                },
+                { text: 'Notes', value: 'name' },
+                { text: 'Booking Date', value: 'date' },
+                { text: 'Time Needed', value: 'time_needed' },
+                { text: 'Start time', value: 'start_time' },
+                { text: 'Actions', value: 'actions' },
+            ],
 		};
 	},
 	methods: {
@@ -73,7 +76,7 @@ export default {
             const start = new Date(booking.start);
             const endDate = new Date(booking.end);
             const diffMs = endDate - start;
-            return (diffMs / 60000) / 60;
+            return ((diffMs / 60000) / 60).toFixed(2);
         },
         getBookingStartTime(booking) {
 	        let startpos = booking.start.length-9;

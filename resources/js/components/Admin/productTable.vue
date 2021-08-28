@@ -1,5 +1,5 @@
 <template>
-	<div style="width: 100%">
+	<div style="width: 100%; margin-top: 30px">
         <v-card
             class="d-flex flex-row-reverse"
             color="none"
@@ -16,43 +16,25 @@
                 >Add item</v-btn
             >
         </v-card>
-		<v-simple-table>
-			<template v-slot:default>
-				<thead>
-					<tr>
-						<th class="text-left">Name</th>
-						<th class="text-left">Price</th>
-						<th class="text-left">Time</th>
-						<th class="text-left">Should display Qty</th>
-                        <th class="text-left">Sort Order</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="item in products" :key="item.name">
-						<td>{{ item.name }}</td>
-						<td>{{ item.price }}</td>
-						<td>{{ item.minutes }}</td>
-						<td>
-							{{ item.display_quantity == 1 ? "Yes" : "No" }}
-						</td>
-                        <td>{{ item.sort_order }}</td>
-						<td>
-							<v-btn
-								color="red"
-								text
-								@click="deleteItem(item.id)"
-							>
-								Delete
-							</v-btn>
-							<v-btn color="blue" text @click="editItem(item)">
-								Edit
-							</v-btn>
-						</td>
-					</tr>
-				</tbody>
-			</template>
-		</v-simple-table>
+        <v-data-table
+            :headers="headers"
+            :items="products"
+        >
+            <template v-slot:item.actions="{ item }">
+                <v-btn
+                    color="red"
+                    @click="deleteItem(item.id)"
+                >
+                    Delete
+                </v-btn>
+                <v-btn color="blue" @click="editItem(item)">
+                    Edit
+                </v-btn>
+            </template>
+
+        </v-data-table>
+
+
 		<add-item-form></add-item-form>
 		<edit-item-form></edit-item-form>
 	</div>
@@ -65,7 +47,19 @@ export default {
 	components: { addItemForm, editItemForm },
 	data() {
 		return {
-			products: null,
+			products: [],
+            headers: [
+                {
+                    text: 'Name',
+                    align: 'left',
+                    value: 'name'
+                },
+                { text: 'Price', value: 'price' },
+                { text: 'Time', value: 'minutes' },
+                { text: 'Display Qty', value: 'display_quantity' },
+                { text: 'Sort Order', value: 'sort_order' },
+                { text: 'Actions', value: 'actions' },
+            ],
 		};
 	},
 	methods: {

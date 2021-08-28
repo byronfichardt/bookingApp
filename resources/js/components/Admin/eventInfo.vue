@@ -32,7 +32,7 @@
 					>Close</v-btn
 				>
                 <v-btn @click="cancelEvent()" color="error"
-                >Cancel</v-btn
+                >Cancel Event</v-btn
                 >
 			</v-card-actions>
 		</v-card>
