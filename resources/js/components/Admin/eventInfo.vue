@@ -34,6 +34,9 @@
                 <v-btn @click="cancelEvent()" color="error"
                 >Cancel Event</v-btn
                 >
+                <v-btn @click="cancelEvent(0)" color="error"
+                >Cancel No Email</v-btn
+                >
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
@@ -49,8 +52,8 @@ export default {
 		};
 	},
 	methods: {
-	    cancelEvent() {
-            axios.get("api/bookings/" + this.event.id + "/cancel").then((response) => {
+	    cancelEvent(sendEmail = 1) {
+            axios.get("api/bookings/" + this.event.id + "/cancel?sendEmail="+ sendEmail).then((response) => {
                 if(response.data.status === 'success') {
                     Swal.fire("Canceled");
                     this.selected_open = false
