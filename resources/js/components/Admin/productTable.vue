@@ -19,6 +19,7 @@
         <v-data-table
             :headers="headers"
             :items="products"
+            disable-sort="true"
         >
             <template v-slot:item.actions="{ item }">
                 <v-btn

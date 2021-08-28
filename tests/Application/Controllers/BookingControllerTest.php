@@ -301,11 +301,35 @@ class BookingControllerTest extends TestCase
 
         Bus::fake();
 
-        $response = $this->get("api/bookings/$booking->id/cancel");
+        $response = $this->get("api/bookings/$booking->id/cancel?sendEmail=1");
 
         $response->assertOk();
 
         Bus::assertDispatched(BookingCanceledEmail::class);
+
+        $this->assertDeleted('bookings', $booking->toArray());
+    }
+
+    public function testItCanRemoveBookingWithoutSendingEmail()
+    {
+        $user = User::factory()->create();
+
+        $booking = Booking::factory()->create([
+            'status' => 'active',
+            'user_id' => $user->id,
+            'event_id' => $this->faker->uuid
+        ]);
+
+        $calendarEventRemover = $this->mock(CalendarEventRemover::class);
+        $calendarEventRemover->shouldReceive('remove')->once();
+
+        Bus::fake();
+
+        $response = $this->get("api/bookings/$booking->id/cancel?sendEmail=0");
+
+        $response->assertOk();
+
+        Bus::assertNotDispatched(BookingCanceledEmail::class);
 
         $this->assertDeleted('bookings', $booking->toArray());
     }

@@ -2,8 +2,7 @@
     <div style="width: 100%">
         <v-card>
         <v-card-title>
-            Blocked Dates
-            <v-spacer></v-spacer>
+            <h3 style="width: 100%; text-align: center">Blocked Dates</h3>
             <v-text-field
                 v-model="search"
                 append-icon="search"
@@ -11,19 +10,24 @@
                 single-line
                 hide-details
             ></v-text-field>
-            <v-btn
-                color="accent"
-                elevation="2"
-                outlined
-                small
-                @click="openAddItemForm"
-            >Add item</v-btn>
         </v-card-title>
         <v-data-table
             :headers="headers"
             :items="blockedDates"
             :search="search"
+            disable-sort="true"
         >
+            <template v-slot:top>
+                <v-toolbar flat>
+                    <v-btn
+                        color="accent"
+                        elevation="2"
+                        outlined
+                        small
+                        @click="openAddItemForm"
+                    >Add item</v-btn>
+                </v-toolbar>
+            </template>
             <template v-slot:item.actions="{ item }">
                 <v-btn
                     color="red"

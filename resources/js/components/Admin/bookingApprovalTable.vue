@@ -3,6 +3,7 @@
         <v-data-table
             :headers="headers"
             :items="bookings"
+            disable-sort="true"
         >
             <template v-slot:item.actions="{ item }">
                 <v-btn
