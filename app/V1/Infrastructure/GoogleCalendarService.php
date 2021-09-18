@@ -13,7 +13,7 @@ class GoogleCalendarService
         $this->calendarClient = $calendarClient;
     }
 
-    protected function getClient(): Google_Service_Calendar
+    public function getClient(): Google_Service_Calendar
     {
         return new Google_Service_Calendar($this->calendarClient->getGoogleClient());
     }
@@ -30,11 +30,12 @@ class GoogleCalendarService
         return $this->getCredentials($authCode)['access_token'];
     }
 
-    public function getCalenderId($accessToken): ?string
+    public function getCalenderId(): ?string
     {
-        $calendarClient = $this->authorizeClient($accessToken);
+        $calendarClient = $this->getClient();
 
         $calenders = $calendarClient->calendarList->listCalendarList();
+
         foreach($calenders->getItems() as $calendarListEntry) {
             if($calendarListEntry->getSummary() == 'Bookings') {
                 $calendarId = $calendarListEntry->getId();
@@ -46,29 +47,5 @@ class GoogleCalendarService
         return $calendarId;
     }
 
-    public function getRefreshToken($authCode)
-    {
-        return $this->getCredentials($authCode)['refresh_token'];
-    }
 
-    public function getAuthorizeUrl(): string
-    {
-        return $this->calendarClient->getGoogleClient()->createAuthUrl();
-    }
-
-    public function exchangeToken($refreshToken): array
-    {
-        return $this->calendarClient
-            ->getGoogleClient()
-            ->fetchAccessTokenWithRefreshToken($refreshToken);
-    }
-
-    public function authorizeClient($accessToken): Google_Service_Calendar
-    {
-        $this->calendarClient
-            ->getGoogleClient()
-            ->setAccessToken($accessToken);
-
-        return $this->getClient();
-    }
 }

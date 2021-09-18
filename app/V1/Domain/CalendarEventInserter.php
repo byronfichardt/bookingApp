@@ -27,16 +27,11 @@ class CalendarEventInserter
 
         $event = $this->createEvent($summary, $description, $startTime, $endTime);
 
-        $user = User::admin();
-        $creds = $this->calendarService->exchangeToken($user->refresh_token);
-
-        $user->refresh_token = $creds['refresh_token'];
-        $user->save();
-
-        $calendarClient = $this->calendarService->authorizeClient($creds['access_token']);
+        $calendarClient = $this->calendarService->getClient();
+        $calendarId = config('google.id');
 
         return $calendarClient->events->insert(
-            $user->calendar_id,
+            $calendarId,
             $event
         );
     }

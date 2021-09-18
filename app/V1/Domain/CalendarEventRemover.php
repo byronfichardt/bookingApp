@@ -17,12 +17,11 @@ class CalendarEventRemover
 
     public function remove(Booking $booking): void
     {
-        $adminUser = User::admin();
-        $creds = $this->calendarService->exchangeToken($adminUser->refresh_token);
-        $calendarClient = $this->calendarService->authorizeClient($creds['access_token']);
+        $calendarId = config('google.id');
+        $calendarClient = $this->calendarService->getClient();
 
         $calendarClient->events->delete(
-            $adminUser->calendar_id,
+            $calendarId,
             $booking->event_id
         );
     }

@@ -12,13 +12,12 @@ class GoogleCalenderClient
 
     public function __construct(Google_Client $client, Repository $config)
     {
+        $creds = $config->get('google.account');
+
         $client->setApplicationName('Impulse Nails');
         $client->setScopes(Google_Service_Calendar::CALENDAR);
-        $client->setClientId($config->get('google.client_id'));
-        $client->setClientSecret($config->get('google.client_secret'));
+        $client->setAuthConfig($creds);
         $client->setRedirectUri($config->get('app.url') . '/api/redirected');
-        $client->setAccessType('offline');
-        $client->setPrompt('select_account consent');
         $this->client = $client;
     }
 

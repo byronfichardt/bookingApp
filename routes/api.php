@@ -29,8 +29,6 @@ Route::get('bookings/{id}/approve', [BookingController::class, 'approve']);
 Route::get('bookings/{id}/cancel', [BookingController::class, 'remove']);
 Route::post('bookings', [BookingController::class, 'store']);
 Route::get('bookings/{date}', [BookingController::class, 'fetch']);
-Route::get('redirected', [AuthorizeController::class, 'redirected']);
-Route::get('authorize', [AuthorizeController::class, 'authorizeWithGoogle']);
 
 Route::get('products', [ProductController::class, 'index']);
 Route::post('products', [ProductController::class, 'store']);
