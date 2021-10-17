@@ -4,6 +4,7 @@ namespace Database\Factories\V1\Application\Models;
 
 use App\V1\Application\Models\Booking;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class BookingFactory extends Factory
 {

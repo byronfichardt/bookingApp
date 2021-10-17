@@ -8,6 +8,7 @@ use App\V1\Application\Models\Booking;
 use App\V1\Application\Models\User;
 use App\V1\Application\Resources\BookingResource;
 use App\V1\Domain\BookingCreator;
+use App\V1\Domain\BookingEditor;
 use App\V1\Domain\CalendarEventInserter;
 use App\V1\Domain\CalendarEventRemover;
 use App\Http\Controllers\Controller;
@@ -16,24 +17,31 @@ use App\V1\Application\Jobs\BookingCreatedEmail;
 use App\V1\Application\Jobs\BookingPendingEmail;
 use App\V1\Application\Requests\Auth\BookingStoreRequest;
 use App\V1\Domain\Decoder;
+use App\V1\Domain\dtos\UserDto;
+use App\V1\Domain\UserCreator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Carbon;
 
 class BookingController extends Controller
 {
     protected CalendarEventInserter $calendarEventInserter;
     protected CalendarEventRemover $calendarEventRemover;
     protected BookingCreator $bookingCreator;
+    private UserCreator $userCreator;
+    private BookingEditor $bookingEditor;
 
     public function __construct(
         CalendarEventInserter $calendarEventInserter,
         CalendarEventRemover $calendarEventRemover,
-        BookingCreator $bookingCreator
+        BookingCreator $bookingCreator,
+        UserCreator $userCreator,
+        BookingEditor $bookingEditor
     ) {
         $this->calendarEventInserter = $calendarEventInserter;
         $this->calendarEventRemover = $calendarEventRemover;
         $this->bookingCreator = $bookingCreator;
+        $this->userCreator = $userCreator;
+        $this->bookingEditor = $bookingEditor;
     }
 
     public function index(): AnonymousResourceCollection
@@ -47,41 +55,35 @@ class BookingController extends Controller
 
     public function pending(): AnonymousResourceCollection
     {
-        return BookingResource::collection(Booking::with('user')->where('status', 'pending')->get());
-    }
-
-    public function fetch(Request $request, string $date)
-    {
-        return Booking::where('created_at', $date)->where('status', 'active')->get()->toJson();
+        return BookingResource::collection(
+            Booking::with('user')
+            ->where('status', 'pending')->get()
+        );
     }
 
     public function store(BookingStoreRequest $request): array
     {
-        //check if user already exist
-        $user = User::findByEmail($request->getEmail());
+        $name = $request->getName();
+        $email = $request->getEmail();
+        $phone = $request->getPhone();
+        $note = $request->getBookingNote();
 
-        if (!$user) {
-            $user = User::create([
-                'name' => $request->getName(),
-                'email' => $request->getEmail(),
-                'phone' => $request->getPhone()
-            ]);
-        }
+        $userDto = new UserDto($name, $email, $phone);
+
+        $user = $this->userCreator->create($userDto);
 
         $booking = $this->bookingCreator->create(
             $user->id,
             $request->getDateTime(),
             $request->getMinutesTotal(),
-            'name: ' . $request->getName() . ' Note: ' . $request->getBookingNote(),
+            sprintf('name: %s, Note: %s', $name, $note),
             $request->getProducts(),
         );
 
-        if($image = $request->image) {
+        if($image = $request->getImage()) {
             SaveImage::dispatch($image, $booking->id);
         }
-
         BookingApprovalEmail::dispatch($user, $booking);
-
         BookingPendingEmail::dispatch($user);
 
         return ['status' => "success"];
@@ -89,15 +91,12 @@ class BookingController extends Controller
 
     public function edit(Request $request, int $bookingId): array
     {
+        /** @var Booking $booking */
         $booking = Booking::find($bookingId);
 
-        $minutes = $booking->products->map(function($product) {
-            return $product->minutes * $product->pivot->quantity;
-        })->sum();
+        $minutes = $booking->calculateMinutes();
 
-        $booking->start_time = $request->input('start');
-        $booking->end_time = Carbon::parse($booking->start_time)->addMinutes($minutes)->format('Y-m-d H:i:s');
-        $booking->save();
+        $this->bookingEditor->update($booking, $request->input('start'), $minutes);
 
         return ['status' => "success"];
     }
@@ -146,7 +145,7 @@ class BookingController extends Controller
         return view('cancel');
     }
 
-    public function remove(Request $request, int $id)
+    public function remove(Request $request, int $id): array
     {
         $booking = Booking::find($id);
         $user = $booking->user;

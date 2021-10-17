@@ -50,4 +50,9 @@ class BookingStoreRequest extends FormRequest
     {
         return $this->input('phone');
     }
+
+    public function getImage()
+    {
+        return $this->input('image');
+    }
 }

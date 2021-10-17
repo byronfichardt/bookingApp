@@ -3,17 +3,21 @@
 namespace App\V1\Domain;
 
 use App\V1\Application\Models\Booking;
-use App\V1\Application\Models\User;
 use Carbon\Carbon;
 
 class BookingCreator
 {
-    public function create(int $user, string $dateTime, int $totalTime, ?string $note, array $products): Booking
-    {
+    public function create(
+        int $userId,
+        string $dateTime,
+        int $totalTime,
+        string $note,
+        array $products
+    ): Booking {
         $booking = Booking::create([
             'start_time' => Carbon::parse($dateTime),
             'end_time' => Carbon::parse($dateTime)->addMinutes($totalTime),
-            'user_id' => $user,
+            'user_id' => $userId,
             'note' => $note,
             'status' => 'pending',
         ]);

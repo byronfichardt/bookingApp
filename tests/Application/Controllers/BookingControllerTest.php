@@ -9,9 +9,11 @@ use App\V1\Application\Models\Booking;
 use App\V1\Application\Models\Product;
 use App\V1\Application\Models\User;
 use App\V1\Domain\BookingCreator;
+use App\V1\Domain\BookingReminders;
 use App\V1\Domain\CalendarEventInserter;
 use App\V1\Domain\CalendarEventRemover;
 use Google\Service\Calendar\Event;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
 
@@ -82,38 +84,6 @@ class BookingControllerTest extends TestCase
         ]);
     }
 
-    public function testItCanFetchBookings()
-    {
-        $bookings = Booking::factory()->count(5)->create();
-
-        $bookings->first()->created_at = now()->subDay();
-        $bookings->first()->save();
-
-        $date = $bookings->first()->created_at->toDateTimeString();
-
-        $response = $this->get("api/bookings/$date");
-
-        $response->assertJsonCount('1');
-
-        $response->assertJsonFragment([
-            'id' => $bookings->first()->id,
-            'note' => $bookings->first()->note,
-            'start_time' => $bookings->first()->start_time,
-            'end_time' => $bookings->first()->end_time,
-            'user_id' => (string) $bookings->first()->user_id,
-        ]);
-
-        $response->assertJsonStructure([
-            [
-                'id',
-                'note',
-                'start_time',
-                'end_time',
-                'user_id',
-            ]
-        ]);
-    }
-
     public function testItCanStoreBookingsWithExistingUser()
     {
         $user = User::factory()->create();
@@ -134,7 +104,7 @@ class BookingControllerTest extends TestCase
                 $user->id,
                 $data['date_time'],
                 $data['minutes_total'],
-                'name: ' . $data['name'] . ' Note: ' . $data['booking_note'],
+                'name: ' . $data['name'] . ', Note: ' . $data['booking_note'],
                 $data['products']
             ]);
         Bus::fake();
@@ -332,5 +302,36 @@ class BookingControllerTest extends TestCase
         Bus::assertNotDispatched(BookingCanceledEmail::class);
 
         $this->assertDeleted('bookings', $booking->toArray());
+    }
+
+    public function testItCanGetReminders()
+    {
+        Booking::factory()->count(5)
+            ->create([
+                'created_at' => $d1 = now()->subDays(7),
+                'start_time' => $d2 = now()->addDays(2),
+                'end_time' => $d3 = now()->addDays(2)->addHours(4)
+            ]);
+
+        Booking::factory()->count(5)
+            ->create([
+                'created_at' => now()->subDays(4),
+                'start_time' => now()->addDays(2),
+                'end_time' => now()->addDays(2)->addHours(4)
+            ]);
+
+        Booking::factory()->count(5)
+            ->create([
+                'created_at' => now()->subDays(7),
+                'start_time' => now()->addDays(0),
+                'end_time' => now()->addDays(0)->addHours(4)
+            ]);
+
+        $bookingReminders = new BookingReminders();
+        $bookings = $bookingReminders->fetch();
+        $this->assertCount(5, $bookings);
+        $this->assertEquals($bookings->toArray()[0]['created_at'], $d1->format('Y-m-d\TH:i:s.000000\Z'));
+        $this->assertEquals($bookings->toArray()[0]['start_time'], $d2->format('Y-m-d\TH:i:s.000000\Z'));
+        $this->assertEquals($bookings->toArray()[0]['end_time'], $d3->format('Y-m-d\TH:i:s.000000\Z'));
     }
 }

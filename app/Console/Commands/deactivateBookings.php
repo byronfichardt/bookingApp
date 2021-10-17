@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Application\Models\Booking;
+use App\V1\Application\Models\Booking;
 use Illuminate\Console\Command;
 
 class deactivateBookings extends Command

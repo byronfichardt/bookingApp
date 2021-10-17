@@ -11,6 +11,7 @@
 
 			<v-text-field
 				v-model="phone"
+                :rules="phoneRules"
 				label="Phone *"
                 class="phone-form-field"
 				required
@@ -61,6 +62,9 @@ export default {
 			(v) => !!v || "E-mail is required",
 			(v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
 		],
+        phoneRules: [
+            (v) => !!v || "Phone is required"
+        ]
 	}),
 
 	methods: {
@@ -72,25 +76,7 @@ export default {
             }
         },
 		validate() {
-		    if(! this.valid ) {
-                Swal.fire("Please make sure to fill in your name, phone and email.");
-            }
-
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
-
-            // let data = new FormData();
-            // data.append('file', this.image);
-            // data.append('products', this.$root.$children[0].selected_products);
-            // data.append('date_time', this.$root.$children[0].selected_date_time);
-            // data.append('minutes_total', this.$root.$children[0].minutes_total);
-            // data.append('email', this.email);
-            // data.append('name', this.name);
-            // data.append('phone', this.phone);
-            // data.append('booking_note', this.booking_note);
+            this.$refs.form.validate()
 
 			let details = {
 				products: this.$root.$children[0].selected_products,

@@ -17,6 +17,11 @@ class Booking extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     protected static function newFactory(): BookingFactory
     {
         return BookingFactory::new();
@@ -42,5 +47,12 @@ class Booking extends Model
         $this->status = 'active';
         $this->event_id = $eventId;
         $this->save();
+    }
+
+    public function calculateMinutes(): int
+    {
+        return $this->products->map(function($product) {
+            return $product->minutes * $product->pivot->quantity;
+        })->sum();
     }
 }

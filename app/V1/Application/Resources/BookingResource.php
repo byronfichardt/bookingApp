@@ -12,8 +12,8 @@ class BookingResource extends JsonResource
         return [
             'id' => $this->id,
             'note' => $this->note,
-            'start' => $this->start_time,
-            'end' => $this->end_time,
+            'start' => $this->start_time->toDateTimeString(),
+            'end' => $this->end_time->toDateTimeString(),
             'products' => ProductResource::collection($this->products),
             'user' => new UserResource($this->user),
             'path' => $this->path ? Storage::url($this->path) : null
