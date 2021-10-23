@@ -8,19 +8,18 @@ import VueRouter from 'vue-router'
 import AdminCalender from './components/Admin/calenderAdmin.vue'
 import table from './components/Admin/productTable.vue'
 import blocked_dates_table from './components/Admin/BlockedDates/blockedDateTable.vue'
-
-Vue.use(VueRouter)
-
-//Main pages
-
 import Admin from './views/admin.vue'
 import User from './views/app.vue'
+import detailsPage from "./components/Admin/detailsPage";
+
+Vue.use(VueRouter)
 
 const routes = [
     { path: '/calender', component: AdminCalender },
     { path: '/products', component: table },
     { path: '/approvals', component: bookingApprovalTable },
     { path: '/blocked_dates', component: blocked_dates_table },
+    { path: '/details', component: detailsPage },
     { path: '', component: AdminCalender },
 ]
 

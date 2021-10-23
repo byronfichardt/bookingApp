@@ -1,6 +1,7 @@
 <?php
 
 use App\V1\Application\Controllers\BookingController;
+use App\V1\Application\Models\Detail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('app');
+    $details = Detail::first();
+    $important = explode(';', $details->important);
+    $about = $details->about;
+
+    return view('app', compact(['important', 'about']));
 });
 
 Route::get('cancel', [BookingController::class, 'cancel']);

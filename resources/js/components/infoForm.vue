@@ -33,7 +33,7 @@
                 @change="onFileChange()"
             ></v-file-input>
 
-			<v-text-field v-model="booking_note" label="Note (optional)"></v-text-field>
+			<v-text-field v-model="booking_note" label="Note (optional)" :counter="255"></v-text-field>
 
 			<v-btn
 				color="green"

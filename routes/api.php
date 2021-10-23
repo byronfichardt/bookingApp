@@ -1,8 +1,8 @@
 <?php
 
-use App\V1\Application\Controllers\AuthorizeController;
 use App\V1\Application\Controllers\BlockedDatesController;
 use App\V1\Application\Controllers\BookingController;
+use App\V1\Application\Controllers\DetailsController;
 use App\V1\Application\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('details', [DetailsController::class, 'index']);
+Route::post('details', [DetailsController::class, 'store']);
 Route::get('bookings', [BookingController::class, 'index']);
 Route::post('blocked', [BlockedDatesController::class, 'store']);
 Route::delete('blocked/{id}', [BlockedDatesController::class, 'delete']);

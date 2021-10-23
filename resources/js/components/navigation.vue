@@ -31,6 +31,9 @@
                     <v-list-item>
                         <router-link to="blocked_dates">Blocked Dates</router-link>
                     </v-list-item>
+                    <v-list-item>
+                        <router-link to="details">Details</router-link>
+                    </v-list-item>
 
                 </v-list-item-group>
             </v-list>
