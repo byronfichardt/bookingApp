@@ -23,6 +23,7 @@ class ProductController extends Controller
         Product::create([
             'name' => $request->name,
             'price' => $request->price,
+            'description' => $request->description,
             'minutes' => $request->minutes,
             'display_quantity' => $request->display_quantity ?? false,
             'sort_order' => $request->sort_order,
@@ -40,6 +41,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->name = $request->name;
+        $product->description = $request->description;
         $product->price = $request->price;
         $product->minutes = $request->minutes;
         $product->display_quantity = $request->display_quantity;

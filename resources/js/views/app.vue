@@ -68,6 +68,12 @@ export default {
         padding: 0px!important;
     }
 }
+.v-application .pa-2 {
+    padding: 0px!important;
+}
+.v-application .ma-2 {
+    margin: 0px!important;
+}
 
 </style>
 

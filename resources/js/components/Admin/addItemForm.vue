@@ -15,6 +15,13 @@
 									required
 								></v-text-field>
 							</v-col>
+                            <v-col cols="12">
+                                <v-text-field
+                                    label="Description*"
+                                    v-model="item.description"
+                                    required
+                                ></v-text-field>
+                            </v-col>
 							<v-col cols="12">
 								<v-text-field
 									label="Price*"
@@ -68,6 +75,7 @@ export default {
 		item: {
 			name: null,
 			price: null,
+            description: null,
 			minutes: null,
 			display_quantity: null,
             sort_order: null

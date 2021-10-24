@@ -19,7 +19,6 @@
         <v-data-table
             :headers="headers"
             :items="products"
-            disable-sort="true"
         >
             <template v-slot:item.actions="{ item }">
                 <v-btn
@@ -56,6 +55,7 @@ export default {
                     value: 'name'
                 },
                 { text: 'Price', value: 'price' },
+                { text: 'Description', value: 'description' },
                 { text: 'Time', value: 'minutes' },
                 { text: 'Display Qty', value: 'display_quantity' },
                 { text: 'Sort Order', value: 'sort_order' },

@@ -80,7 +80,7 @@
             </div>
 
         </div>
-        <div  class="w3-container " style="padding:0px 16px;" >
+        <div  class="w3-container " style="padding:0px 0px;" >
             <div class="w3-row">
                 <div class="w3-col m3 w3-center"><p></p></div>
                 <div class="w3-col m6 w3-center">

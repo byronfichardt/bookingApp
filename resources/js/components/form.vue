@@ -1,48 +1,54 @@
 <template>
 	<div class="ma-2 pa-2">
 		<div style="margin: auto">
-			<v-simple-table>
-				<template v-slot:default>
-					<tbody>
-						<tr v-for="(item, index) in products" :key="index">
-							<td>
-								<v-checkbox
-									light
-									:label="item.name"
-									v-model="item.selected"
-									style="flex: 1 1 auto"
-								>
-								</v-checkbox>
-							</td>
-							<td>
-								<v-text-field
-									v-model="item.quantity"
-									v-if="item.display_quantity"
-									label="Qty"
-									@change="updatePrice(item)"
-								></v-text-field>
-							</td>
-							<td>
-                                <label>Dkk {{item.price}}</label>
-							</td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td style="text-align: left" colspan="2">Cost:</td>
-							<td colspan="2">
-                                <label>Dkk {{sumtotal('price')}}</label>
-							</td>
-						</tr>
-						<tr>
-							<td style="text-align: left" colspan="2">Total time:</td>
-							<td colspan="2">
-                                <label>Hours {{sumIntoHours}}</label>
-							</td>
-						</tr>
-					</tfoot>
-				</template>
-			</v-simple-table>
+            <v-data-table
+                v-model="selected"
+                :headers="productHeaders"
+                :items="products"
+                :single-expand="singleExpand"
+                :expanded.sync="expanded"
+                item-key="name"
+                hide-default-header
+                show-select
+                hide-default-footer
+                expandIcon="mdi-information-variant"
+                mobile-breakpoint="300"
+                show-expand
+                :dense=true
+                class="elevation-1"
+            >
+
+                <template v-slot:item.quantity="{ item }">
+                    <v-text-field
+                        v-model="item.quantity"
+                        v-if="item.display_quantity"
+                        label="Qty"
+                        @change="updatePrice(item)"
+                    ></v-text-field>
+                </template>
+                <template v-slot:item.price="{ item }">
+                    <label>Dkk {{item.price}}</label>
+                </template>
+                <template v-slot:foot>
+                    <tr >
+                        <td style="text-align: left" colspan="2" class="pl-2">Cost:</td>
+                        <td colspan="2">
+                            <label>Dkk {{sumtotal('price')}}</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left" colspan="2" class="pl-2">Total time:</td>
+                        <td colspan="2">
+                            <label>Hours {{sumIntoHours}}</label>
+                        </td>
+                    </tr>
+                </template>
+                <template v-slot:expanded-item="{ headers, item }">
+                    <td :colspan="headers.length">
+                        {{ item.description ? item.description : "Nothing here yet:)" }}
+                    </td>
+                </template>
+            </v-data-table>
 		</div>
 
 		<v-btn
@@ -60,8 +66,21 @@
 import { bus } from "../app";
 export default {
 	data: () => ({
+        selected: [],
+        productHeaders: [
+            {
+                text: 'Dessert',
+                align: 'start',
+                sortable: false,
+                value: 'name',
+            },
+            { text: 'Qty', value: 'quantity'},
+            { text: 'Price', value: 'price', align: 'center'},
+            { text: '', value: 'data-table-expand' },
+        ],
+        expanded: [],
+        singleExpand: false,
 		valid: true,
-		selected_products: [],
 		products: [],
 		sum: {
 			price: 0.0,
@@ -80,24 +99,15 @@ export default {
 				this.products = response.data;
 			});
 		},
-		setSelectedProducts() {
-			this.products.forEach((element) => {
-				if (element.selected) {
-					this.selected_products.push(element);
-				}
-			});
-		},
 		saveProducts() {
-			this.setSelectedProducts();
-			if (this.selected_products.length > 0) {
-				bus.$emit("save_products", this.selected_products);
+			if (this.selected.length > 0) {
+				bus.$emit("save_products", this.selected);
 				bus.$emit("move_next");
 			}
 		},
         sumtotal(type) {
             let sum = 0;
-            this.products.forEach((element) => {
-                if (element.selected) {
+            this.selected.forEach((element) => {
                     let value = parseInt(element[type]);
                     let total = 0
                     let itemQty = 1
@@ -108,7 +118,6 @@ export default {
                     }
                     total = value * parseInt(itemQty);
                     sum = parseFloat(sum) + parseInt(total);
-                }
             });
             return sum;
         },
@@ -141,7 +150,7 @@ export default {
 </script>
 <style>
 .v-input--selection-controls__input input[role="checkbox"] {
-	opacity: 1 !important;
+
 }
 .v-select__slot .v-label {
 	left: 15px !important;
@@ -154,6 +163,7 @@ export default {
 .v-data-table > .v-data-table__wrapper > table > tfoot > tr > td,
 .v-data-table > .v-data-table__wrapper > table > thead > tr > td {
 	font-size: 0.875rem !important;
+    padding: 0px;
 }
 .v-select__slot .v-select__selections .v-select__selection {
 	padding-left: 15px !important;
@@ -164,9 +174,25 @@ export default {
 		background-color: lightblue;
 	}
 }
+.v-data-table__expand-icon {
+    background-color: #c3e8f2 !important;
+    border-radius: 50% !important;
+}
+.v-data-table>.v-data-table__wrapper tbody tr.v-data-table__expanded__content {
+    box-shadow: inset 0 2px 4px -5px rgb(50 50 50 / 75%), inset 0 -4px 4px -5px rgb(50 50 50 / 75%) !important;
+}
 </style>
 <style scoped>
 div::v-deep table > tbody > tr > td {
 	border-bottom: unset !important;
+}
+div::v-deep table > tbody > tr > td:nth-child(3) {
+    width:15%
+}
+div::v-deep table > tbody > tr > td:nth-child(4) {
+    width:20%
+}
+div::v-deep table > tbody > tr > td:nth-child(1) {
+    text-align: center!important;
 }
 </style>
