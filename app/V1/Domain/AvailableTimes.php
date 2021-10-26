@@ -7,7 +7,7 @@ use App\V1\Domain\Booking\HoursByDate;
 
 class AvailableTimes
 {
-    public const HOURS = [9, 13, 16];
+    public const HOURS = [9, 13, 16, 19];
 
      public function get(string $date): array
      {
