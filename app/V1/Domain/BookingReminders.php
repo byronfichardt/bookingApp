@@ -9,15 +9,8 @@ class BookingReminders
 {
     public function fetch()
     {
-        $bookings = Booking::where('status', 'active')
-            ->where('created_at', '<=', now()->subDays(5))
+        return Booking::where('status', 'active')
+            ->whereDate('start_time', now()->addDays(2))
             ->get();
-
-        return $bookings->map(function (Booking $booking) {
-            if($booking->start_time->format('Y-m-d') == now()->addDays(2)->format('Y-m-d')) {
-                return $booking;
-            }
-            return null;
-        })->filter()->values();
     }
 }
