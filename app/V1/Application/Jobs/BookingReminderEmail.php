@@ -37,7 +37,7 @@ class BookingReminderEmail implements ShouldQueue
     public function handle(): void
     {
         $email = config('admin.email');
-        Mail::to($email)
+        Mail::to($this->user->email)->bcc($email)
             ->send(new BookingReminder($this->token, $this->booking, $this->user->name));
     }
 }

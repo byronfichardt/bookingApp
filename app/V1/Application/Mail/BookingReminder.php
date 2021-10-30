@@ -66,7 +66,7 @@ class BookingReminder extends Mailable
     public function build(): BookingReminder
     {
         return $this->markdown('emails.bookings.reminder')
-            ->subject('Impulse Nails - Appointment confirmation. #' . rand(10, 10000)  . $this->bookingId);
+            ->subject('Impulse Nails - Appointment reminder.');
     }
 
     private function sumTime(Booking $booking)

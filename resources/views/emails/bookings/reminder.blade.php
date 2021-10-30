@@ -4,7 +4,7 @@
 Hi, {{$name}}!
 
 This is a friendly reminder that your appointment with {{ config('app.name') }} is happening soon.
-You appointment date: {{$bookingDate}}
+Your appointment date: {{$bookingDate}}
 
 Address:
 {{$co_address}} <br/>
