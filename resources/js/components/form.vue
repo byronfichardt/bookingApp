@@ -26,14 +26,14 @@
                     </tr>
                 </template>
                 <template v-slot:item="{ item }">
-                    <tr>
+                    <tr :class="{borderBottom: !item.description}">
                         <td>
                             <v-simple-checkbox
                                 v-model="item.selected"
                                 @input="updateSelected(item)"
                             ></v-simple-checkbox>
                         </td>
-                        <td>
+                        <td style="text-align: left">
                             <span style="font-size:120%; margin-bottom: 10px">
                                 {{ item.name }}
                             </span>
@@ -46,11 +46,11 @@
                                 @change="updatePrice(item)"
                             ></v-text-field>
                         </td>
-                        <td>
+                        <td >
                             <label>Dkk {{item.price}}</label>
                         </td>
                     </tr>
-                    <tr v-if="item.description">
+                    <tr v-if="item.description" style="background-color: rgb(244 245 245); border-bottom:1px solid rgb(218 220 225)">
                         <td colspan="4">
                             {{ item.description }}
                         </td>
@@ -162,6 +162,9 @@ export default {
 };
 </script>
 <style>
+.borderBottom{
+    border-bottom:1px solid #a5a0a0;
+}
 .v-input--selection-controls__input input[role="checkbox"] {
 
 }
