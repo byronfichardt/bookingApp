@@ -2,33 +2,15 @@
 	<div class="ma-2 pa-2">
 		<div style="margin: auto">
             <v-data-table
-                v-model="selected"
                 :headers="productHeaders"
                 :items="products"
-                :single-expand="singleExpand"
-                :expanded.sync="expanded"
                 item-key="name"
                 hide-default-header
-                show-select
                 hide-default-footer
-                expandIcon="mdi-information-variant"
                 mobile-breakpoint="300"
-                show-expand
                 :dense=true
                 class="elevation-1"
             >
-
-                <template v-slot:item.quantity="{ item }">
-                    <v-text-field
-                        v-model="item.quantity"
-                        v-if="item.display_quantity"
-                        label="Qty"
-                        @change="updatePrice(item)"
-                    ></v-text-field>
-                </template>
-                <template v-slot:item.price="{ item }">
-                    <label>Dkk {{item.price}}</label>
-                </template>
                 <template v-slot:foot>
                     <tr >
                         <td style="text-align: left" colspan="2" class="pl-2">Cost:</td>
@@ -43,10 +25,36 @@
                         </td>
                     </tr>
                 </template>
-                <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length">
-                        {{ item.description ? item.description : "Nothing here yet:)" }}
-                    </td>
+                <template v-slot:item="{ item }">
+                    <tr>
+                        <td>
+                            <v-simple-checkbox
+                                v-model="item.selected"
+                                @input="updateSelected(item)"
+                            ></v-simple-checkbox>
+                        </td>
+                        <td>
+                            <span style="font-size:120%; margin-bottom: 10px">
+                                {{ item.name }}
+                            </span>
+                        </td>
+                        <td>
+                            <v-text-field
+                                v-model="item.quantity"
+                                v-if="item.display_quantity"
+                                label="Qty"
+                                @change="updatePrice(item)"
+                            ></v-text-field>
+                        </td>
+                        <td>
+                            <label>Dkk {{item.price}}</label>
+                        </td>
+                    </tr>
+                    <tr v-if="item.description">
+                        <td colspan="4">
+                            {{ item.description }}
+                        </td>
+                    </tr>
                 </template>
             </v-data-table>
 		</div>
@@ -76,10 +84,7 @@ export default {
             },
             { text: 'Qty', value: 'quantity'},
             { text: 'Price', value: 'price', align: 'center'},
-            { text: '', value: 'data-table-expand' },
         ],
-        expanded: [],
-        singleExpand: false,
 		valid: true,
 		products: [],
 		sum: {
@@ -88,6 +93,14 @@ export default {
 		},
 	}),
 	methods: {
+	    updateSelected(item){
+	        if(item.selected === false) {
+                const index = this.selected.findIndex(v => v.id === item.id);
+                this.selected.splice(index, index >= 0 ? 1 : 0);
+            }else{
+                this.selected.push(item)
+            }
+        },
 		updatePrice(item) {
 			item.origanalPrice
 				? item.origanalPrice
