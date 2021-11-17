@@ -13,7 +13,7 @@ class BookingCreator
         int $totalTime,
         string $note,
         array $products,
-        string $path
+        ?string $path
     ): Booking {
         $booking = Booking::create([
             'start_time' => Carbon::parse($dateTime),
