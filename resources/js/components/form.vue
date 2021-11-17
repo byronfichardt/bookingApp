@@ -50,8 +50,8 @@
                             <label>Dkk {{item.price}}</label>
                         </td>
                     </tr>
-                    <tr v-if="item.description" style="background-color: rgb(244 245 245); border-bottom:1px solid rgb(218 220 225)">
-                        <td colspan="4">
+                    <tr v-if="item.description" class="itemdescription">
+                        <td colspan="4" style="padding-bottom: 30px;padding-left: 20px;padding-right: 20px;">
                             {{ item.description }}
                         </td>
                     </tr>
@@ -199,6 +199,13 @@ export default {
 }
 </style>
 <style scoped>
+.itemdescription {
+    border-bottom:1px solid rgb(218 220 225) !important;
+}
+.itemdescription:hover {
+    background: none!important;
+}
+
 div::v-deep table > tbody > tr > td {
 	border-bottom: unset !important;
 }

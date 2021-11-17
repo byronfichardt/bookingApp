@@ -25,13 +25,7 @@
 				required
 			></v-text-field>
 
-            <v-file-input
-                v-model="file"
-                show-size
-                accept="image/*"
-                label="Inspiration picture. (optional)"
-                @change="onFileChange()"
-            ></v-file-input>
+            <upload-progress></upload-progress>
 
 			<v-text-field v-model="booking_note" label="Note (optional)" :counter="255"></v-text-field>
 
@@ -39,6 +33,7 @@
 				color="green"
 				class="mr-4 book-button"
 				@click="validate"
+                :disabled="disabled === true"
 			>
 				Book
 			</v-btn>
@@ -47,17 +42,19 @@
 </template>
 <script>
 import { bus } from "../app";
+import UploadProgress from "./uploadProgress";
 import Swal from "sweetalert2";
 export default {
-	data: () => ({
+    components: {UploadProgress},
+    data: () => ({
+        disabled: false,
 		phone: "",
 		valid: false,
 		booking_note: "",
 		name: "",
 		nameRules: [(v) => !!v || "Name is required"],
 		email: "",
-        image: null,
-        file: null,
+        path: '',
 		emailRules: [
 			(v) => !!v || "E-mail is required",
 			(v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -68,13 +65,6 @@ export default {
 	}),
 
 	methods: {
-        onFileChange() {
-            const reader = new FileReader()
-            reader.readAsDataURL(this.file)
-            reader.onload = e => {
-                this.image = e.target.result
-            }
-        },
 		validate() {
             this.$refs.form.validate()
 
@@ -86,12 +76,26 @@ export default {
 				name: this.name,
 				phone: this.phone,
 				booking_note: this.booking_note,
-                image: this.image,
+                image_path: this.path
 			};
 			axios.post("api/bookings", details).then((response) => {
-				bus.$emit("finished");
+			    console.log(response.data);
+			    if(response.data.status === 'success') {
+                    bus.$emit("finished");
+                }else{
+                    Swal.fire("Oops something went wrong, please try again!");
+                }
 			});
 		},
 	},
+    created: function () {
+        bus.$on('file-uploaded', (data) => {
+            this.path = data['path']
+            this.disabled = false
+        });
+        bus.$on('file-uploading', (data) => {
+            this.disabled = true
+        });
+    },
 };
 </script>

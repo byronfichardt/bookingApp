@@ -3,7 +3,6 @@
 namespace App\V1\Application\Controllers;
 
 use App\V1\Application\Jobs\BookingApprovalEmail;
-use App\V1\Application\Jobs\SaveImage;
 use App\V1\Application\Models\Booking;
 use App\V1\Application\Models\User;
 use App\V1\Application\Resources\BookingResource;
@@ -78,15 +77,22 @@ class BookingController extends Controller
             $request->getMinutesTotal(),
             sprintf('name: %s, Note: %s', $name, $note),
             $request->getProducts(),
+            $request->getImagePath(),
         );
 
-        if($image = $request->getImage()) {
-            SaveImage::dispatch($image, $booking->id);
-        }
         BookingApprovalEmail::dispatch($user, $booking);
         BookingPendingEmail::dispatch($user);
 
         return ['status' => "success"];
+    }
+
+    public function upload(Request $request)
+    {
+        $year = now()->year;
+
+        $filePath = $request->file('file')->store('public/' . $year, 's3');
+
+        return response()->json(['path'=>$filePath]);
     }
 
     public function edit(Request $request, int $bookingId): array

@@ -13,7 +13,9 @@ class BookingStoreRequest extends FormRequest
 
     public function rules(): array
     {
-        return [];
+        return [
+            'email' => 'required|email'
+        ];
     }
 
     public function getDateTime()
@@ -54,5 +56,10 @@ class BookingStoreRequest extends FormRequest
     public function getImage()
     {
         return $this->input('image');
+    }
+
+    public function getImagePath()
+    {
+        return $this->input('image_path');
     }
 }

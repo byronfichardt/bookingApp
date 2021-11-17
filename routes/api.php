@@ -30,6 +30,7 @@ Route::patch('bookings/{id}', [BookingController::class, 'edit']);
 Route::get('bookings/{id}/approve', [BookingController::class, 'approve']);
 Route::get('bookings/{id}/cancel', [BookingController::class, 'remove']);
 Route::post('bookings', [BookingController::class, 'store']);
+Route::post('bookings/file-upload', [BookingController::class, 'upload']);
 
 Route::get('products', [ProductController::class, 'index']);
 Route::post('products', [ProductController::class, 'store']);

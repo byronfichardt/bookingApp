@@ -12,7 +12,8 @@ class BookingCreator
         string $dateTime,
         int $totalTime,
         string $note,
-        array $products
+        array $products,
+        string $path
     ): Booking {
         $booking = Booking::create([
             'start_time' => Carbon::parse($dateTime),
@@ -20,6 +21,7 @@ class BookingCreator
             'user_id' => $userId,
             'note' => $note,
             'status' => 'pending',
+            'path' => $path
         ]);
 
         foreach ($products as $product) {
