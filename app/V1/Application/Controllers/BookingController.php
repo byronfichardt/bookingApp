@@ -90,7 +90,7 @@ class BookingController extends Controller
     {
         $year = now()->year;
 
-        $filePath = $request->file('file')->store('public/' . $year, 's3');
+        $filePath = $request->file('file')->storePublicly('public/' . $year, 's3');
 
         return response()->json(['path'=>$filePath]);
     }
