@@ -54,6 +54,7 @@ export default {
 		type: "month",
 		mode: "stack",
 		weekday: [0, 1, 2, 3, 4, 5, 6],
+        availableTimes: [],
 		eventsCal: [],
 		events: [],
 	}),
@@ -71,6 +72,49 @@ export default {
 				this.selected_date = new Date(`${event.date} ${event.time}`);
 			}
 		},
+        getBlockedDates(){
+            axios.get("api/blocked").then((response) => {
+                this.blockedDates = response.data.data.forEach((event) => {
+                    if(event.times) {
+                        event.times.split(',').forEach((item) => {
+                            let eventDate = moment(event.date).hour(item);
+                            this.events.push({
+                                id: 0,
+                                start: eventDate.format("YYYY-MM-DD HH:mm:SS"),
+                                products: [],
+                                user: 'karin',
+                                end: eventDate.add(3, 'h').format("YYYY-MM-DD HH:mm:SS"),
+                                name: 'Karin Time',
+                                note: '',
+                                path: '',
+                                color: 'green',
+                            });
+                        })
+                    }else {
+                        let eventDate = moment(event.date);
+                        this.availableTimes.forEach((item) => {
+                            let thisEventDate = eventDate.hour(item);
+                            this.events.push({
+                                id: 0,
+                                start: thisEventDate.format("YYYY-MM-DD HH:mm:SS"),
+                                products: [],
+                                user: 'karin',
+                                end: thisEventDate.add(3, 'h').format("YYYY-MM-DD HH:mm:SS"),
+                                name: 'Karin Time',
+                                note: '',
+                                path: '',
+                                color: 'green',
+                            });
+                        })
+                    }
+                });
+            });
+        },
+        getAvailableTimes(){
+            axios.get("api/bookings/availableTimes?date=2040-01-01").then((response) => {
+                this.availableTimes = response.data
+            })
+        },
 		getEvents() {
 			axios.get("api/bookings").then((response) => {
 				this.events = [];
@@ -86,6 +130,8 @@ export default {
                         path: event.path,
 					});
 				});
+				this.getAvailableTimes()
+				this.getBlockedDates()
 				bus.$emit("all_events", this.events);
 			});
 		},
