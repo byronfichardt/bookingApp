@@ -35,11 +35,14 @@ class BlockedDatesController extends Controller
         return $this->availableTimes->get($date);
     }
 
-    public function store(Request $request): array
+    public function store(Request $request)
     {
+        if(empty($request->times)) {
+            return ['status' => "success"];
+        }
         BlockedDate::create([
             'blocked_date' => $request->date,
-            'times' => $request->times
+            'times' => implode(',',$request->times)
         ]);
 
         return ['status' => "success"];

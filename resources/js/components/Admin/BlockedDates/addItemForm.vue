@@ -12,15 +12,17 @@
 								<v-text-field
 									label="Date YYYY-MM-DD"
 									v-model="item.date"
-									required
+                                    readonly
 								></v-text-field>
-                                <v-text-field
-                                    label="times (9, 13, 16)"
-                                    v-model="item.times"
-                                    required
-                                ></v-text-field>
+
+                                <v-btn v-for="time in item.times" :key="time" @click="blockTime(item, time)" elevation="2" :class="timeClass(time)">{{ hourToString(time) }}</v-btn>
 							</v-col>
 						</v-row>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-btn elevation="2" @click="blockAvailableTimes(item)">All available</v-btn>
+                            </v-col>
+                        </v-row>
 					</v-container>
 					<small>*indicates required field</small>
 				</v-card-text>
@@ -43,14 +45,36 @@ import { bus } from "../../../app";
 export default {
 	data: () => ({
 		dialog: false,
+        date:'',
 		item: {
 			date: null,
-            times: ""
+            times: [],
+            alltimes: []
 		},
 	}),
 	methods: {
-		saveItem() {
-			axios.post("api/blocked", this.item).then((response) => {
+        timeClass(time) {
+            return "time-button-" + time;
+        },
+        hourToString(time) {
+            return ('0' + time).slice(-2) + ":00"
+        },
+        blockTime(item, time){
+            let blockItem = {
+                date: item.date,
+                times: [time]
+            }
+            this.saveItem(blockItem)
+        },
+        blockAvailableTimes(item){
+            let blockItem = {
+                date: item.date,
+                times: item.times
+            }
+            this.saveItem(blockItem)
+        },
+		saveItem(blockItem) {
+			axios.post("api/blocked", blockItem).then((response) => {
 				if (response.data.status === "success") {
 					bus.$emit("blocked_date_created");
 					this.dialog = false;
@@ -60,6 +84,10 @@ export default {
 	},
 	created: function () {
 		bus.$on("open_add_blocked_date_form", (event) => {
+		    console.log(event)
+		    this.item.date = event.date
+            this.item.times = event.times
+            this.item.alltimes = event.alltimes
 			this.dialog = true;
 		});
 	},

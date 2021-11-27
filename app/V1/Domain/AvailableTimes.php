@@ -17,7 +17,7 @@ class AvailableTimes
          $blockedDate = BlockedDate::whereDate('blocked_date', $date)->first();
 
          if(! $blockedDate) {
-             return $hours->diff($notAvailableHours)->toArray();
+             return $hours->diff($notAvailableHours)->values()->toArray();
          }
 
          if(! $blockedDate->hasTimes()) {

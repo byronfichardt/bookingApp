@@ -31,11 +31,13 @@
 				@change="getEvents"
 				color="primary"
 				@click:event="showEvent"
+                @click:date="testme"
 			>
 			</v-calendar>
 		</v-sheet>
 
 		<event-info></event-info>
+        <add-item-form></add-item-form>
 	</div>
 </template>
 <script>
@@ -43,8 +45,9 @@ import moment from "moment";
 import { bus } from "../../app";
 import eventForm from "../chooseTimeForm.vue";
 import EventInfo from "./eventInfo.vue";
+import AddItemForm from "./BlockedDates/addItemForm";
 export default {
-	components: { eventForm, EventInfo },
+	components: {AddItemForm, eventForm, EventInfo },
 	data: () => ({
 		today: "",
 		theDate: "",
@@ -55,10 +58,15 @@ export default {
 		mode: "stack",
 		weekday: [0, 1, 2, 3, 4, 5, 6],
         availableTimes: [],
+        availableTimesBlockOut: [],
 		eventsCal: [],
 		events: [],
 	}),
 	methods: {
+	    testme(event) {
+	        console.log(event)
+            this.getAvailableTimes(event.date)
+        },
 		showEvent({ event }) {
 			bus.$emit("open_event_info", event);
 		},
@@ -110,9 +118,14 @@ export default {
                 });
             });
         },
-        getAvailableTimes(){
-            axios.get("api/bookings/availableTimes?date=2040-01-01").then((response) => {
+        getAvailableTimes(date = '2040-01-01'){
+            axios.get("api/bookings/availableTimes?date=" + date).then((response) => {
                 this.availableTimes = response.data
+                if(date !== '2040-01-01'){
+                    bus.$emit("available_times_fetched", {times:response.data, date: date});
+                }else{
+                    this.alltimes = response.data
+                }
             })
         },
 		getEvents() {
@@ -135,10 +148,22 @@ export default {
 				bus.$emit("all_events", this.events);
 			});
 		},
+        openAddItemForm(event) {
+	        event.alltimes = this.alltimes
+            bus.$emit("open_add_blocked_date_form", event);
+        },
 	},
 	mounted: function () {
 		this.today = moment().format("Y-MM-DD HH:mm:ss");
 	},
+    created: function () {
+        bus.$on("available_times_fetched", (event) => {
+            this.openAddItemForm(event)
+        });
+        bus.$on("blocked_date_created", (event) => {
+            this.getEvents();
+        });
+    },
 	watch: {
 		selected_date: function (newVal, oldVal) {
 			this.formated_date = moment(newVal).format("Y-MM-DD HH:mm:ss");
