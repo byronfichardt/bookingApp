@@ -10,7 +10,7 @@ class HoursByDate
 {
     public static function get(Collection $hours, string $date): Collection
     {
-        $bookings = Booking::active()->whereDate('start_time', $date)->get();
+        $bookings = Booking::whereIn('status', ['active','pending'])->whereDate('start_time', $date)->get();
 
         return $bookings->map(function ($booking) use($hours) {
             $start = Carbon::parse($booking->start_time)->hour;
