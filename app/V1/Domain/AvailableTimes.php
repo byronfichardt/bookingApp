@@ -14,20 +14,32 @@ class AvailableTimes
          $hours = collect(self::HOURS);
          $notAvailableHours = HoursByDate::get($hours, $date);
 
-         $blockedDate = BlockedDate::whereDate('blocked_date', $date)->first();
+         $blockedDates = BlockedDate::whereDate('blocked_date', $date)->get();
 
-         if(! $blockedDate) {
-             return $hours->diff($notAvailableHours)->values()->toArray();
+         if ($blockedDates->count() == 1) {
+             $blockedDate = $blockedDates->first();
+             if(! $blockedDate) {
+                 return $hours->diff($notAvailableHours)->values()->toArray();
+             }
+
+             if(! $blockedDate->hasTimes()) {
+                 return [];
+             }
+
+             foreach($blockedDate->times() as $time) {
+                 $notAvailableHours->add((int) $time);
+             }
+
+             return $hours->diff($notAvailableHours)->unique()->values()->toArray();
          }
 
-         if(! $blockedDate->hasTimes()) {
-             return [];
-         }
+         $times = $blockedDates->pluck('times')->toArray();
 
-         foreach($blockedDate->times() as $time) {
+         foreach($times as $time) {
              $notAvailableHours->add((int) $time);
          }
 
          return $hours->diff($notAvailableHours)->unique()->values()->toArray();
+
      }
 }
