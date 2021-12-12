@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class AvailableTimes
 {
-    public const HOURS = [9, 13, 16, 19];
+    public const HOURS = [9, 13, 16];
 
      public function get(string $date): array
      {
