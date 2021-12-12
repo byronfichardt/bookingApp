@@ -30,6 +30,9 @@
                 <v-btn color="blue" @click="editItem(item)">
                     Edit
                 </v-btn>
+                <v-btn color="blue" @click="editPrices(item)">
+                    Prices
+                </v-btn>
             </template>
 
         </v-data-table>
@@ -37,14 +40,16 @@
 
 		<add-item-form></add-item-form>
 		<edit-item-form></edit-item-form>
+        <product-prices></product-prices>
 	</div>
 </template>
 <script>
 import { bus } from "../../app";
 import addItemForm from "./addItemForm.vue";
 import editItemForm from "./editItemForm.vue";
+import ProductPrices from "./productPrices";
 export default {
-	components: { addItemForm, editItemForm },
+	components: {ProductPrices, addItemForm, editItemForm },
 	data() {
 		return {
 			products: [],
@@ -69,7 +74,7 @@ export default {
 		},
 		getProducts() {
 			axios.get("api/products").then((response) => {
-				this.products = response.data;
+				this.products = response.data.data;
 			});
 		},
 		deleteItem(id) {
@@ -82,6 +87,9 @@ export default {
 		editItem(item) {
 			bus.$emit("open_edit_item_form", item);
 		},
+        editPrices(item) {
+            bus.$emit("open_edit_prices_form", item);
+        },
 	},
 	mounted: function () {
 		this.getProducts();

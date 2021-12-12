@@ -71,7 +71,7 @@ export default {
 			bus.$emit("selected_date_time", dateTime);
 			setTimeout(() => {
                 this.opened_form = false;
-                bus.$emit("move_next");
+                bus.$emit("move_next", dateTime);
 			}, 500);
 		},
 	},

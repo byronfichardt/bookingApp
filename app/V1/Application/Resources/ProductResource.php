@@ -9,11 +9,14 @@ class ProductResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'price' => $this->price,
-            'minutes' => $this->minutes,
-            'quantity' => $this->pivot->quantity,
+            'id' => $this->getProduct()->id,
+            'name' => $this->getProduct()->name,
+            'sort_order' => $this->getProduct()->sort_order,
+            'description' => $this->getProduct()->description,
+            'display_quantity' => $this->getProduct()->display_quantity,
+            'price' => $this->getProductPrice()->price ?? $this->getProduct()->price,
+            'minutes' => $this->getProduct()->minutes,
+            'quantity' => property_exists($this->getProduct(),'pivot') ? $this->getProduct()->pivot->quantity : null,
         ];
     }
 }
