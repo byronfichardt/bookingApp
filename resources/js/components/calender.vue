@@ -14,7 +14,7 @@
 					box-shadow: unset !important;
 					padding-top: 10px;
 				"
-				>{{ selected_date ? formated_date : today }}</v-banner
+				>Next Available: {{ available_date }}</v-banner
 			>
 			<v-spacer></v-spacer>
 			<v-btn icon class="ma-2" @click="$refs.calendar.next()">
@@ -46,6 +46,7 @@ import Swal from "sweetalert2";
 export default {
 	components: { eventForm },
 	data: () => ({
+        available_date: '',
 		today: "",
 		theDate: "",
 		start: moment().add(2, "days").format("Y-MM-DD"),
@@ -67,7 +68,6 @@ export default {
 			bus.$emit("move_next");
 		},
 		clickTime(event) {
-		    console.log(event.name);
 		    this.getAvailableTimes(event);
 		},
         getAvailableTimes(event) {
@@ -80,7 +80,6 @@ export default {
                         Swal.fire("Day fully booked");
                     } else if (moment(event.date).isAfter(tomorrowsDate)) {
                         this.showEvent(response.data);
-                        console.log(event);
                         this.selected_date = new Date(`${event.date}`);
                     }
                 }
@@ -99,8 +98,18 @@ export default {
 				bus.$emit("all_events", this.events);
 			});
 		},
+        getNextAvailableDate(){
+            axios.get("api/bookings/nextAvailable").then((response) => {
+                if(! response.data){
+                    this.available_date = moment().add(2, 'days').format("Y-MM-DD")
+                }else{
+                    this.available_date = moment(response.data).format("Y-MM-DD");
+                }
+            });
+        }
 	},
 	mounted: function () {
+	    this.getNextAvailableDate()
 		this.today = moment().format("Y-MM-DD HH:mm:ss");
 	},
 	watch: {

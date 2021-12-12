@@ -36,7 +36,7 @@ export default {
 		selected_products: function selectedProduct(newVal) {
 			this.minutes_total = 0;
 			newVal.forEach((element) => {
-				this.minutes_total += parseInt(element.minutes) * parseInt(element.hasOwnProperty('quantity') ? element.quantity : 1);
+				this.minutes_total += parseInt(element.minutes) * (element.quantity? parseInt(element.quantity) : 1);
 			});
 		},
 	},

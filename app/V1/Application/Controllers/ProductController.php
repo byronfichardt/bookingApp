@@ -4,13 +4,24 @@ namespace App\V1\Application\Controllers;
 
 use App\V1\Application\Models\Product;
 use App\Http\Controllers\Controller;
+use App\V1\Application\Resources\ProductResource;
+use App\V1\Domain\dtos\ProductDto;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Product::orderBy('sort_order')->get()->toJson();
+        $date = $request->date ? Carbon::parse($request->date) : null;
+
+        $products = Product::with('prices')->orderBy('sort_order')->get();
+
+        $products = $products->map(function (Product $product) use($date) {
+            return new ProductDto($product, $product->getPrice($date));
+        });
+
+        return ProductResource::collection($products);
     }
 
     public function fetch(Request $request, string $date)

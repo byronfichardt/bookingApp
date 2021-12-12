@@ -6,9 +6,9 @@ use App\V1\Application\Models\Booking;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
-class HoursByDate
+class BookingHours
 {
-    public static function get(Collection $hours, string $date): Collection
+    public static function hoursByDate(Collection $hours, string $date): Collection
     {
         $bookings = Booking::whereIn('status', ['active','pending'])->whereDate('start_time', $date)->get();
 

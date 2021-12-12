@@ -1,20 +1,19 @@
 <template>
 	<v-card>
 		<v-tabs v-model="tab" centered icons-and-text touchless>
-			<v-tab href="#tab-1" disabled> Products </v-tab>
-			<v-tab href="#tab-2" disabled> Date </v-tab>
+			<v-tab href="#tab-1" disabled> Dates </v-tab>
+			<v-tab href="#tab-2" disabled> Products </v-tab>
 			<v-tab href="#tab-3" disabled> Your Info </v-tab>
 			<v-tab href="#finished" disabled> Thank You </v-tab>
 		</v-tabs>
 
 		<v-tabs-items v-model="tab" touchless>
-			<v-tab-item :value="'tab-1'">
-				<productForm></productForm>
-			</v-tab-item>
 			<v-tab-item :value="'tab-2'">
+				<productForm :selectedDate="selected_date_time"></productForm>
+			</v-tab-item>
+			<v-tab-item :value="'tab-1'">
 				<calender
 					calander-type="month"
-					:startDate="selected_date"
 				></calender>
 			</v-tab-item>
 			<v-tab-item :value="'tab-3'">
@@ -36,16 +35,21 @@ import { bus } from "../app";
 import calender from "./calender.vue";
 import productForm from "./form.vue";
 import InfoForm from "./infoForm.vue";
+import moment from "moment";
 export default {
 	components: { calender, productForm, InfoForm },
 	data() {
 		return {
 			tab: "tab-1",
 			selected_date: "",
+            selected_date_time:'',
 		};
 	},
 	created: function () {
-		bus.$on("move_next", () => {
+		bus.$on("move_next", (event) => {
+            this.selected_date_time = moment(event).format(
+                "YYYY-MM-DD HH:mm:SS"
+            );
 			let currentTab = this.tab.split("-").pop();
 			let nextTab = parseInt(currentTab) + 1;
 			this.tab = "tab-" + nextTab;

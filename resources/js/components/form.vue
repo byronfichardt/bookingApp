@@ -68,12 +68,17 @@
 		>
 			Next
 		</v-btn>
+        <quantity-add-form></quantity-add-form>
 	</div>
 </template>
 <script>
 import { bus } from "../app";
+import QuantityAddForm from "./QuantityAddForm";
+import moment from "moment";
 export default {
-	data: () => ({
+    props: ['selectedDate'],
+    components: {QuantityAddForm},
+    data: () => ({
         selected: [],
         productHeaders: [
             {
@@ -94,12 +99,20 @@ export default {
 	}),
 	methods: {
 	    updateSelected(item){
-	        if(item.selected === false) {
+            if(item.selected === false) {
                 const index = this.selected.findIndex(v => v.id === item.id);
                 this.selected.splice(index, index >= 0 ? 1 : 0);
+                delete item.quantity
             }else{
-                this.selected.push(item)
+                if(item.display_quantity) {
+                    bus.$emit("show_quantity_form", item);
+                }else{
+                    this.addSelected(item);
+                }
             }
+        },
+        addSelected(item){
+            this.selected.push(item)
         },
 		updatePrice(item) {
 			item.origanalPrice
@@ -108,8 +121,8 @@ export default {
 			item.price = 1 * item.origanalPrice;
 		},
 		getProducts() {
-			axios.get("api/products").then((response) => {
-				this.products = response.data;
+			axios.get("api/products?date="+ this.selectedDate).then((response) => {
+				this.products = response.data.data;
 			});
 		},
 		saveProducts() {
@@ -121,16 +134,16 @@ export default {
         sumtotal(type) {
             let sum = 0;
             this.selected.forEach((element) => {
-                    let value = parseInt(element[type]);
-                    let total = 0
-                    let itemQty = 1
-                    if (element.hasOwnProperty("quantity")) {
-                        if(element.quantity) {
-                            itemQty = element.quantity
-                        }
+                let value = parseInt(element[type]);
+                let total = 0
+                let itemQty = 1
+                if (element.hasOwnProperty("quantity")) {
+                    if(element.quantity) {
+                        itemQty = element.quantity
                     }
-                    total = value * parseInt(itemQty);
-                    sum = parseFloat(sum) + parseInt(total);
+                }
+                total = value * parseInt(itemQty);
+                sum = parseFloat(sum) + parseInt(total);
             });
             return sum;
         },
@@ -159,6 +172,14 @@ export default {
 	mounted: function () {
 		this.getProducts();
 	},
+    created: function () {
+        bus.$on("quantity_form_saved", (event) => {
+            this.addSelected(event)
+        });
+        bus.$on("closed_not_saved", (event) => {
+            event.selected = false
+        });
+    },
 };
 </script>
 <style>
