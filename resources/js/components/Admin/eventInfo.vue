@@ -63,14 +63,14 @@ export default {
         eventPrice() {
 	        let sum = 0
 	        this.event.products.forEach( (product) => {
-                sum += product.price * product.quantity;
+                sum += product.price * (product.quantity ?? 1);
             })
             return sum;
         },
         eventTime() {
             let sum = 0
             this.event.products.forEach( (product) => {
-                sum += product.minutes * product.quantity;
+                sum += product.minutes * (product.quantity ?? 1);
             })
             return sum;
         }

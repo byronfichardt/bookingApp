@@ -26,23 +26,16 @@ class BlockedDatesController extends Controller
         return BlockedDatesResource::collection($blockedDates);
     }
 
-    public function getAvailableTimes(Request $request): array
-    {
-        $date = $request->input('date');
-
-        $date = Carbon::parse($date)->format('Y-m-d');
-
-        return $this->availableTimes->get($date);
-    }
-
     public function store(Request $request)
     {
         if(empty($request->times)) {
-            return ['status' => "success"];
+            $times = implode(',', AvailableTimes::HOURS);
+        }else {
+            $times = implode(',',$request->times);
         }
         BlockedDate::create([
             'blocked_date' => $request->date,
-            'times' => implode(',',$request->times)
+            'times' => $times
         ]);
 
         return ['status' => "success"];

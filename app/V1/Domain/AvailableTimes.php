@@ -65,6 +65,8 @@ class AvailableTimes
                  return $key;
              }
          }
+
+         return now()->addDay()->format('Y-m-d');
      }
 
     /**
@@ -79,7 +81,7 @@ class AvailableTimes
             ];
         });
 
-        $blockedDates = BlockedDate::where('blocked_date','>', now()->addDay())->get()->map(function ($blockedDate) {
+        $blockedDates = BlockedDate::where('blocked_date','>', now())->get()->map(function ($blockedDate) {
             $all = [];
             if (!$blockedDate->times) {
                 $times = AvailableTimes::HOURS;

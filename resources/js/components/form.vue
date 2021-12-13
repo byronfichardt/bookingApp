@@ -107,6 +107,7 @@ export default {
                 if(item.display_quantity) {
                     bus.$emit("show_quantity_form", item);
                 }else{
+                    item.quantity = 1;
                     this.addSelected(item);
                 }
             }
