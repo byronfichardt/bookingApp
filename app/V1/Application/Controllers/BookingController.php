@@ -18,7 +18,6 @@ use App\V1\Application\Requests\Auth\BookingStoreRequest;
 use App\V1\Domain\Decoder;
 use App\V1\Domain\dtos\UserDto;
 use App\V1\Domain\UserCreator;
-use Google\Model;
 use Google\Service\Calendar\Event;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
