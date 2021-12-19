@@ -100,7 +100,7 @@
                 <div class="w3-col s6 w3-center">
 
                     <p class="w3-medium" style="color: black">
-                        Mobile +45 52 81 37 11
+                        Mobile +45 52 63 91 28
                         Email:  impulsenailscph@gmail.com</p>
                     <p class="w3-medium" style="color: black">
                         Axel Heides Gade,
