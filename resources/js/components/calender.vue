@@ -14,7 +14,9 @@
 					box-shadow: unset !important;
 					padding-top: 10px;
 				"
-				>Next Available: {{ available_date }}</v-banner
+				>
+<!--                Next Available: {{ available_date }}-->
+            </v-banner
 			>
 			<v-spacer></v-spacer>
 			<v-btn icon class="ma-2" @click="$refs.calendar.next()">
