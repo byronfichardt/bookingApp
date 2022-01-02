@@ -80,8 +80,9 @@ class BookingReminder extends Mailable
     private function sumPrice(Booking $booking)
     {
         return $booking->products
-            ->map(function ($product) {
-                return (int)$product->price * (int)$product->pivot->quantity;
+            ->map(function ($product) use($booking) {
+                $price = $product->getPrice($booking->start_time);
+                return (int)$price->price * (int)$product->pivot->quantity;
             })->sum();
     }
 }

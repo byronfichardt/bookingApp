@@ -26,10 +26,7 @@ class BookingCreated extends Mailable
 
     public string $name;
 
-    /**
-     * @var mixed
-     */
-    public $products;
+    public Booking $booking;
     /**
      * @var int|mixed
      */
@@ -52,7 +49,7 @@ class BookingCreated extends Mailable
     {
         $this->cancelUrl = config('app.url') . '/cancel?token=' . $token;
         $this->bookingDate = $booking->start_time;
-        $this->products = $booking->products->toArray();
+        $this->booking = $booking;
         $this->bookingId = $booking->id;
         $this->totalTime = $this->sumTime($booking);
         $this->totalPrice = $this->sumPrice($booking);
@@ -80,8 +77,9 @@ class BookingCreated extends Mailable
     private function sumPrice(Booking $booking)
     {
         return $booking->products
-            ->map(function ($product) {
-                return (int)$product->price * (int)$product->pivot->quantity;
+            ->map(function ($product) use($booking) {
+                $price = $product->getPrice($booking->start_time);
+                return (int)$price->price * (int)$product->pivot->quantity;
             })->sum();
     }
 }
