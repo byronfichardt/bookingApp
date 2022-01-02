@@ -3,7 +3,7 @@
 namespace App\V1\Application\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\V1\Application\Models\productPrice;
+use App\V1\Application\Models\ProductPrice;
 use App\V1\Application\Resources\ProductPriceResource;
 use Illuminate\Http\Request;
 

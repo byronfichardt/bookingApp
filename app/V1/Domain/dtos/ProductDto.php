@@ -3,12 +3,12 @@
 namespace App\V1\Domain\dtos;
 
 use App\V1\Application\Models\Product;
-use App\V1\Application\Models\productPrice;
+use App\V1\Application\Models\ProductPrice;
 
 class ProductDto
 {
     protected Product $product;
-    protected ?productPrice $productPrice;
+    protected ?ProductPrice $productPrice;
 
     public function __construct(Product $product, ?ProductPrice $price)
     {
@@ -25,9 +25,9 @@ class ProductDto
     }
 
     /**
-     * @return productPrice|null
+     * @return ProductPrice|null
      */
-    public function getProductPrice(): ?productPrice
+    public function getProductPrice(): ?ProductPrice
     {
         return $this->productPrice;
     }
