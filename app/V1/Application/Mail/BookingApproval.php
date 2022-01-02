@@ -3,11 +3,14 @@
 namespace App\V1\Application\Mail;
 
 use App\V1\Application\Models\Booking;
+use App\V1\Application\Models\Product;
 use App\V1\Application\Models\User;
 use App\V1\Domain\Decoder;
+use App\V1\Domain\dtos\ProductDto;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class BookingApproval extends Mailable
 {
@@ -19,11 +22,15 @@ class BookingApproval extends Mailable
     public string $approveUrl;
     public $totalTime;
     public $totalPrice;
+    public Collection $products;
 
     public function __construct(User $user, Booking $booking)
     {
         $this->user = $user;
         $this->booking = $booking;
+        $this->products = $booking->products->map(function (Product $product) use($booking) {
+            return new ProductDto($product, $product->getPrice($booking->start_time), $product->pivot->quantity);
+        });
         $token = Decoder::encode(['booking_id' => $booking->id]);
         $this->cancelUrl = config('app.url') . '/cancel?token=' . $token;
         $this->approveUrl = config('app.url') . "/bookings/$booking->id/approve";
@@ -49,7 +56,7 @@ class BookingApproval extends Mailable
         return $booking->products
             ->map(function ($product) use($booking) {
                 $price = $product->getPrice($booking->start_time);
-                return (int)$price->price * (int)$product->pivot->quantity;
+                return (int)($price ? $price->price : $product->price) * (int)$product->pivot->quantity;
             })->sum();
     }
 }

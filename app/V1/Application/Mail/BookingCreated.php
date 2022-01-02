@@ -3,9 +3,12 @@
 namespace App\V1\Application\Mail;
 
 use App\V1\Application\Models\Booking;
+use App\V1\Application\Models\Product;
+use App\V1\Domain\dtos\ProductDto;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class BookingCreated extends Mailable
 {
@@ -39,6 +42,7 @@ class BookingCreated extends Mailable
      * @var mixed
      */
     public $bookingId;
+    public Collection $products;
 
     /**
      * Create a new message instance.
@@ -51,6 +55,9 @@ class BookingCreated extends Mailable
         $this->bookingDate = $booking->start_time;
         $this->booking = $booking;
         $this->bookingId = $booking->id;
+        $this->products = $booking->products->map(function (Product $product) use($booking) {
+            return new ProductDto($product, $product->getPrice($booking->start_time), $product->pivot->quantity);
+        });
         $this->totalTime = $this->sumTime($booking);
         $this->totalPrice = $this->sumPrice($booking);
         $this->co_address = config('admin.address.co');
@@ -79,7 +86,7 @@ class BookingCreated extends Mailable
         return $booking->products
             ->map(function ($product) use($booking) {
                 $price = $product->getPrice($booking->start_time);
-                return (int)$price->price * (int)$product->pivot->quantity;
+                return (int)($price ? $price->price : $product->price) * (int)$product->pivot->quantity;
             })->sum();
     }
 }

@@ -3,9 +3,12 @@
 namespace App\V1\Application\Mail;
 
 use App\V1\Application\Models\Booking;
+use App\V1\Application\Models\Product;
+use App\V1\Domain\dtos\ProductDto;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class BookingReminder extends Mailable
 {
@@ -27,10 +30,6 @@ class BookingReminder extends Mailable
     public string $name;
 
     /**
-     * @var mixed
-     */
-    public $products;
-    /**
      * @var int|mixed
      */
     public $totalTime;
@@ -43,6 +42,8 @@ class BookingReminder extends Mailable
      */
     public $bookingId;
 
+    public Collection $products;
+
     /**
      * Create a new message instance.
      *
@@ -52,7 +53,9 @@ class BookingReminder extends Mailable
     {
         $this->cancelUrl = config('app.url') . '/cancel?token=' . $token;
         $this->bookingDate = $booking->start_time;
-        $this->products = $booking->products->toArray();
+        $this->products = $booking->products->map(function (Product $product) use($booking) {
+            return new ProductDto($product, $product->getPrice($booking->start_time), $product->pivot->quantity);
+        });
         $this->bookingId = $booking->id;
         $this->totalTime = $this->sumTime($booking);
         $this->totalPrice = $this->sumPrice($booking);
@@ -82,7 +85,7 @@ class BookingReminder extends Mailable
         return $booking->products
             ->map(function ($product) use($booking) {
                 $price = $product->getPrice($booking->start_time);
-                return (int)$price->price * (int)$product->pivot->quantity;
+                return (int)($price ? $price->price : $product->price) * (int)$product->pivot->quantity;
             })->sum();
     }
 }

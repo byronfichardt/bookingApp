@@ -17,8 +17,8 @@ Address:
 
 | Description           | Price                      | Time (minutes)               |
 | --------------------- |:--------------------------:| ----------------------------:|
-@foreach($booking->products as $product)
-| {{$product['name']}}  | {{$product->getPrice($booking->start_time)->price}}      | {{$product['minutes'] * $product['pivot']['quantity']}}      |
+@foreach($products as $product)
+|{{ $product->getProduct()['name'] }}  | {{$product->getPrice()}}      | {{$product->getProduct()['minutes'] * $product->getQuantity()}}      |
 @endforeach
 | Totals                | {{$totalPrice}}            | {{$totalTime}}               |
 
