@@ -77,10 +77,9 @@ export default {
                 if(response.data.length === 0 ) {
                     Swal.fire("Day fully booked");
                 }else {
-                    let tomorrowsDate = moment(this.today).add(1, "days");
-                    if (moment(event.date).isBetween(moment(this.today), tomorrowsDate)) {
+                    if (moment(event.date).isSame(moment(this.today), 'day')) {
                         Swal.fire("Day fully booked");
-                    } else if (moment(event.date).isAfter(tomorrowsDate)) {
+                    } else if (moment(event.date).isAfter(moment(this.today))) {
                         this.showEvent(response.data);
                         this.selected_date = new Date(`${event.date}`);
                     }
