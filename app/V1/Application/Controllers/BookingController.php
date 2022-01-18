@@ -6,6 +6,7 @@ use App\V1\Application\Jobs\BookingApprovalEmail;
 use App\V1\Application\Models\Booking;
 use App\V1\Application\Models\User;
 use App\V1\Application\Resources\BookingResource;
+use App\V1\Domain\AvailableTimes;
 use App\V1\Domain\BookingCreator;
 use App\V1\Domain\BookingEditor;
 use App\V1\Domain\CalendarEventInserter;
@@ -18,6 +19,7 @@ use App\V1\Application\Requests\Auth\BookingStoreRequest;
 use App\V1\Domain\Decoder;
 use App\V1\Domain\dtos\UserDto;
 use App\V1\Domain\UserCreator;
+use Carbon\Carbon;
 use Google\Service\Calendar\Event;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -67,6 +69,16 @@ class BookingController extends Controller
         $email = $request->getEmail();
         $phone = $request->getPhone();
         $note = $request->getBookingNote();
+
+        $bookingDate = Carbon::parse($request->getDateTime());
+
+        /** @var AvailableTimes $availableTimes */
+        $availableTimes = app(AvailableTimes::class);
+        $times = $availableTimes->get($bookingDate->toDateString());
+
+        if(! in_array($bookingDate->hour, $times)) {
+            return ['status' => "fail"];
+        }
 
         $userDto = new UserDto($name, $email, $phone);
 

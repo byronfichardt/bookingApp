@@ -83,7 +83,7 @@ export default {
 			    if(response.data.status === 'success') {
                     bus.$emit("finished");
                 }else{
-                    Swal.fire("Oops something went wrong, please try again!");
+                    Swal.fire("Oops something went wrong, please refresh your page and try again!");
                 }
 			});
 		},
