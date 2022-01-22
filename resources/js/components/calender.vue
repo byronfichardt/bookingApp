@@ -15,7 +15,7 @@
 					padding-top: 10px;
 				"
 				>
-<!--                Next Available: {{ available_date }}-->
+                Next Available: {{ available_date }}
             </v-banner
 			>
 			<v-spacer></v-spacer>

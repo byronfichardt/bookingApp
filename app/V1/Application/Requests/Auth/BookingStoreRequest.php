@@ -2,6 +2,7 @@
 
 namespace App\V1\Application\Requests\Auth;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BookingStoreRequest extends FormRequest
@@ -18,9 +19,9 @@ class BookingStoreRequest extends FormRequest
         ];
     }
 
-    public function getDateTime()
+    public function getDateTime(): Carbon
     {
-        return $this->input('date_time');
+        return Carbon::parse($this->input('date_time'));
     }
 
     public function getMinutesTotal()

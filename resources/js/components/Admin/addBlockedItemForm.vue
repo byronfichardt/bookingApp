@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { bus } from "../../../app";
+import { bus } from "../../app";
 export default {
 	data: () => ({
 		dialog: false,
@@ -84,7 +84,6 @@ export default {
 	},
 	created: function () {
 		bus.$on("open_add_blocked_date_form", (event) => {
-		    console.log(event)
 		    this.item.date = event.date
             this.item.times = event.times
             this.item.alltimes = event.alltimes

@@ -21,8 +21,10 @@ use App\V1\Domain\dtos\UserDto;
 use App\V1\Domain\UserCreator;
 use Carbon\Carbon;
 use Google\Service\Calendar\Event;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use JetBrains\PhpStorm\ArrayShape;
 
 class BookingController extends Controller
 {
@@ -63,14 +65,11 @@ class BookingController extends Controller
         );
     }
 
+    #[ArrayShape(['status' => "string"])]
     public function store(BookingStoreRequest $request): array
     {
         $name = $request->getName();
-        $email = $request->getEmail();
-        $phone = $request->getPhone();
-        $note = $request->getBookingNote();
-
-        $bookingDate = Carbon::parse($request->getDateTime());
+        $bookingDate = $request->getDateTime();
 
         /** @var AvailableTimes $availableTimes */
         $availableTimes = app(AvailableTimes::class);
@@ -80,15 +79,15 @@ class BookingController extends Controller
             return ['status' => "fail"];
         }
 
-        $userDto = new UserDto($name, $email, $phone);
-
-        $user = $this->userCreator->create($userDto);
+        $user = $this->userCreator->create(
+            new UserDto($name, $request->getEmail(), $request->getPhone())
+        );
 
         $booking = $this->bookingCreator->create(
             $user->id,
             $request->getDateTime(),
             $request->getMinutesTotal(),
-            sprintf('name: %s, Note: %s', $name, $note),
+            sprintf('name: %s, Note: %s', $name, $request->getBookingNote()),
             $request->getProducts(),
             $request->getImagePath(),
         );
@@ -99,7 +98,7 @@ class BookingController extends Controller
         return ['status' => "success"];
     }
 
-    public function upload(Request $request)
+    public function upload(Request $request): JsonResponse
     {
         $year = now()->year;
 
@@ -108,6 +107,7 @@ class BookingController extends Controller
         return response()->json(['path'=>$filePath]);
     }
 
+    #[ArrayShape(['status' => "string"])]
     public function edit(Request $request, int $bookingId): array
     {
         /** @var Booking $booking */

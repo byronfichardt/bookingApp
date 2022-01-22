@@ -13,14 +13,15 @@ class BookingCreator
         int $totalTime,
         string $note,
         array $products,
-        ?string $path
+        ?string $path,
+        string $status = 'pending'
     ): Booking {
         $booking = Booking::create([
             'start_time' => Carbon::parse($dateTime),
             'end_time' => Carbon::parse($dateTime)->addMinutes($totalTime),
             'user_id' => $userId,
             'note' => $note,
-            'status' => 'pending',
+            'status' => $status,
             'path' => $path
         ]);
 

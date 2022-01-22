@@ -2,7 +2,6 @@
 
 namespace App\V1\Domain;
 
-use App\V1\Application\Models\BlockedDate;
 use App\V1\Application\Models\Booking;
 use App\V1\Domain\Booking\BookingHours;
 use Carbon\Carbon;
@@ -16,38 +15,12 @@ class AvailableTimes
          $hours = collect(self::HOURS);
          $notAvailableHours = BookingHours::hoursByDate($hours, $date);
 
-         $blockedDates = BlockedDate::whereDate('blocked_date', $date)->get();
-
-         if ($blockedDates->count() == 1) {
-             $blockedDate = $blockedDates->first();
-             if(! $blockedDate) {
-                 return $hours->diff($notAvailableHours)->values()->toArray();
-             }
-
-             if(! $blockedDate->hasTimes()) {
-                 return [];
-             }
-
-             foreach($blockedDate->times() as $time) {
-                 $notAvailableHours->add((int) $time);
-             }
-
-             return $hours->diff($notAvailableHours)->unique()->values()->toArray();
-         }
-
-         $times = $blockedDates->pluck('times')->toArray();
-
-         foreach($times as $time) {
-             $notAvailableHours->add((int) $time);
-         }
-
          return $hours->diff($notAvailableHours)->unique()->values()->toArray();
-
      }
 
      public function getNextAvailable(): string
      {
-         $datesAndTimes = $this->transformAndMergeBookingAndBlocked();
+         $datesAndTimes = $this->transformBookings();
 
          $dates = $datesAndTimes->reduce(function($carry, $item) {
              if(isset($carry[$item['date']])) {
@@ -72,32 +45,17 @@ class AvailableTimes
     /**
      * @return mixed
      */
-    protected function transformAndMergeBookingAndBlocked()
+    protected function transformBookings()
     {
-        $bookings = Booking::where('start_time','>', now()->addDay())->get()->map(function ($booking) {
-            return [
-                'date' => Carbon::parse($booking->start_time)->format('Y-m-d'),
-                'time' => Carbon::parse($booking->start_time)->hour
-            ];
-        });
+        // make sure we start from tomorrow at the beginning of the day
+        $date = now()->addDay()->hour(1);
 
-        $blockedDates = BlockedDate::where('blocked_date','>', now())->get()->map(function ($blockedDate) {
-            $all = [];
-            if (!$blockedDate->times) {
-                $times = AvailableTimes::HOURS;
-            } else {
-                $times = explode(',', $blockedDate->times);
-            }
-
-            foreach ($times as $time) {
-                $all[] = [
-                    'date' => Carbon::parse($blockedDate->blocked_date)->format('Y-m-d'),
-                    'time' => (int)$time
+        return Booking::where('start_time','>', $date)->get()
+            ->map(function ($booking) {
+                return [
+                    'date' => Carbon::parse($booking->start_time)->format('Y-m-d'),
+                    'time' => Carbon::parse($booking->start_time)->hour
                 ];
-            }
-            return $all;
-        })->flatten(1);
-
-        return $blockedDates->merge($bookings);
+            });
     }
 }

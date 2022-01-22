@@ -31,7 +31,7 @@
 				@change="getEvents"
 				color="primary"
 				@click:event="showEvent"
-                @click:date="testme"
+                @click:date="showAddBlockedDateForm"
 			>
 			</v-calendar>
 		</v-sheet>
@@ -45,7 +45,7 @@ import moment from "moment";
 import { bus } from "../../app";
 import eventForm from "../chooseTimeForm.vue";
 import EventInfo from "./eventInfo.vue";
-import AddItemForm from "./BlockedDates/addItemForm";
+import AddItemForm from "./addBlockedItemForm";
 export default {
 	components: {AddItemForm, eventForm, EventInfo },
 	data: () => ({
@@ -63,8 +63,7 @@ export default {
 		events: [],
 	}),
 	methods: {
-	    testme(event) {
-	        console.log(event)
+        showAddBlockedDateForm(event) {
             this.getAvailableTimes(event.date)
         },
 		showEvent({ event }) {
@@ -80,44 +79,6 @@ export default {
 				this.selected_date = new Date(`${event.date} ${event.time}`);
 			}
 		},
-        getBlockedDates(){
-            axios.get("api/blocked").then((response) => {
-                this.blockedDates = response.data.data.forEach((event) => {
-                    if(event.times) {
-                        event.times.split(',').forEach((item) => {
-                            let eventDate = moment(event.date).hour(item);
-                            this.events.push({
-                                id: 0,
-                                start: eventDate.format("YYYY-MM-DD HH:mm:SS"),
-                                products: [],
-                                user: 'karin',
-                                end: eventDate.add(3, 'h').format("YYYY-MM-DD HH:mm:SS"),
-                                name: 'Karin Time',
-                                note: '',
-                                path: '',
-                                color: 'green',
-                            });
-                        })
-                    }else {
-                        let eventDate = moment(event.date);
-                        this.availableTimes.forEach((item) => {
-                            let thisEventDate = eventDate.hour(item);
-                            this.events.push({
-                                id: 0,
-                                start: thisEventDate.format("YYYY-MM-DD HH:mm:SS"),
-                                products: [],
-                                user: 'karin',
-                                end: thisEventDate.add(3, 'h').format("YYYY-MM-DD HH:mm:SS"),
-                                name: 'Karin Time',
-                                note: '',
-                                path: '',
-                                color: 'green',
-                            });
-                        })
-                    }
-                });
-            });
-        },
         getAvailableTimes(date = '2040-01-01'){
             axios.get("api/bookings/availableTimes?date=" + date).then((response) => {
                 this.availableTimes = response.data
@@ -132,19 +93,25 @@ export default {
 			axios.get("api/bookings").then((response) => {
 				this.events = [];
 				response.data["data"].forEach((event) => {
+				    let color = 'blue';
+				    let name = event.user ? event.user.name : event.name
+				    if(event.note === 'BLOCKED') {
+                        color = 'green';
+                        name = 'Blocked';
+                    }
 					this.events.push({
                         id: event.id,
 						start: event.start.slice(0, -3),
 						products: event.products,
 						user: event.user,
 						end: event.end.slice(0, -3),
-						name: event.user ? event.user.name : event.name,
+						name: name,
                         note: event.note,
                         path: event.path,
+                        color: color
 					});
 				});
 				this.getAvailableTimes()
-				this.getBlockedDates()
 				bus.$emit("all_events", this.events);
 			});
 		},

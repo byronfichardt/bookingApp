@@ -3,49 +3,42 @@
 namespace App\V1\Application\Controllers;
 
 use App\V1\Application\Models\BlockedDate;
+use App\V1\Application\Models\User;
 use App\V1\Application\Resources\BlockedDatesResource;
 use App\V1\Domain\AvailableTimes;
 use App\Http\Controllers\Controller;
+use App\V1\Domain\BookingCreator;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use JetBrains\PhpStorm\ArrayShape;
 
 class BlockedDatesController extends Controller
 {
-    private AvailableTimes $availableTimes;
+    private BookingCreator $bookingCreator;
 
-    public function __construct(AvailableTimes $availableTimes)
+    public function __construct(BookingCreator $bookingCreator)
     {
-        $this->availableTimes = $availableTimes;
+        $this->bookingCreator = $bookingCreator;
     }
 
-    public function index(): AnonymousResourceCollection
+    #[ArrayShape(['status' => "string"])]
+    public function store(Request $request): array
     {
-        $blockedDates = BlockedDate::orderBy('blocked_date', 'desc')->limit(200)->get();
-
-        return BlockedDatesResource::collection($blockedDates);
-    }
-
-    public function store(Request $request)
-    {
-        if(empty($request->times)) {
-            $times = implode(',', AvailableTimes::HOURS);
-        }else {
-            $times = implode(',',$request->times);
+        $adminUser = User::admin();
+        $date = Carbon::parse($request->date);
+        foreach($request->times as $time) {
+            $date->hour($time);
+            $this->bookingCreator->create(
+                $adminUser->id,
+                $date,
+                0,
+                'BLOCKED',
+                [],
+                null,
+                'active'
+            );
         }
-        BlockedDate::create([
-            'blocked_date' => $request->date,
-            'times' => $times
-        ]);
-
-        return ['status' => "success"];
-    }
-
-    public function delete(Request $request, int $id): array
-    {
-        $blockedDate = BlockedDate::find($id);
-
-        $blockedDate->delete();
 
         return ['status' => "success"];
     }
