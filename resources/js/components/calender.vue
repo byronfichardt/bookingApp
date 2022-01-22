@@ -101,11 +101,7 @@ export default {
 		},
         getNextAvailableDate(){
             axios.get("api/bookings/nextAvailable").then((response) => {
-                if(! response.data){
-                    this.available_date = moment().add(2, 'days').format("Y-MM-DD")
-                }else{
-                    this.available_date = moment(response.data).format("Y-MM-DD");
-                }
+                this.available_date = moment(response.data).format("Y-MM-DD");
             });
         }
 	},
