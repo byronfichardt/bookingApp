@@ -53,9 +53,9 @@ class ConvertBlockedDates extends Command
             $times = explode(',', $blockedDate->times);
             foreach($times as $time) {
                 $time = trim($time);
-                $date->hour($time);
+                $date->hour((int)$time);
 
-                if(Booking::whereDate('start_time', $date)->first()) {
+                if(Booking::where('start_time', $date)->first()) {
                     continue;
                 }
 
