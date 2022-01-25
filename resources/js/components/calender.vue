@@ -4,20 +4,19 @@
 			<v-btn icon class="ma-2" @click="$refs.calendar.prev()">
 				<v-icon>mdi-chevron-left</v-icon>
 			</v-btn>
-			<v-banner
-				elevation="1"
-				single-line
-				style="
-					display: block;
-					width: 100%;
-					text-align: center;
-					box-shadow: unset !important;
-					padding-top: 10px;
-				"
-				>
-                Next Available: {{ available_date }}
-            </v-banner
-			>
+<!--			<v-banner-->
+<!--				elevation="1"-->
+<!--				single-line-->
+<!--				style="-->
+<!--					display: block;-->
+<!--					width: 100%;-->
+<!--					text-align: center;-->
+<!--					box-shadow: unset !important;-->
+<!--					padding-top: 10px;-->
+<!--				"-->
+<!--				>-->
+<!--                Next Available: {{ available_date }}-->
+<!--            </v-banner>-->
 			<v-spacer></v-spacer>
 			<v-btn icon class="ma-2" @click="$refs.calendar.next()">
 				<v-icon>mdi-chevron-right</v-icon>
