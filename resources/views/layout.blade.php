@@ -103,7 +103,7 @@
                         Mobile +45 52 63 91 28
                         Email:  impulsenailscph@gmail.com</p>
                     <p class="w3-medium" style="color: black">
-                        Axel Heides Gade,
+                        Else Alfelts Vej,
                         Kobenhavn S,
                         2300</p>
                 </div>
