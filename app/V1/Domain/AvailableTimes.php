@@ -9,10 +9,20 @@ use Carbon\Carbon;
 class AvailableTimes
 {
     public const HOURS = [9, 13, 16];
+    public const LONG_HOURS = [9, 13, 16, 19];
 
      public function get(string $date): array
      {
-         $hours = collect(self::HOURS);
+         $wednesday = Carbon::parse($date)->isWednesday();
+         $tuesday = Carbon::parse($date)->isTuesday();
+         $monday = Carbon::parse($date)->isMonday();
+
+         if($monday || $tuesday || $wednesday) {
+             $hours = collect(self::LONG_HOURS);
+         }else {
+             $hours = collect(self::HOURS);
+         }
+
          $notAvailableHours = BookingHours::hoursByDate($hours, $date);
 
          return $hours->diff($notAvailableHours)->unique()->values()->toArray();
