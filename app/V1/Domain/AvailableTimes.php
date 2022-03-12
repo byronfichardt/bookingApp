@@ -5,6 +5,8 @@ namespace App\V1\Domain;
 use App\V1\Application\Models\Booking;
 use App\V1\Domain\Booking\BookingHours;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class AvailableTimes
 {
@@ -13,15 +15,7 @@ class AvailableTimes
 
      public function get(string $date): array
      {
-         $wednesday = Carbon::parse($date)->isWednesday();
-         $tuesday = Carbon::parse($date)->isTuesday();
-         $monday = Carbon::parse($date)->isMonday();
-
-         if($monday || $tuesday || $wednesday) {
-             $hours = collect(self::LONG_HOURS);
-         }else {
-             $hours = collect(self::HOURS);
-         }
+         $hours = $this->getHoursForDate($date);
 
          $notAvailableHours = BookingHours::hoursByDate($hours, $date);
 
@@ -30,42 +24,36 @@ class AvailableTimes
 
      public function getNextAvailable(): string
      {
-         $datesAndTimes = $this->transformBookings();
+         $date = now()->addDay()->startOfDay();
+         $bookings = Booking::where('start_time','>', $date)
+             ->select(DB::raw('date(start_time) as date'), DB::raw('count(*) as total'))
+             ->groupBy('date')
+             ->orderBy('date')
+             ->get();
 
-         $dates = $datesAndTimes->reduce(function($carry, $item) {
-             if(isset($carry[$item['date']])) {
-                 $carry[$item['date']][] = $item['time'];
-                 return $carry;
-             }
-             $carry[$item['date']] = [$item['time']];
-             return $carry;
-         }, []);
+         foreach ($bookings as $booking) {
+             $hours = $this->getHoursForDate($booking->date);
 
-         ksort($dates);
-
-         foreach ($dates as $key => $date) {
-             if(count($date) < count(AvailableTimes::HOURS)){
-                 return $key;
+             if($booking->total < $hours->count()){
+                 return $booking->date;
              }
          }
 
          return now()->addDay()->format('Y-m-d');
      }
 
-    /**
-     * @return mixed
-     */
-    protected function transformBookings()
+    public function getHoursForDate(string $date): Collection
     {
-        // make sure we start from tomorrow at the beginning of the day
-        $date = now()->addDay()->hour(1);
+        $wednesday = Carbon::parse($date)->isWednesday();
+        $tuesday = Carbon::parse($date)->isTuesday();
+        $monday = Carbon::parse($date)->isMonday();
 
-        return Booking::where('start_time','>', $date)->get()
-            ->map(function ($booking) {
-                return [
-                    'date' => Carbon::parse($booking->start_time)->format('Y-m-d'),
-                    'time' => Carbon::parse($booking->start_time)->hour
-                ];
-            });
+        if($monday || $tuesday || $wednesday) {
+            $hours = collect(self::LONG_HOURS);
+        }else {
+            $hours = collect(self::HOURS);
+        }
+
+        return $hours;
     }
 }
