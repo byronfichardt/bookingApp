@@ -4,6 +4,20 @@
 			<v-btn icon class="ma-2" @click="$refs.calendar.prev()">
 				<v-icon>mdi-chevron-left</v-icon>
 			</v-btn>
+            <v-banner
+                elevation="1"
+                single-line
+                style="
+					display: block;
+					width: 100%;
+					text-align: center;
+					box-shadow: unset !important;
+					padding-top: 10px;
+				"
+            >
+                {{ month }}
+            </v-banner>
+            <v-spacer></v-spacer>
 			<v-banner
 				elevation="1"
 				single-line
@@ -17,7 +31,8 @@
 				>
                 Next Available: {{ available_date }}
             </v-banner>
-			<v-spacer></v-spacer>
+            <v-spacer></v-spacer>
+
 			<v-btn icon class="ma-2" @click="$refs.calendar.next()">
 				<v-icon>mdi-chevron-right</v-icon>
 			</v-btn>
@@ -49,6 +64,7 @@ export default {
 	data: () => ({
         available_date: '',
 		today: "",
+        month: '',
 		theDate: "",
 		start: moment().add(2, "days").format("Y-MM-DD"),
 		selected_date: "",
@@ -85,7 +101,8 @@ export default {
                 }
             });
         },
-		getEvents() {
+		getEvents({ start, end }) {
+            this.month = moment(start.date).format('MMMM');
 			axios.get("api/bookings").then((response) => {
 				this.events = [];
 				response.data["data"].forEach((event) => {

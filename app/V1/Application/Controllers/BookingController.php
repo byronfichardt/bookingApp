@@ -48,12 +48,21 @@ class BookingController extends Controller
         $this->bookingEditor = $bookingEditor;
     }
 
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $bookings = Booking::with('user')
+            ->where('status', 'active');
+
+        if ($startDate && $endDate) {
+            $bookings->whereDate('start_time', '>=', Carbon::parse($startDate))
+                ->whereDate('start_time', '<', Carbon::parse($endDate)->endOfDay());
+        }
+
         return BookingResource::collection(
-            Booking::with('user')
-                ->where('status', 'active')
-                ->get()
+            $bookings->get()
         );
     }
 

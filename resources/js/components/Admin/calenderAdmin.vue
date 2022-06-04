@@ -4,18 +4,18 @@
 			<v-btn icon class="ma-2" @click="$refs.calendar.prev()">
 				<v-icon>mdi-chevron-left</v-icon>
 			</v-btn>
-			<v-banner
-				elevation="1"
-				single-line
-				style="
+            <v-banner
+                elevation="1"
+                single-line
+                style="
 					display: block;
 					width: 100%;
 					text-align: center;
 					box-shadow: unset !important;
 					padding-top: 10px;
 				"
-				>{{ selected_date ? formated_date : today }}</v-banner
-			>
+            >{{ month }}</v-banner
+            >
 			<v-spacer></v-spacer>
 			<v-btn icon class="ma-2" @click="$refs.calendar.next()">
 				<v-icon>mdi-chevron-right</v-icon>
@@ -51,6 +51,7 @@ export default {
 	data: () => ({
 		today: "",
 		theDate: "",
+        month: '',
 		start: moment().add(1, "days").format("Y-MM-DD"),
 		selected_date: "",
 		formated_date: "",
@@ -89,8 +90,10 @@ export default {
                 }
             })
         },
-		getEvents() {
-			axios.get("api/bookings").then((response) => {
+		getEvents({ start, end }) {
+            this.month = moment(start.date).format('MMMM');
+
+			axios.get("api/bookings?start_date=" + start.date + '&end_date=' + end.date).then((response) => {
 				this.events = [];
 				response.data["data"].forEach((event) => {
 				    let color = 'blue';
@@ -128,7 +131,7 @@ export default {
             this.openAddItemForm(event)
         });
         bus.$on("blocked_date_created", (event) => {
-            this.getEvents();
+            this.getEvents(event);
         });
     },
 	watch: {
